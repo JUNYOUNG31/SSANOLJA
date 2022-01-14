@@ -77,9 +77,31 @@
 
 ## 와이어프레임
 
-(향후 완성되면 캡쳐를 딸 예정)
-
 https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%851?node-id=0%3A1
+
+![스파이폴](/uploads/74416e46b58444793c1fecd726fcc683/스파이폴.gif)
+![메인페이지](/uploads/8f625a3e17109e80945f038d5a99c67c/메인페이지.gif)
+![가예뉴가](/uploads/86493623ec329b7fe3148be24b52231c/가예뉴가.gif)
+![텔레스테이션](/uploads/879e143addd53f0f16942510f1c46fd7/텔레스테이션.gif)
+
+
+
+## ER Diagram
+
+
+
+![ERD_1.0](/uploads/bde2736b8f25c5e8c0ede551fe4aee93/ERD_1.0.png)
+
+
+
+
+
+## 기능 정의서
+
+![1](/uploads/da8b830fd9bd66d23ce4c51a58e19705/1.png)
+![2](/uploads/56c36762481ed8b3f0f0980cfc31b22e/2.png)
+![3](/uploads/5408796bca8fffb2a802663842d75ac6/3.png)
+![4](/uploads/a9d625ea09c8a0847b151f1e827dbab1/4.png)
 
 
 
