@@ -19,16 +19,28 @@
 ## 프로젝트 소개
 
 * 프로젝트명: SSANOLJA
+
+
+
 * 서비스 특징: 웹/모바일(웹 기술) 프로젝트를 위한 스켈레톤 프로젝트
+
+
+
 * 주요 기능
   - 회원 관리
   - 화상 미팅룸
   - 그룹 채팅
+  
+  
+  
 * 주요 기술
   - WebRTC
   - WebSocket
   - JWT Authentication
   - REST API
+  
+  
+  
 * 참조 리소스
   * Vuetify: 디자인 전반 적용
   * Vue Argon Design System: 디자인 전반 적용
@@ -36,6 +48,9 @@
   * AR Core: 구글에서 제공하는 AR 지원 라이브러리. 이미지 인식 및 오버레이 영상에 활용
   * Color Thief: 이미지 색상 추출 라이브러리. 커버 사진 색상 추출 및 배경 변경에 활용
   * Animation.css: CSS 애니메이션 지원 라이브러리. 메인 페이지 진입 애니메이션에 활용
+  
+  
+  
 * 배포 환경
   - URL: // 웹 서비스, 랜딩 페이지, 프로젝트 소개 등의 배포 URL 기입
   - 테스트 계정: // 로그인이 필요한 경우, 사용 가능한 테스트 계정(ID/PW) 기입
@@ -60,14 +75,28 @@
 
 
 
+## 와이어프레임
+
+(향후 완성되면 캡쳐를 딸 예정)
+
+https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%851?node-id=0%3A1
+
+
+
 
 
 ## 협업 툴
 
 - Git
+
 - Jira
-- Notion
+
+- Notion 
+
+  [https://granite-guitar-399.notion.site/SSAnolja-f46693a1c6f04836b9e515b5f61b3724]
+
 - Mattermost
+
 - Webex
 
 
@@ -102,23 +131,24 @@
 
   - 커밋 타입: 내용 간단하게 적어주기
   - 예시) FEAT: register REST API 작성 [#JIRA issue-number] 
-
+  - JIRA issue-number는 Githook을 사용하여 자동으로 작성할 예정
   
-
+  
+  
   - FEAT: 새로운 기능을 추가할 경우
-
+  
   - FIX: 버그를 고친 경우
-
+  
   - STYLE: 코드 포맷 변경, 코드 변경이 없는 경우
-
+  
   - REFACTOR: 변수명, 메서드 이름 수정 등 클린코드를 위한 코드 리팩토링
-
+  
   - DOCS: Swagger, README등 문서를 수정하는 경우
-
+  
   - RENAME: 파일 혹은 폴더명 수정 및 이동
-
+  
   - REMOVE : 파일 삭제
-
+  
     
-
+  
   
