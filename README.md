@@ -171,6 +171,9 @@ https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED
   
   - REMOVE : 파일 삭제
   
+  - CHORE : 빌드 테스크 업데이트, 패키지 매니저 환경설정
+  
     
   
   
+
