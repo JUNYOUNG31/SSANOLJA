@@ -67,17 +67,11 @@
 
 
 
-## 프로젝트 상세 설명
-
-// 개발 환경, 기술 스택, 시스템 구성도, ERD, 기능 상세 설명 등
-
-
-
 
 
 ## 와이어프레임
 
-https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%851?node-id=0%3A1
+[링크](https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%851?node-id=0%3A1)
 
 ![스파이폴](/uploads/74416e46b58444793c1fecd726fcc683/스파이폴.gif)
 ![메인페이지](/uploads/8f625a3e17109e80945f038d5a99c67c/메인페이지.gif)
@@ -113,9 +107,7 @@ https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED
 
 - Jira
 
-- Notion 
-
-  [https://granite-guitar-399.notion.site/SSAnolja-f46693a1c6f04836b9e515b5f61b3724]
+- [Notion](https://granite-guitar-399.notion.site/SSAnolja-f46693a1c6f04836b9e515b5f61b3724)
 
 - Mattermost
 
@@ -141,6 +133,7 @@ https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED
 
   
 
+  - README는 develop브런치에서 바로 작성한다.
   - feature 브랜치가 완성되면 develop 브랜치로 merge pull request를 진행한다.
   - pull request시 충돌이 발생하면 충돌되는 코드를 작성한 당사자들끼리 코드를 리뷰하며 필요한 경우 모든 팀원들이 코드 리뷰해서 merge한다.
   - feature 브랜치 이름 명명 규칙
@@ -157,23 +150,12 @@ https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED
   
   
   
-  - FEAT: 새로운 기능을 추가할 경우
-  
-  - FIX: 버그를 고친 경우
-  
+  - FEAT: 새로운 기능을 추가
+  - FIX: 버그를 해결
   - STYLE: 코드 포맷 변경, 코드 변경이 없는 경우
-  
   - REFACTOR: 변수명, 메서드 이름 수정 등 클린코드를 위한 코드 리팩토링
-  
-  - DOCS: Swagger, README등 문서를 수정하는 경우
-  
+  - DOCS: Swagger, README등 문서를 수정
   - RENAME: 파일 혹은 폴더명 수정 및 이동
-  
   - REMOVE : 파일 삭제
-  
   - CHORE : 빌드 테스크 업데이트, 패키지 매니저 환경설정
   
-    
-  
-  
-
