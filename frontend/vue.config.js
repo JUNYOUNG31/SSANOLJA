@@ -17,8 +17,8 @@ module.exports = {
     requireModuleExtension: false // import 시에 경로에 .module 포함 안해도 됨.
   },
   transpileDependencies: [
-    'element-plus'
+    'vuetify',
   ],
   lintOnSave: false,
-  outputDir: '../backend-java/src/main/resources/dist'
+  outputDir: '../backend/src/main/resources/dist'
 }

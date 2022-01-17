@@ -1,5 +1,5 @@
 {
-  "name": "ssafy-vue",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,16 +12,18 @@
     "@vue/cli": "^4.5.15",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "element-plus": "^1.0.2-beta.44",
+    "element-ui": "^2.15.6",
+    "lodash": "^4.17.21",
     "node-sass": "^6.0.1",
     "roboto-fontface": "*",
     "sass-loader": "^10.2.0",
     "stylus-loader": "^3.0.2",
-    "vue": "^3.2.26",
+    "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
-    "vue-i18n": "^9.1.6",
-    "vue-router": "^4.0.6",
-    "vuex": "^4.0.0"
+    "vue-i18n": "^8.26.8",
+    "vue-router": "^3.5.3",
+    "vuetify": "^2.6.2",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
@@ -48,7 +50,7 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/vue3-essential",
+      "plugin:vue/essential",
       "eslint:recommended"
     ],
     "parserOptions": {
