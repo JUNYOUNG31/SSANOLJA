@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <img src="../assets/logo.png" alt="logo">
-    <a href="#">로그인 하기</a>
+    <section class="test">
+    <div v-on:click="GoogleLoginBtn">구글 OAuth2 연동</div>
+    <div id="my-signin2" style="display: none"></div>
+    </section>
     <br>
     <router-link :to="{ name: 'Room' }">대기실 가기</router-link>
   </div>
@@ -12,11 +15,44 @@
 
   export default {
     name: 'Home',
+    methods: {
+    GoogleLoginBtn:function(){
+      var self = this;
 
-    // components: {
+      window.gapi.signin2.render('my-signin2', {
+        scope: 'profile email',
+        width: 240,
+        height: 50,
+        longtitle: true,
+        theme: 'dark',
+        onsuccess: this.GoogleLoginSuccess,
+        onfailure: this.GoogleLoginFailure,
+      });
+
+      setTimeout(function () {
+        if (!self.googleLoginCheck) {
+          const auth = window.gapi.auth2.getAuthInstance();
+          auth.isSignedIn.get();
+          document.querySelector('.abcRioButton').click();
+        }
+      }, 1500)
+
+    },
+    async GoogleLoginSuccess(googleUser) {
+      const googleEmail = googleUser.getBasicProfile().getEmail();
+      if (googleEmail !== 'undefined') {
+        console.log(googleEmail);
+      }
+    },
+    //구글 로그인 콜백함수 (실패)
+    GoogleLoginFailure(error) {
+      console.log(error);
+    },
+  }
+}    // components: {
     //   HelloWorld,
     // },
-  }
+
 </script>
 
 <style>
@@ -31,4 +67,5 @@
   margin-top: 100px;
   margin-bottom: 100px;
 }
+
 </style>
