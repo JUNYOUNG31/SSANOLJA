@@ -2,9 +2,14 @@
   <div class="home">
     <img src="../assets/logo.png" alt="logo">
     <section class="test">
-    <div v-on:click="GoogleLoginBtn">구글 OAuth2 연동</div>
+    <div v-on:click="GoogleLoginBtn" class="googlelogin">
+      <img src="../assets/googlelogo.png" alt="googlelogo" width="40">
+      <a class="grey--text">Sign in with Google</a>      
+    </div>
     <div id="my-signin2" style="display: none"></div>
     </section>
+    <br>
+    <router-link :to="{ name: 'Lobby' }">로비로 가기</router-link> 
     <br>
     <router-link :to="{ name: 'Room' }">대기실 가기</router-link>
   </div>
@@ -18,7 +23,6 @@
     methods: {
     GoogleLoginBtn:function(){
       var self = this;
-
       window.gapi.signin2.render('my-signin2', {
         scope: 'profile email',
         width: 240,
@@ -42,8 +46,11 @@
       const googleEmail = googleUser.getBasicProfile().getEmail();
       if (googleEmail !== 'undefined') {
         console.log(googleEmail);
+        console.log(googleUser)
+        this.$router.push('Lobby')
       }
     },
+    
     //구글 로그인 콜백함수 (실패)
     GoogleLoginFailure(error) {
       console.log(error);
@@ -62,10 +69,24 @@
   justify-content: center;
   align-items: center;  
 }
-.home img {
+.home > img {
   width: 300px;
   margin-top: 100px;
   margin-bottom: 100px;
 }
+.googlelogin {
+  display: flex;
+  text-decoration: none;
+  background: whitesmoke;
+  padding: 5px 5px;
+}
+.googlelogin:hover{
+  background: lightgray;
+}
+
+.googlelogin  a {
+  margin-top: 8px; 
+}
+
 
 </style>
