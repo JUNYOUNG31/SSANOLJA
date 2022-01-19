@@ -16,3 +16,19 @@ export default {
   }),
 };
 </script>
+
+<style>
+.v-application {
+  border: hidden;
+}
+.v-application--wrap {
+  border: hidden;
+}
+.v-main__wrap {
+  border: hidden;
+}
+v-main
+.main > div {
+  border: hidden;
+}
+</style>
