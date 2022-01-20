@@ -47,7 +47,7 @@
       if (googleEmail !== 'undefined') {
         console.log(googleEmail);
         console.log(googleUser)
-        this.$router.push('Lobby')
+        this.$router.push('lobby')
       }
     },
     

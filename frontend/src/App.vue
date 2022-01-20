@@ -31,4 +31,8 @@ v-main
 .main > div {
   border: hidden;
 }
+.v-application div {
+  background-color: rgb(36, 33, 33);
+  color: white;
+}
 </style>

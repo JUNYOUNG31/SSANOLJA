@@ -1,18 +1,24 @@
 <template>
   <div class = "lobby">
-    <img src="../assets/logo.png" alt="logo">
-    <v-container>
-      <v-col class="go-or-make">
-        <v-btn>
-          <router-link :to="{ name: 'Room' }">방만들기</router-link> 
-        </v-btn>
-        <div>
-          <v-btn>게임참가</v-btn>
-          <br>
-          <input type="text">
-        </div>
-      </v-col>
-    </v-container>
+    <div class="myface">
+      <img src="../assets/logo.png" alt="logo">
+    </div>
+      <v-btn>
+        <router-link :to="{ name: 'Room' }">방만들기</router-link> 
+      </v-btn>
+      <br><br>     
+      <v-btn>게임참가</v-btn>
+      <br>
+      <div>
+        <input type="text" style="border: 1px solid white">
+        <br>
+        <br>
+      </div>
+      <v-btn>닉네임</v-btn>
+      <br>
+      <div>
+        <input type="text" style="border: 1px solid white">
+      </div>
   </div>
 </template>
 
@@ -28,7 +34,18 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;  
+  border: hidden;
 }
+.lobby div input{
+  color: white;
+}
+.lobby .myface {
+  width: 300px;
+}
+.lobby .myface img {
+  width: 100%;
+}
+
 .go-or-make {
   display: flex;
   justify-content: center;
