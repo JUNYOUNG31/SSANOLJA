@@ -20,6 +20,7 @@ export default {
 	},
 
 	computed: {
+		
 		// clientData: nickname
 		clientData () {
 			const { clientData } = this.getConnectionData();
@@ -28,8 +29,8 @@ export default {
 	},
 
 	methods: {
-		getConnectionData () {
-			const { connection } = this.streamManager.stream;
+			getConnectionData () {
+			const { connection } = this.streamManager.stream.session;
 			return JSON.parse(connection.data);
 		},
 	},
