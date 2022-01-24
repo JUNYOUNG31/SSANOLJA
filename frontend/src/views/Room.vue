@@ -6,14 +6,14 @@
         <v-col class="playercamera">
           <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
         </v-col>
-        <v-col v-for="sub in subscribers.slice(0,3)" :key="sub.stream.connection.connectionId" class="playercamera">
-          <user-video :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+        <v-col v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
+          <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
         </v-col>
       </v-row>
       <v-row class="div2" ><!--div2--><!--가로배열-->
         <div class="div2-1"><!--div2-1 화면 4개--><!--세로배열-->
-          <div v-for="sub in subscribers.slice(3)" :key="sub.stream.connection.connectionId" class="playercamera">
-          <user-video :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
+          <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
           </div>
         </div> 
         <v-col class="div2-2"> <!--div2-2 게임화면--><!--세로배열-->
@@ -69,17 +69,17 @@ export default {
 			"subscribers",
 			"mainStreamManager",
 		]),
-    // oddplayer: function () {
-    //   return this.subscribers.filter(user => {
-    //     return user.keys() % 2 === 1
-    //   })
-    // }
-    // ,
-    // evenplayer : function() {
-    //   return this.subscribers.filter(user => {
-    //     return user.keys() % 2 === 0
-    //   })
-    // }
+    oddplayer: function () {
+      return this.subscribers.filter((user, index) => {
+        return index % 2 === 1
+      })
+    }
+    ,
+    evenplayer : function() {
+      return this.subscribers.filter((user, index) => {
+        return index % 2 === 0
+      })
+    }
 	},
 }
 
