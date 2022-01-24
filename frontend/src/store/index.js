@@ -126,8 +126,7 @@ export default new Vuex.Store({
               state.publisher = publisher;
   
               // --- Publish your stream ---
-              state.session.publish(this.publisher);
-              console.log(this.publisher, 'publisher')
+              state.session.publish(state.publisher);
             })
             .catch(error => {
               console.log('There was an error connecting to the session:', error.code, error.message);
