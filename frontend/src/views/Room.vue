@@ -3,17 +3,18 @@
     <v-container><!--세로배열-->
       <v-row class="row-cols-5 div1" style="border: hidden"> <!--div1 로고 & 화면4개--><!--가로배열-->
         <v-col class="div1-1"><img src="../assets/logo.png" alt="logo"></v-col> <!--div1-1 로고-->
-        <v-col>화면1</v-col>
-        <v-col>화면2</v-col>
-        <v-col>화면3</v-col>
-        <v-col>화면4</v-col>
-      </v-row> 
+        <v-col class="playercamera">
+          <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+        </v-col>
+        <v-col v-for="sub in subscribers.slice(0,3)" :key="sub.stream.connection.connectionId" class="playercamera">
+          <user-video :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+        </v-col>
+      </v-row>
       <v-row class="div2" ><!--div2--><!--가로배열-->
         <div class="div2-1"><!--div2-1 화면 4개--><!--세로배열-->
-          <div>화면5</div>
-          <div>화면6</div>
-          <div>화면7</div>
-          <div>화면8</div>
+          <div v-for="sub in subscribers.slice(3)" :key="sub.stream.connection.connectionId" class="playercamera">
+          <user-video :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+          </div>
         </div> 
         <v-col class="div2-2"> <!--div2-2 게임화면--><!--세로배열-->
           <v-row class="div3"><!--div3 게임선택 및 레디 --><!--가로배열-->
@@ -39,31 +40,78 @@
           <div class="div4">게임설명</div><!--div4 게임설명-->
         </v-col> 
       </v-row>
-    </v-container>
+    </v-container>    
   </div>
 </template>
 
 
 <script>
+import UserVideo from '@/components/Video/UserVideo';
+import { mapState } from "vuex";
 export default {
-  name: "Room",
- // data: function () {
- //  return { 
- //   players : [
- //    {id : "player1"},
- //    {id : "player2"},
- //    {id : "player3"},
- //    {id : "player4"},     
- //   ]
- // }
- // }
+  name: "Room", 
+
+  data () {
+		return {
+		}
+	},
+
+	components: {
+		UserVideo,
+	},
+
+  computed: {
+		...mapState([
+			"session",
+			"myUserName",
+			"mySessionId",
+			"publisher",
+			"subscribers",
+			"mainStreamManager",
+		]),
+    // oddplayer: function () {
+    //   return this.subscribers.filter(user => {
+    //     return user.keys() % 2 === 1
+    //   })
+    // }
+    // ,
+    // evenplayer : function() {
+    //   return this.subscribers.filter(user => {
+    //     return user.keys() % 2 === 0
+    //   })
+    // }
+	},
 }
 
 </script>
 <style>
+#p-name {
+  position: absolute;
+  bottom: 0px;
+  margin: 0 auto;
+}
+#p-name p{  
+  margin: 0;
+}
+
+.playercamera {
+  position: relative;
+}
+
+/*.cameradiv {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}*/
+
+video {
+  max-height: 160px;
+}
+
+
 .room div {
   height: auto;
-  border: 1px solid black;  
+  border: 1px solid white;  
 }
 /* 메인 화면 */
 .room .room .container {
@@ -91,7 +139,7 @@ margin: 0;
 }
 /* 화면 1,2,3,4 */
 .room .container .div1 .col {
-padding: 5px;
+/* padding: 5px; */
 /* margin: 0; */
 height: 160px;
 }
@@ -105,11 +153,12 @@ height: 160px;
   border: hidden; 
   width: 20%;
 }
+
 /* 화면 5,6,7,8 */
 .room .container .div2-1 div {
   /* border: hidden;  */
-  height: 160px;
-  padding: 5px;
+  /* height: 160px; */
+  /* padding: 5px; */
 }
 /* 게임 화면 */
 .room .container .div2-2  {
@@ -168,6 +217,9 @@ height: 160px;
 }
 /* 1904부터는 밑의 코드 적용 */
 @media (min-width: 1904px) {
+  video {
+  max-height: 180px;
+  }
   .room .container {
   height: 935px;
   }
@@ -175,12 +227,12 @@ height: 160px;
   height: 570px;
   }
   .room .container .div1 .col {
-  padding: 5px;
+  /* padding: 5px; */
   height: 180px;
   }
   .room .container .div2-1 div {
-  height: 180px;
-  padding: 5px;
+  /* height: 180px; */
+  /* padding: 5px; */
   }
 .room .container .div3-1 {
   border: hidden; 

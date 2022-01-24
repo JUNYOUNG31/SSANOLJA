@@ -2,22 +2,19 @@
   <div class = "lobby">
     <div class="myface">
       <img src="../assets/logo.png" alt="logo">
-    </div>
-      <v-btn>
-        <router-link :to="{ name: 'Room' }">방만들기</router-link> 
-      </v-btn>
-      <br><br>     
-
+    
     <div id="join" v-if="!session">
 			<div id="join-dialog" class="jumbotron vertical-center">
 				<h1>LOBBY</h1>
 				<div class="form-group">
 					<p>
 						<v-btn>닉네임</v-btn>
+						<br><br>
 						<input v-model="myUserName" class="form-control" type="text" required>
 					</p>
 					<p>
 						<v-btn>방 참여코드</v-btn>
+						<br><br>
 						<input v-model="joinCode" class="form-control" type="text" required>
 					</p>
 					<p class="text-center">
@@ -26,7 +23,7 @@
 				</div>
 			</div>
 		</div>
-
+		</div>
   </div>
 </template>
 
