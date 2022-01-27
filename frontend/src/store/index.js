@@ -114,7 +114,7 @@ export default new Vuex.Store({
               let publisher = state.OV.initPublisher(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+                publishAudio: false,  	// Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
                 resolution: '640x480',  // The resolution of your video
                 frameRate: 30,			// The frame rate of your video
@@ -126,8 +126,7 @@ export default new Vuex.Store({
               state.publisher = publisher;
   
               // --- Publish your stream ---
-              state.session.publish(this.publisher);
-              console.log(this.publisher, 'publisher')
+              state.session.publish(state.publisher);
             })
             .catch(error => {
               console.log('There was an error connecting to the session:', error.code, error.message);
