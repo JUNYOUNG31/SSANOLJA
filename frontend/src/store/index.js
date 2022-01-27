@@ -9,8 +9,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
-    OPENVIDU_SERVER_URL : "https://i6e106.p.ssafy.io",
+		OPENVIDU_SERVER_URL : "https://i6e106.p.ssafy.io",
+    // OPENVIDU_SERVER_URL : "https://" + location.hostname + ":4443",
     OPENVIDU_SERVER_SECRET : "MY_SECRET",
     OV: undefined,
     session: undefined,
