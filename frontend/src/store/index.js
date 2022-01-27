@@ -10,7 +10,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 
-    OPENVIDU_SERVER_URL : "https://" + location.hostname + ":4443",
+    OPENVIDU_SERVER_URL : "https://i6e106.p.ssafy.io",
     OPENVIDU_SERVER_SECRET : "MY_SECRET",
     OV: undefined,
     session: undefined,
@@ -219,6 +219,20 @@ export default new Vuex.Store({
 					.catch(error => reject(error.response));
 			});
 		},
+
+		socketTest: function({state}) {
+			state.session.signal({
+				data: 'sessionTest',
+				to: [],
+				type: 'session-test'
+			})
+			.then(() => {
+				console.log('Message successfully sent');
+			})
+			.catch(error => {
+				console.error(error);
+			})
+		}
   },
   modules: {
   }
