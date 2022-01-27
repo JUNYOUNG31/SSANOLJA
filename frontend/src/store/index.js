@@ -219,6 +219,20 @@ export default new Vuex.Store({
 					.catch(error => reject(error.response));
 			});
 		},
+
+		socketTest: function({state}) {
+			state.session.signal({
+				data: 'sessionTest',
+				to: [],
+				type: 'session-test'
+			})
+			.then(() => {
+				console.log('Message successfully sent');
+			})
+			.catch(error => {
+				console.error(error);
+			})
+		}
   },
   modules: {
   }

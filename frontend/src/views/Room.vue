@@ -40,6 +40,8 @@
             </div>
           </v-row>
           <div class="div4">게임설명</div><!--div4 게임설명-->
+          <v-btn @click="socketTest()">소켓 테스트</v-btn>
+          <p>{{message}}</p>
         </v-col> 
       </v-row>
     </v-container>    
@@ -56,6 +58,7 @@ export default {
   data () {
 		return {
       gameSelected: '',
+      message: null,
 		}
 	},
 
@@ -82,9 +85,23 @@ export default {
       return this.subscribers.filter((user, index) => {
         return index % 2 === 0
       })
-    }
+    },
+    
 	},
+  mounted () {
+    this.session.on('signal:session-test', (event) => {
+    console.log(event.data, '이것은 데이터'); // Message
+    console.log(event.from, '이것은 메시지 보낸사람'); // Connection object of the sender
+    console.log(event.type, '이것은 메시지 타입'); // The type of message
+    this.message=event.data
+    
+});
+  },
   methods : {
+    socketTest() {
+      this.$store.dispatch('socketTest') // 소켓 테스트
+    },
+
     leaveSession() {
 			this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
