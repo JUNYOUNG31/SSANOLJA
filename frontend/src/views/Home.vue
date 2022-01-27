@@ -1,6 +1,19 @@
 <template>
   <div class="home">
     <img src="../assets/logo.png" alt="logo">
+      <div class="form-group">
+        <div>
+        <label>아이디</label>
+        <input v-model="userId" class="form-control" type="text" required>
+        <br>
+        <br>
+        <label>비밀번호</label>
+        <input v-model="userPassword" class="form-control" type="text" required>
+        </div>
+        <div>
+           <router-link :to="{ name: 'Lobby' }">Login</router-link> 
+        </div>
+      </div>
     <section class="test">
     <div v-on:click="GoogleLoginBtn" class="googlelogin">
       <img src="../assets/googlelogo.png" alt="googlelogo" width="40">
@@ -9,9 +22,7 @@
     <div id="my-signin2" style="display: none"></div>
     </section>
     <br>
-    <router-link :to="{ name: 'Lobby' }">로비로 가기</router-link> 
-    <br>
-    <router-link :to="{ name: 'Room' }">대기실 가기</router-link>
+    <router-link :to="{ name: 'SignUp' }">회원가입</router-link> 
   </div>
 </template>
 
@@ -19,7 +30,13 @@
   // import HelloWorld from '../components/HelloWorld'
 
   export default {
-    name: 'Home',
+    name: 'Home',    
+    data () {
+      return {
+        userId : null,
+        userPassword : null,
+      } 
+    },
     methods: {
     GoogleLoginBtn:function(){
       var self = this;
@@ -86,6 +103,9 @@
 
 .googlelogin  a {
   margin-top: 8px; 
+}
+.form-group {
+  display: flex;
 }
 
 
