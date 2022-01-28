@@ -139,8 +139,14 @@
   - feature 브랜치 이름 명명 규칙
     - feature/[fe or be]/[기능 이름]
     - 예시) feature/fe/login
-
+  - develop 브랜치 규칙
+    - develop-[back or front]
   
+
+<br>
+
+
+
 
 - 커밋 전략
 
@@ -158,4 +164,3 @@
   - RENAME: 파일 혹은 폴더명 수정 및 이동
   - REMOVE : 파일 삭제
   - CHORE : 빌드 테스크 업데이트, 패키지 매니저 환경설정
-  
