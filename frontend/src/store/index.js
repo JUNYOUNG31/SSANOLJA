@@ -221,9 +221,9 @@ export default new Vuex.Store({
 
 		socketTest: function({state}) {
 			state.session.signal({
-				data: 'sessionTest',
+				data: 'socketTest',
 				to: [],
-				type: 'session-test'
+				type: 'socket-test'
 			})
 			.then(() => {
 				console.log('Message successfully sent');
