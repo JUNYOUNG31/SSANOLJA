@@ -31,7 +31,7 @@
   - 화상 미팅룸
   - 그룹 채팅
   
-  
+<br>  
   
 * 주요 기술
   - WebRTC
@@ -39,7 +39,7 @@
   - JWT Authentication
   - REST API
   
-  
+  <br>  
   
 * 참조 리소스
   * Vuetify: 디자인 전반 적용
@@ -49,7 +49,7 @@
   * Color Thief: 이미지 색상 추출 라이브러리. 커버 사진 색상 추출 및 배경 변경에 활용
   * Animation.css: CSS 애니메이션 지원 라이브러리. 메인 페이지 진입 애니메이션에 활용
   
-  
+  <br>  
   
 * 배포 환경
   - URL: // 웹 서비스, 랜딩 페이지, 프로젝트 소개 등의 배포 URL 기입
@@ -122,7 +122,7 @@
   - 클래스 이름은 대문자로 시작합니다.
   - 메서드 이름은 소문자로 시작하고 동사로 짓습니다.
 
-
+<br>
 
 - 브랜치 전략
 
@@ -130,7 +130,6 @@
   - develop: 개발
   - master: 배포
   - hotfix: 배포 중 급한 에러 수정
-
   
 
   - README는 develop브런치에서 바로 작성한다.
@@ -139,9 +138,9 @@
   - feature 브랜치 이름 명명 규칙
     - feature/[fe or be]/[기능 이름]
     - 예시) feature/fe/login
+<br>
   - develop 브랜치 규칙
     - develop-[back or front]
-  
 
 <br>
 
