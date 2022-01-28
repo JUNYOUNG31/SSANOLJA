@@ -22,7 +22,6 @@ export default {
 
 	computed: {
 		
-		// clientData: nickname
 		clientData () {
 			const { clientData } = this.getConnectionData();
 			return clientData;
