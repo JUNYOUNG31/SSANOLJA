@@ -130,11 +130,6 @@ export default {
   position: relative;
 }
 
-/*.cameradiv {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}*/
 .playercamera > div {
   height: 160px;
 }

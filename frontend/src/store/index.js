@@ -38,7 +38,6 @@ export default new Vuex.Store({
       state.session.on('exception', ({ exception }) => {
 				console.warn(exception);
 			});
-			console.log("on 작동 1")
     },
 
     // GET_TOKEN: function (state) {
