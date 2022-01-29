@@ -24,8 +24,6 @@
 </template>
 
 <script>
-  // import HelloWorld from '../components/HelloWorld'
-
   export default {
     name: 'Signup',    
     data () {
@@ -37,7 +35,6 @@
       }
     },
   }
-
 </script>
 
 <style>
@@ -78,9 +75,6 @@
     input:active {
         box-shadow: 0px 0px 5px 0px;
     }
-    #done {
-        background: lightgreen;
-    }
     .button {
         cursor: pointer;
         user-select: none;
@@ -93,6 +87,5 @@
     img:hover {
         box-shadow: 0px 0px 5px 0px;
         cursor: pointer;
-
     }
 </style>
