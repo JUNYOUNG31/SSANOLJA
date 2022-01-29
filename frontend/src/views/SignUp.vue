@@ -79,11 +79,6 @@
         cursor: pointer;
         user-select: none;
     }
-    img {
-        width: 700px ;
-        margin: 10px;
-        user-select: none;
-    }
     img:hover {
         box-shadow: 0px 0px 5px 0px;
         cursor: pointer;
