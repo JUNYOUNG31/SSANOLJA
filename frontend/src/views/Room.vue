@@ -17,18 +17,22 @@
           <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
           <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
           </div>
-        </div> 
+        </div>
         <v-col class="div2-2"> <!--div2-2 게임화면--><!--세로배열-->
+        <span v-if="start">
+          <router-view></router-view>
+        </span>
+        <span v-else>
           <v-row class="div3"><!--div3 게임선택 및 레디 --><!--가로배열-->
             <v-row class="div3-1 row-cols-3"> <!--div3-1 게임선택--><!--가로배열-->
               <v-col>
-                <v-btn v-bind:class="{'grey': gameSelected == 'spyfall'}" @click="gameSelect('spyfall')">스파이폴 {{gameSelected}}</v-btn>
+                <v-btn v-bind:class="{'grey': gameSelected == 'spyfall'}" @click="gameSelect('Spyfall')">스파이폴 {{gameSelected}}</v-btn>
               </v-col>
               <v-col>
-                <v-btn v-bind:class="{'grey': gameSelected == 'fakeartist'}" @click="gameSelect('fakeartist')">가예누가</v-btn>
+                <v-btn v-bind:class="{'grey': gameSelected == 'fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
               </v-col>
               <v-col>
-                <v-btn v-bind:class="{'grey': gameSelected == 'telestation'}" @click="gameSelect('telestation')">텔레스테이션</v-btn>
+                <v-btn v-bind:class="{'grey': gameSelected == 'telestation'}" @click="gameSelect('Telestation')">텔레스테이션</v-btn>
               </v-col>
             </v-row> 
             <div class="div3-2"> <!--div3-2 레디 --><!--세로배열-->              
@@ -39,7 +43,9 @@
               <v-col><v-btn @click="gameStart(gameSelected)">시작</v-btn></v-col>
             </div>
           </v-row>
-          <div class="div4">게임설명</div><!--div4 게임설명-->
+          <div class="div4">게임설명
+          </div><!--div4 게임설명-->
+        </span>
           <v-btn @click="socketTest()">소켓 테스트</v-btn>
           <p>{{message}}</p>
         </v-col> 
@@ -59,6 +65,7 @@ export default {
 		return {
       gameSelected: '',
       message: null,
+      start : false,
 		}
 	},
 
@@ -89,7 +96,7 @@ export default {
     
 	},
   mounted () {
-    this.session.on('signal:socket-test', (event) => {
+    this.session.on('signal:session-test', (event) => {
     console.log(event.data, '이것은 데이터'); // Message
     console.log(event.from, '이것은 메시지 보낸사람'); // Connection object of the sender
     console.log(event.type, '이것은 메시지 타입'); // The type of message
@@ -110,7 +117,8 @@ export default {
       this.gameSelected = game
     },
     gameStart(game) {
-      this.$router.push(game)
+      this.start = true
+      this.$router.push({name:game})
     }
   }
 }
