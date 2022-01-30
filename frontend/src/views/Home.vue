@@ -10,9 +10,9 @@
           <input v-model="userPassword" class="form-control" type="text" required>
         </div>
         <div class="login-button">
-          <button class="btn btn-lg btn-success">
-            <router-link :to="{ name: 'Lobby' }">Login</router-link> 
-          </button>
+          <router-link :to="{ name: 'Lobby' }">
+            <button class="btn btn-lg btn-success">Login</button>
+          </router-link> 
         </div>
       </div>
     <section class="test">
@@ -24,9 +24,9 @@
     </section>
     <br>
     <div class="signup-button">
-      <button class="btn btn-lg btn-primary">
-        <router-link :to="{ name: 'SignUp' }">회원가입</router-link> 
-      </button>
+      <router-link :to="{ name: 'SignUp' }">
+        <button class="btn btn-lg btn-primary">회원가입</button>
+      </router-link> 
     </div>
   </div>
 </template>
@@ -89,8 +89,8 @@ import axios from 'axios'
       })
         .then(res=>{
           console.log(res)
-          // localStorage.setItem('jwt', res.data.token)
-          // this.$emit('login') 
+          localStorage.setItem('jwt', res.data.token)
+          this.$emit('login') 
           this.$router.push({name:'Lobby'})
         })
         .catch(err=> {
@@ -99,13 +99,8 @@ import axios from 'axios'
         })
       this.$emit('submit-login-data', this.loginData)
     }
-
-
   }
-}    // components: {
-    //   HelloWorld,
-    // },
-
+}
 </script>
 
 <style>
