@@ -1,8 +1,5 @@
-package com.ssafy.backend.domain.fakeartist.entity;
+package fakeartist.entity;
 
-import com.ssafy.backend.domain.room.entity.Room;
-import com.ssafy.backend.domain.room.entity.RoomDetail;
-import com.ssafy.backend.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,25 +1,25 @@
 package com.ssafy.backend.domain.spyfall.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "spyfall_places")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class SpyfallPlace {
 
     @Id
+    @Column(name = "spyfall_places_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer spyfallPlaceId;
 
-    @Column(length = 45, nullable = false)
-    private String spyfallPlace;
 
+    @Column(name="place_name")
+    private String placeName;
 }

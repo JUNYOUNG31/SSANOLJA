@@ -1,26 +1,25 @@
 package com.ssafy.backend.domain.game.entity;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
+
 @Entity
-@Table
+@Table(name = "game_indexes")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Game {
+public class GameIndex {
 
     @Id
+    @Column(name = "game_indexes_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer gameId;
+    private Integer gameIndexId;
 
-    @Column(nullable = false, length = 45)
+    @Column(name = "game_name")
     private String gameName;
 
 }

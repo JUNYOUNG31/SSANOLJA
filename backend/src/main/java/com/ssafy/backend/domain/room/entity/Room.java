@@ -1,34 +1,24 @@
 package com.ssafy.backend.domain.room.entity;
 
-import com.ssafy.backend.domain.game.entity.Game;
-import com.ssafy.backend.domain.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "rooms")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Room {
 
     @Id
+    @Column(name="rooms_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roomId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User roomMaker;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id")
-    private Game game;
-
-    @Column(nullable = false)
-    private Integer personnel;
+    @Column(name = "room_code", nullable = false)
+    private String roomCode;
 }

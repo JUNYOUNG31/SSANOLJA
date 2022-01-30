@@ -1,4 +1,4 @@
-package com.ssafy.backend.domain.fakeartist.entity;
+package fakeartist.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,31 +1,37 @@
 package com.ssafy.backend.domain.telestation.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "telestation_rules")
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class TelestationRule {
 
+
     @Id
+    @Column(name = "telestation_rules_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer telestationRuleId;
 
-    @Column(nullable = false)
-    private Integer telestationPersonnelMin;
+    @Column(name = "drawing_time")
+    private Integer drawingTime;
 
-    @Column(nullable = false)
-    private Integer telestationPersonnelMax;
+    @Column(name = "texting_time")
+    private Integer textingTime;
 
-    private Integer telestationArtTime;
+    @Column(name = "vote_time")
+    private Integer voteTime;
 
-    private Integer telestationTextTime;
+    @Column(name = "min_people")
+    private Integer minPeople;
+
+    @Column(name = "max_people")
+    private Integer maxPeople;
 }
