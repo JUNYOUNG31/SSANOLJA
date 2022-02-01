@@ -28,7 +28,7 @@ public class Telestation {
     // self join (둘 중 하나가 before_pk 같음)
     // 부모 정의
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "play_game_id")
+    @JoinColumn(name = "before_pk")
     private Telestation parent;
 
     // 자식 정의
