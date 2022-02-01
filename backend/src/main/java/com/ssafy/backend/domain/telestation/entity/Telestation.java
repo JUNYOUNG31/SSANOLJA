@@ -25,7 +25,7 @@ public class Telestation {
     @JoinColumn(name = "play_game_id")
     private PlayGame playGame;
 
-    //셀프조인
+    // self join (둘 중 하나가 before_pk 같음)
     // 부모 정의
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "play_game_id")
@@ -35,9 +35,8 @@ public class Telestation {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
     private List<Telestation> children;
 
-    //??
-    @Column(name = "user_nickname")
-    private Integer userNickname;
+    @Column(name = "users_id")
+    private Integer userId;
 
     @Column(name = "data_index")
     private String dataIndex;
@@ -50,5 +49,13 @@ public class Telestation {
 
     @Column(name = "drawing_order")
     private String drawingOrder;
+
+    @Column(name = "bestvote")
+    private String bestvote;
+
+    @Column(name = "worstvote")
+    private String worstvote;
+
+
 
 }

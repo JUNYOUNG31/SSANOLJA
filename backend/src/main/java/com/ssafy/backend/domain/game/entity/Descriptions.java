@@ -18,15 +18,13 @@ public class Descriptions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer descriptionId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_list_id")
-    private GameIndex gameIndex;
+    @Column(name = "game_num")
+    private Integer gameNum;
 
-    @Lob
     @Column(name = "description")
     private String description;
 
-    @Column(name="order")
+    @Column(name = "order")
     private int order;
 
 }

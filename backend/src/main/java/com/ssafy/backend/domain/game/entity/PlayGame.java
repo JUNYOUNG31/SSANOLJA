@@ -23,7 +23,4 @@ public class PlayGame {
     @JoinColumn(name = "rooms_id", nullable = false)
     private Room room;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_indexes_id", nullable = false)
-    private GameIndex gameIndex;
 }

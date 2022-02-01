@@ -2,6 +2,7 @@ package com.ssafy.backend.domain.spyfall.entity;
 
 
 import com.ssafy.backend.domain.game.entity.PlayGame;
+import com.ssafy.backend.domain.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,14 +23,15 @@ public class Spyfall {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "play_games_id")
-    private PlayGame playGame;
+    @JoinColumn(name = "users_id")
+    private User user;
 
 
     @ManyToOne
     @JoinColumn(name = "spyfall_jobs_id")
     private SpyfallJob spyfallJob;
 
-    @Column(name = "user_nickname")
-    private String userNickname;
+    @ManyToOne
+    @JoinColumn(name = "play_games_id")
+    private PlayGame playGame;
 }
