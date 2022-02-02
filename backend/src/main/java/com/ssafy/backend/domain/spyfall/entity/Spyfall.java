@@ -1,7 +1,7 @@
 package com.ssafy.backend.domain.spyfall.entity;
 
 
-import com.ssafy.backend.domain.game.entity.PlayGame;
+import com.ssafy.backend.domain.game.entity.Game;
 import com.ssafy.backend.domain.user.entity.User;
 import lombok.*;
 
@@ -32,6 +32,6 @@ public class Spyfall {
     private SpyfallJob spyfallJob;
 
     @ManyToOne
-    @JoinColumn(name = "play_games_id")
-    private PlayGame playGame;
+    @JoinColumn(name = "games_id")
+    private Game game;
 }

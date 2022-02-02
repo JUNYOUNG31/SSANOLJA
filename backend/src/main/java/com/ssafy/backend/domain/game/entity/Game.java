@@ -6,16 +6,16 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "play_games")
+@Table(name = "games")
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayGame {
+public class Game {
 
     @Id
-    @Column(name = "play_games_id")
+    @Column(name = "games_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer playGameId;
 

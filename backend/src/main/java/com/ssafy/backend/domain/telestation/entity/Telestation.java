@@ -1,6 +1,6 @@
 package com.ssafy.backend.domain.telestation.entity;
 
-import com.ssafy.backend.domain.game.entity.PlayGame;
+import com.ssafy.backend.domain.game.entity.Game;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,8 +22,8 @@ public class Telestation {
     private Integer telestationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "play_game_id")
-    private PlayGame playGame;
+    @JoinColumn(name = "games_id")
+    private Game game;
 
     // self join (둘 중 하나가 before_pk 같음)
     // 부모 정의
