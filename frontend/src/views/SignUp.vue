@@ -22,29 +22,45 @@
         <input v-model="userData.userNickName" class="form-control" type="text" id="userNickName" placeholder="NickName">
       </div>
       <div class="signup-button-to-home">
-        <button class="btn btn-lg btn-success">
-          <router-link router-link :to="{ name: 'Home' }">가입하기</router-link>
-        </button>
+        <button class="btn btn-lg btn-success" @click="signup">가입하기</button>
       </div>
-
     </div>  
     <br>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
   export default {
     name: 'Signup',    
     data () {
       return {
         userData: {
-        userId : null,
-        userPassword : null,
-        userEmail : null,
-        userNickName : null,
+          userId : null,
+          userPassword : null,
+          userEmail : null,
+          userNickName : null,
         }   
       }
     },
+  //   methods: {
+  //   signup: function () {
+  //     axios({
+  //       method: 'post',
+  //       url: 'http://#/signup/',
+  //       data: this.userData
+  //     })
+  //     .then( () => {
+  //       // console.log(res)
+  //       alert("회원가입이 완료 되었습니다.")
+  //       this.$router.push({name:'Home'})
+  //     })
+  //     .catch(res => {
+  //       console.log(res)
+  //       alert("아이디, 비밀번호를 다시 확인하세요") // 이메일 형식이나 비번 아디 중복 처리
+  //     })
+  //   }
+  // }
   }
 </script>
 
@@ -54,7 +70,7 @@
     position: absolute;
     top: 10%;
     left: 30%;
-    width: 40%;
+    width: 35%;
     text-align: center;
     justify-content: center;
     padding: 5px;
