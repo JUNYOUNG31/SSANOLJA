@@ -2,7 +2,6 @@ package com.ssafy.backend.domain.room.repository;
 
 
 import com.ssafy.backend.domain.room.entity.Room;
-import lombok.Builder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
