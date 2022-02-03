@@ -8,12 +8,14 @@ import com.ssanolja.backend.db.repository.SpyfallJobRepository;
 import com.ssanolja.backend.db.repository.SpyfallPlaceRepository;
 import com.ssanolja.backend.db.repository.SpyfallRepository;
 import com.ssanolja.backend.db.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
+@Slf4j
 public class SpyfallService {
 
     private final SpyfallRepository spyfallRepository;
@@ -33,34 +35,34 @@ public class SpyfallService {
         SpyfallPlace place = selectPlace();
 
         List<SpyfallJob> jobList = selectJobList(place,users.size());
-        Collections.shuffle(jobList);
 
         SpyfallRes spyfallRes = new SpyfallRes();
 
         spyfallRes.setPlace(place.getPlaceName());
 
+        Spyfall spy = spyfallRepository.save(Spyfall.builder()
+                .user(users.get(0))
+                .game(game)
+                .spyfallJob(jobList.get(0))
+                .build());
+        spyfallRes.getJobs().put(spy.getUser().getUserNickname(), spy.getSpyfallJob().getJobName());
+
+//        log.info("스파이 정보 {}", spyfallRes.getJobs());
+
+        jobList.remove(0);
+        Collections.shuffle(jobList);
+
+
         //7명이라 하면, 6명한테 장소와 직업 부여. 마지막 사람에겐 확정적으로 스파이를 부여하고 장소는 부여하지 않음
-        for(int i = 0; i < users.size(); i++) {
-            if(i < users.size()-1) {
-                //시민에겐 직업 부여
+        for(int i = 1; i < users.size(); i++) {
+                // 스파이 부여
                 Spyfall citizen = spyfallRepository.save(Spyfall.builder()
                         .user(users.get(i))
                         .game(game)
-                        .spyfallJob(jobList.get(i))
+                        .spyfallJob(jobList.get(i-1))
                         .build());
-
                 spyfallRes.getJobs().put(citizen.getUser().getUserNickname(), citizen.getSpyfallJob().getJobName());
-            }
-            else if(i == users.size()-1) {
-                // 스파이 부여
-                Spyfall spy = spyfallRepository.save(Spyfall.builder()
-                        .user(users.get(i))
-                        .game(game)
-                        .build());
-                spyfallRes.getJobs().put(spy.getUser().getUserNickname(), "spy");
-           }
         }
-
         return spyfallRes;
     }
 
@@ -71,7 +73,7 @@ public class SpyfallService {
         Random random = new Random();
 
 
-        return places.get(random.nextInt(places.size()-1));
+        return places.get(random.nextInt(places.size()));
     }
 
 
