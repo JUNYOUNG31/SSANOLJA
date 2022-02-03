@@ -12,8 +12,9 @@ import java.util.List;
 public class StartGameReq {
 
     @NotNull
-    //User들의 닉네임 정보
-    private List<String> users;
+
+    private List<String> userNicknames;
+
 
     @NotNull
     private String roomCode;
