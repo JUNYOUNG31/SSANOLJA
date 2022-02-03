@@ -14,7 +14,7 @@ spring:
         format_sql : true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
-    url: jdbc:mysql://localhost:3306/ssanolja_2.1?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    url: jdbc:mysql://localhost:3306/ssanolja_2.3?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
