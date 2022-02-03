@@ -4,6 +4,7 @@ import com.ssanolja.backend.api.request.StartGameReq;
 import com.ssanolja.backend.api.response.GameRes;
 import com.ssanolja.backend.api.service.GameService;
 import com.ssanolja.backend.db.entity.Game;
+import com.ssanolja.backend.db.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,8 +30,8 @@ public class GameController {
 //    public ResponseEntity<GameRes> startGame(@RequestBody StartGameReq startGameReq) {
 //        String roomCode = startGameReq.getRoomCode();
 //        Game game = gameService.makeGame(roomCode);
-//        List<String> users = startGameReq.getUsers();
-//        // game 이용하여 방 안의 사용자마다 게임 객체 만들기
+//        List<String> userNicknames = startGameReq.getUserNicknames();
+//        List<User> users = gameService.getUserList(userNicknames);
 //        String selectedGame = startGameReq.getSelectedGame();
 //        if (selectedGame.equals("spyfall")) {
 ////            spyfallService
@@ -40,7 +41,5 @@ public class GameController {
 ////            telestationService
 //            return "telestation";
 //        }
-//
-//        return "ok";
 //    }
 }
