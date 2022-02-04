@@ -1,21 +1,15 @@
 package com.ssanolja.backend.api.request;
 
-
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class StartGameReq {
+public class GetRuleReq {
 
     @NotNull
-    private List<String> userNicknames;
-
-    @NotNull
-    private String roomCode;
+    private Integer personnel;
 
     @NotNull
     private String selectedGame;
