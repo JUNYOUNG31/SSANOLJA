@@ -9,7 +9,7 @@
 				<div >
 					<p>
 						<label>닉네임</label>
-						<input v-model="userData.userNickname" class="form-control" type="text" required placeholder="닉네임을 입력하세요">
+						<input v-model="userData.userName" class="form-control" type="text" required placeholder="닉네임을 입력하세요">
 					</p>
 					<p>
 						<label>방 참여코드</label>
@@ -19,13 +19,13 @@
 						<button class="btn btn-lg btn-success" @click="$refs.preview.dialog = true">입장하기</button>
 					</p>
 					<p class="text-center">
-						<button class="btn btn-lg btn-success" @click="makeSession(userData.userNickname, joinCode)">방 만들기</button>
+						<button class="btn btn-lg btn-success" @click="makeSession(userData.userName, joinCode)">방 만들기</button>
 					</p>
 				</div>
 			</div>
 		</div>
 		</div>
-		<preview ref="preview" :joinCode="joinCode" :myUserName="userData.userNickname">
+		<preview ref="preview" :joinCode="joinCode" :myUserName="userData.userName">
 		</preview>
   </div>
 </template>
@@ -63,7 +63,7 @@ export default {
 	methods: {
 		joinSession(myUserName, joinCode) {
 			const payload = {
-				"myUserName": userData.userNickname,
+				"myUserName": myUserName,
 				"joinCode": joinCode
 			}
 			this.$store.dispatch('joinSession', payload)
@@ -89,7 +89,7 @@ export default {
           // localStorage.setItem('jwt', res.data.token)
           // this.$emit('login')
 					const payload = {
-						"myUserName": this.userData.userNickname,
+						"myUserName": this.userData.userName,
 						"joinCode": this.joinCode
 					}
 					this.$store.dispatch('joinSession', payload)
