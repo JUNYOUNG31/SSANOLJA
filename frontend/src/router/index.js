@@ -3,10 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Room from '../views/Room.vue'
 import Lobby from '../views/Lobby.vue'
-import SignUp from '../views/SignUp.vue'
-import Spyfall from '../components/games/Spyfall.vue'
-import Fakeartist from '../components/games/Fakeartist.vue'
-import Telestation from '../components/games/Telestation.vue'
+
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -41,12 +39,7 @@ const routes = [
     path: '/lobby',
     name: 'Lobby',
     component: Lobby
-  },
-  {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp
-  },
+  }
 ]
 
 const router = new VueRouter({
