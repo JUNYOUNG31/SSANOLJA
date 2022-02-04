@@ -12,7 +12,9 @@ import java.util.List;
 public class StartGameReq {
 
     @NotNull
+
     private List<String> userNicknames;
+
 
     @NotNull
     private String roomCode;
