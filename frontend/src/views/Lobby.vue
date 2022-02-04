@@ -1,33 +1,39 @@
 <template>
-  <div class = "lobby">
+  <div class="lobby">
     <div class="myface">
       <img src="../assets/logo.png" alt="logo">
-				<div id="join" v-if="!session">
-					<div id="join-dialog" class="jumbotron vertical-center">
-						<h1>LOBBY</h1>
-						<div >
-							<p>
-								<label>닉네임</label>
-								<input v-model="myUserName" class="form-control" type="text" required>
-							</p>
-							<p>
-								<label>방 참여코드</label>
-								<input v-model="joinCode" class="form-control" type="text" required>
-							</p>
-							<p class="text-center">
-								<button class="btn btn-lg btn-success" @click="joinSession()">입장하기</button>
-							</p>
-						</div>
-					</div>
+    
+    <div id="join" v-if="!session">
+			<div id="join-dialog" class="vertical-center">
+				<h1>LOBBY</h1>
+				<div >
+					<p>
+						<label>닉네임</label>
+						<input v-model="myUserName" class="form-control" type="text" required placeholder="닉네임을 입력하세요">
+					</p>
+					<p>
+						<label>방 참여코드</label>
+						<input v-model="joinCode" class="form-control" type="text" required placeholder="참여코드를 입력하세요">
+					</p>
+					<p class="text-center">
+						<button class="btn btn-lg btn-success" @click="$refs.preview.dialog = true">입장하기</button>
+					</p>
+					<p class="text-center">
+						<button class="btn btn-lg btn-success" @click="makeSession(myUserName, joinCode)">방 만들기</button>
+					</p>
+				</div>
 			</div>
 		</div>
+		</div>
+		<preview ref="preview" :joinCode="joinCode" :myUserName="myUserName">
+		</preview>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { mapState } from "vuex";
-// import UserVideo from '@/components/Video/UserVideo';
+import Preview from '@/components/Preview.vue';
 
 export default {
 	name: 'Lobby',
@@ -39,24 +45,64 @@ export default {
 				userEmail : null,
 				userNickname : null,
 			},
-			joinCode: 'SessionA',
+			joinCode: '',
+			myUserName: '',
 		}
+	},
+	components: {
+		Preview,
 	},
 	computed: {
 		...mapState([
 			"session",
-			"myUserName",
-			"mySessionId",
 			"publisher",
 			"subscribers",
 			"mainStreamManager",
 		])
 	},    
 	methods: {
-		joinSession() {
-				this.$store.dispatch('joinSession')
-	this.$router.push('room')
+		joinSession(myUserName, joinCode) {
+			const payload = {
+				"myUserName": myUserName,
+				"joinCode": joinCode
+			}
+			this.$store.dispatch('joinSession', payload)
+			this.$router.push('room')			
+			//axios({
+      //  method: 'get',
+      //  url:`local 8080/api/rooms/${joinCode}`,
+				// data: joinCode
+      //})
+			//	.then(res=>{
+			//		console.log(res)
+			//		this.$store.dispatch('joinSession', payload)
+			//		this.$router.push('room')					
+			//	})//
 		},
+		makeSession: function () {
+      axios({
+        method: 'post',
+        url:'local 8080/api/rooms',
+      })
+        .then(res=>{
+          console.log(res)
+          // localStorage.setItem('jwt', res.data.token)
+          // this.$emit('login')
+					const payload = {
+						"myUserName": this.myUserName,
+						"joinCode": this.joinCode
+					}
+					this.$store.dispatch('joinSession', payload)
+          this.$router.push({
+					name: 'Room',
+					params: { joinCode: this.joinCode }
+					})
+        })
+        .catch(err=> {
+          console.log(err)
+        })
+
+    },
 		leaveSession() {
 				this.$store.dispatch('leaveSession')
 		},
@@ -83,7 +129,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .lobby {
   display: flex;
   flex-direction: column;
