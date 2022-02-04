@@ -1,78 +1,135 @@
 <template>
-  <div class = "lobby">
+  <div class="lobby">
     <div class="myface">
       <img src="../assets/logo.png" alt="logo">
     
     <div id="join" v-if="!session">
-			<div id="join-dialog" class="jumbotron vertical-center">
+			<div id="join-dialog" class="vertical-center">
 				<h1>LOBBY</h1>
-				<div class="form-group">
+				<div >
 					<p>
-						<v-btn>닉네임</v-btn>
-						<br><br>
-						<input v-model="myUserName" class="form-control" type="text" required>
+						<label>닉네임</label>
+						<input v-model="myUserName" class="form-control" type="text" required placeholder="닉네임을 입력하세요">
 					</p>
 					<p>
-						<v-btn>방 참여코드</v-btn>
-						<br><br>
-						<input v-model="joinCode" class="form-control" type="text" required>
+						<label>방 참여코드</label>
+						<input v-model="joinCode" class="form-control" type="text" required placeholder="참여코드를 입력하세요">
 					</p>
 					<p class="text-center">
-						<button class="btn btn-lg btn-success" @click="joinSession()">입장하기</button>
+						<button class="btn btn-lg btn-success" @click="$refs.preview.dialog = true">입장하기</button>
+					</p>
+					<p class="text-center">
+						<button class="btn btn-lg btn-success" @click="makeSession(myUserName, joinCode)">방 만들기</button>
 					</p>
 				</div>
 			</div>
 		</div>
 		</div>
+		<preview ref="preview" :joinCode="joinCode" :myUserName="myUserName">
+		</preview>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import { mapState } from "vuex";
-// import UserVideo from '@/components/Video/UserVideo';
+import Preview from '@/components/Preview.vue';
 
 export default {
 	name: 'Lobby',
 
-	// components: {
-	// 	UserVideo,
-	// },
-
 	data () {
 		return {
-
-			joinCode: 'SessionA',
+			userData : {
+				userName : null,
+				userEmail : null,
+				userNickname : null,
+			},
+			joinCode: '',
+			myUserName: '',
 		}
 	},
-
+	components: {
+		Preview,
+	},
 	computed: {
 		...mapState([
 			"session",
-			"myUserName",
-			"mySessionId",
 			"publisher",
 			"subscribers",
 			"mainStreamManager",
 		])
-	},
-
-	
+	},    
 	methods: {
-		joinSession() {
-			this.$store.dispatch('joinSession')
-      this.$router.push('room')
+		joinSession(myUserName, joinCode) {
+			const payload = {
+				"myUserName": myUserName,
+				"joinCode": joinCode
+			}
+			this.$store.dispatch('joinSession', payload)
+			this.$router.push('room')			
+			//axios({
+      //  method: 'get',
+      //  url:`local 8080/api/rooms/${joinCode}`,
+				// data: joinCode
+      //})
+			//	.then(res=>{
+			//		console.log(res)
+			//		this.$store.dispatch('joinSession', payload)
+			//		this.$router.push('room')					
+			//	})//
 		},
+		makeSession: function () {
+      axios({
+        method: 'post',
+        url:'local 8080/api/rooms',
+      })
+        .then(res=>{
+          console.log(res)
+          // localStorage.setItem('jwt', res.data.token)
+          // this.$emit('login')
+					const payload = {
+						"myUserName": this.myUserName,
+						"joinCode": this.joinCode
+					}
+					this.$store.dispatch('joinSession', payload)
+          this.$router.push({
+					name: 'Room',
+					params: { joinCode: this.joinCode }
+					})
+        })
+        .catch(err=> {
+          console.log(err)
+        })
+
+    },
 		leaveSession() {
-			this.$store.dispatch('leaveSession')
+				this.$store.dispatch('leaveSession')
 		},
 		updateMainVideoStreamManager(data) {
-			this.$store.dispatch('updateMainVideoStreamManager',data)
+				this.$store.dispatch('updateMainVideoStreamManager',data)
+		},
+		getUserDate() {
+			axios({
+					method:'GET',
+					url: '/sendUser'
+			})
+			.then(res => {
+					this.userData.userName = res.data.userName
+					this.userData.userNickname = res.data.userNickname
+					this.userData.userEmail = res.data.userEmail
+					console.log(this.userData)
+			})
+			.catch(err => console.log(err))
 		}
+	},
+	created() {
+		this.getUserDate()
 	}
 }
 </script>
 
-<style>
+<style scoped>
 .lobby {
   display: flex;
   flex-direction: column;
@@ -89,7 +146,6 @@ export default {
 .lobby .myface img {
   width: 100%;
 }
-
 .go-or-make {
   display: flex;
   justify-content: center;
@@ -99,7 +155,6 @@ export default {
   margin: 10px;
   width: 100px;
 }
-
 .lobby > img {
   width: 300px;
   margin-top: 100px;

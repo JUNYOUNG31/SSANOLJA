@@ -23,6 +23,12 @@ export default new Vuex.Store({
 
   },
   mutations: {
+
+		CHANGE_JOININFO: function(state, data) {
+			state.mySessionId = data.sessionId
+			state.myUserName = data.userName
+		},
+
     GET_OVOBJ: function(state) {
       state.OV = new OpenVidu();
     },
@@ -38,7 +44,6 @@ export default new Vuex.Store({
       state.session.on('exception', ({ exception }) => {
 				console.warn(exception);
 			});
-			console.log("on 작동 1")
     },
 
     // GET_TOKEN: function (state) {
@@ -65,14 +70,16 @@ export default new Vuex.Store({
     
   },
   actions: {
-    joinSession: function ({ commit, dispatch, state}) {
+    joinSession: function ({ commit, dispatch, state}, data) {
 			// --- Get an OpenVidu object ---
+			commit("CHANGE_JOININFO", data)
+
       commit("GET_OVOBJ")
 			
 			// --- Init a session ---
       commit("INIT_SESSION")
 			
-			
+			console.log('조성현',data)
       console.log(state.session)
 			// --- Specify the actions when events take place in the session ---
       
@@ -111,16 +118,7 @@ export default new Vuex.Store({
   
               // --- Get your own camera stream with the desired properties ---
               
-              let publisher = state.OV.initPublisher(undefined, {
-                audioSource: undefined, // The source of audio. If undefined default microphone
-                videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: false,  	// Whether you want to start publishing with your audio unmuted or not
-                publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-                resolution: '640x480',  // The resolution of your video
-                frameRate: 30,			// The frame rate of your video
-                insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-                mirror: false       	// Whether to mirror your local video or not
-              });
+              let publisher = state.OV.initPublisher(undefined, data.publishInfo);
   
               state.mainStreamManager = publisher;
               state.publisher = publisher;
@@ -222,9 +220,9 @@ export default new Vuex.Store({
 
 		socketTest: function({state}) {
 			state.session.signal({
-				data: 'sessionTest',
+				data: 'socketTest',
 				to: [],
-				type: 'session-test'
+				type: 'socket-test'
 			})
 			.then(() => {
 				console.log('Message successfully sent');
