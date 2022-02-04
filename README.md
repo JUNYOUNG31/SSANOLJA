@@ -31,8 +31,9 @@
   - 화상 미팅룸
   - 그룹 채팅
   
+
 <br>  
-  
+
 * 주요 기술
   - WebRTC
   - WebSocket
@@ -138,7 +139,7 @@
   - feature 브랜치 이름 명명 규칙
     - feature/[fe or be]/[기능 이름]
     - 예시) feature/fe/login
-<br>
+    <br>
   - develop 브랜치 규칙
     - develop-[back or front]
 
