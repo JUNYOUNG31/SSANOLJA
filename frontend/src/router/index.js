@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Room from '../views/Room.vue'
 import Lobby from '../views/Lobby.vue'
-import SignUp from '../views/SignUp.vue'
+
 
 Vue.use(VueRouter)
 
@@ -22,11 +22,6 @@ const routes = [
     path: '/lobby',
     name: 'Lobby',
     component: Lobby
-  },
-  {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp
   }
 ]
 
