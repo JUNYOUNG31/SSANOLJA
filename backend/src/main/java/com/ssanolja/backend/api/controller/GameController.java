@@ -36,11 +36,9 @@ public class GameController {
         List<User> users = gameService.getUserList(userNicknames);
         String selectedGame = startGameReq.getSelectedGame();
         if (selectedGame.equals("spyfall")) {
-//            spyfallService
             return new ResponseEntity<>(spyfallService.makeSpyfall(users, game), HttpStatus.CREATED);
 //        }
 //        else if (selectedGame.equals("telestation")) {
-////            telestationService
 //            return "telestation";
 //        }
 //    }
