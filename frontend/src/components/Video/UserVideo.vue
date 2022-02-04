@@ -8,7 +8,6 @@
 
 <script>
 import OvVideo from './OvVideo';
-
 export default {
 	name: 'UserVideo',
 
@@ -26,11 +25,13 @@ export default {
 			const { clientData } = this.getConnectionData();
 			return clientData;
 		},
+
+		
 	},
 
 	methods: {
 			getConnectionData () {
-			const { connection } = this.streamManager.stream.session;
+			const { connection } = this.streamManager.stream;
 			return JSON.parse(connection.data);
 		},
 	},

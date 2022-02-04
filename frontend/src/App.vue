@@ -1,5 +1,5 @@
 <template>
-  <v-app> 
+  <v-app style="background: rgb(36, 33, 33); color:white"> 
     <v-main>
       <router-view/>
     </v-main>
@@ -32,7 +32,6 @@ v-main
   border: hidden;
 }
 .v-application div {
-  background-color: rgb(36, 33, 33);
-  color: white;
+  /* color: white; */
 }
 </style>
