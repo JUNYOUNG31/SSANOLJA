@@ -1,11 +1,14 @@
 package com.ssanolja.backend.api.controller;
 
+import com.ssanolja.backend.api.request.GetRuleReq;
 import com.ssanolja.backend.api.request.StartGameReq;
 import com.ssanolja.backend.api.response.GameRes;
+import com.ssanolja.backend.api.response.RuleRes;
 import com.ssanolja.backend.api.service.GameService;
 import com.ssanolja.backend.api.service.SpyfallService;
 import com.ssanolja.backend.db.entity.Game;
 import com.ssanolja.backend.db.entity.User;
+import com.ssanolja.backend.util.RuleUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,5 +48,27 @@ public class GameController {
 //        }
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/rules")
+    public ResponseEntity getRule(@RequestBody GetRuleReq getRuleReq) {
+        Integer personnel = getRuleReq.getPersonnel();
+        String selectedGame = getRuleReq.getSelectedGame();
+
+        RuleUtil rule = RuleUtil.valueOf(selectedGame.toUpperCase());
+        if (personnel > rule.getMaxPeople() || personnel < rule.getMinPeople()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            int gameType = rule.getGameType();
+            RuleRes res = RuleRes.builder()
+                    .playTime(rule.getPlayTime())
+                    .drawingTime(rule.getDrawingTime())
+                    .meetingTime(rule.getMeetingTime())
+                    .textingTime(rule.getTextingTime())
+                    .voteTime(rule.getVoteTime())
+                    .build();
+
+            return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+        }
     }
 }
