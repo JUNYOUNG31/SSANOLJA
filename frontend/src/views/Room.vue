@@ -20,19 +20,27 @@
         </div>
         <v-col class="div2-2"> <!--div2-2 게임화면--><!--세로배열-->
         <span v-if="start">
-          <router-view></router-view>
+          <span v-if="gameSelected == 'Spyfall'">
+            <spyfall :stream-manager="spyFallVideo"></spyfall>
+          </span >
+          <span v-if="gameSelected == 'Fakeartist'">
+            <fakeartist :stream-manager="spyFallVideo"></fakeartist>
+          </span>
+          <span v-if="gameSelected == 'Telestation'">
+            <telestation :stream-manager="spyFallVideo"></telestation>
+          </span>
         </span>
         <span v-else>
           <v-row class="div3"><!--div3 게임선택 및 레디 --><!--가로배열-->
             <v-row class="div3-1 row-cols-3"> <!--div3-1 게임선택--><!--가로배열-->
               <v-col>
-                <v-btn v-bind:class="{'grey': gameSelected == 'spyfall'}" @click="gameSelect('Spyfall')">스파이폴 {{gameSelected}}</v-btn>
+                <v-btn v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴 {{gameSelected}}</v-btn>
               </v-col>
               <v-col>
-                <v-btn v-bind:class="{'grey': gameSelected == 'fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
+                <v-btn v-bind:class="{'grey': gameSelected == 'Fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
               </v-col>
               <v-col>
-                <v-btn v-bind:class="{'grey': gameSelected == 'telestation'}" @click="gameSelect('Telestation')">텔레스테이션</v-btn>
+                <v-btn v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</v-btn>
               </v-col>
             </v-row> 
             <div class="div3-2"> <!--div3-2 레디 --><!--세로배열-->              
@@ -57,7 +65,10 @@
 
 <script>
 import UserVideo from '@/components/Video/UserVideo';
+import Spyfall from '@/components/games/Spyfall';
 import { mapState } from "vuex";
+import Fakeartist from '@/components/games/Fakeartist.vue';
+import Telestation from '@/components/games/Telestation.vue';
 export default {
   name: "Room", 
 
@@ -66,11 +77,15 @@ export default {
       gameSelected: '',
       message: null,
       start : false,
+      spyFallVideo : null
 		}
 	},
 
 	components: {
 		UserVideo,
+    Spyfall,
+    Fakeartist,
+    Telestation,
 	},
 
   computed: {
@@ -115,6 +130,7 @@ export default {
 		},
     gameSelect(game) {
       this.gameSelected = game
+      this.spyFallVideo = this.mainStreamManager
     },
     gameStart(game) {
       this.start = true
@@ -142,7 +158,8 @@ export default {
   height: 160px;
 }
 
-video {
+.playercamera div video {
+  width: 100%;
   max-height: 160px;
 }
 .room div {
@@ -256,7 +273,8 @@ video {
 }
 /* 1904부터는 밑의 코드 적용 */
 @media (min-width: 1904px) {
-  video {
+  .playercamera div video {
+    width: 100%;
     max-height: 180px;
   }
   .playercamera > div {

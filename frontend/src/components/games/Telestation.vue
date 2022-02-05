@@ -1,12 +1,15 @@
 <template>
   <div class="telestation-container">
-    <h1>텔레스테이션</h1>
+    <h1>텔레스트레이션</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Telestation'
+  name: 'Telestation',
+  props: {
+  streamManager: Object,
+	},
 }
 </script>
 
