@@ -37,7 +37,7 @@
             </v-row> 
             <div class="div3-2"> <!--div3-2 레디 --><!--세로배열-->              
               <v-col>
-                <v-btn>{{ mySessionId }}</v-btn>
+                <v-btn @click="copyJoinCode(mySessionId)">{{ mySessionId }}</v-btn>
               </v-col>
               <v-col><v-btn>레디</v-btn></v-col>
               <v-col><v-btn @click="gameStart(gameSelected)">시작</v-btn></v-col>
@@ -58,6 +58,7 @@
 <script>
 import UserVideo from '@/components/Video/UserVideo';
 import { mapState } from "vuex";
+import axios from "axios";
 export default {
   name: "Room", 
 
@@ -109,6 +110,16 @@ export default {
       this.$store.dispatch('socketTest') // 소켓 테스트
     },
 
+
+    copyJoinCode(joinCode) {
+      const joinCodeToCopy = document.createElement("textarea")
+      document.body.appendChild(joinCodeToCopy)
+      joinCodeToCopy.value = joinCode
+      joinCodeToCopy.select()
+      document.execCommand("copy")
+      alert('복사되었습니다')
+    },
+
     leaveSession() {
 			this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
@@ -119,7 +130,22 @@ export default {
     gameStart(game) {
       this.start = true
       this.$router.push({name:game})
-    }
+    
+      axios
+        .post(
+          'api/games/start',
+          
+          JSON.stringify({
+            userNicknames : ["조성현", "정성우", "박준영", "김범주"],
+            roomCode : this.mySessionId,
+            selectedGame: game
+          }),
+
+        )
+        .then(response => response.data)
+        .catch(error => console.log(error))
+  }
+    
   }
 }
 
