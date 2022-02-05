@@ -6,7 +6,11 @@
 
 <script>
 export default {
-  name: 'Fakeartist'
+  name: 'Fakeartist',
+  props: {
+  streamManager: Object,
+	},
+
 }
 </script>
 
