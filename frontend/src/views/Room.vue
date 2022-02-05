@@ -1,23 +1,15 @@
 <template>
   <div class="room">
     <v-container><!--세로배열-->
-      <v-row class="div1" style="border: hidden"> <!--div1 로고 & 화면4개--><!--가로배열-->
-        <v-col class="div1-1">
-          <img class="img1" src="../assets/logo.png" alt="logo" @click="leaveSession"> 
-          </v-col> <!--div1-1 로고-->
+      <v-row class="div2" ><!--div2--><!--가로배열-->
+      <div class="div2-1">
         <v-col class="playercamera">
           <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
         </v-col>
         <v-col v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
           <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
         </v-col>
-      </v-row>
-      <v-row class="div2" ><!--div2--><!--가로배열-->
-        <div class="div2-1"><!--div2-1 화면 4개--><!--세로배열-->
-          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
-          <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
-          </div>
-        </div>
+      </div>
         <v-col class="div2-2"> <!--div2-2 게임화면--><!--세로배열-->
         <span v-if="start">
           <router-view></router-view>
@@ -49,6 +41,11 @@
           <v-btn @click="socketTest()">소켓 테스트</v-btn>
           <p>{{message}}</p>
         </v-col> 
+          <div class="div2-1"><!--div2-1 화면 4개--><!--세로배열-->
+          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
+          <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
+          </div>
+        </div>
       </v-row>
     </v-container>    
   </div>
