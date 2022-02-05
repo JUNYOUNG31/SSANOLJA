@@ -126,20 +126,37 @@ export default {
     },
     gameStart(game) {
       this.start = true
-      this.$router.push({name:game})
-    
+      axios.post(
+        '/api/games/rules',
+
+        JSON.stringify({
+          personnel: 4, // userNicknames의 길이로 대체
+          selectedGame: game
+        })
+      )
+      .then(res => {
+        console.log(res.data)
+        this.$router.push({name:game})
+
+      })
+      .catch(alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다'))
+
+
       axios
         .post(
-          'api/games/start',
+          '/api/games/start',
           
           JSON.stringify({
             userNicknames : ["조성현", "정성우", "박준영", "김범주"],
             roomCode : this.mySessionId,
             selectedGame: game
           }),
-
         )
-        .then(response => response.data)
+        .then(res =>{
+          
+          console.log(res.data)
+        }
+          )
         .catch(error => console.log(error))
   }
     
