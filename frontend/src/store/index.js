@@ -18,13 +18,14 @@ export default new Vuex.Store({
     publisher: undefined,
     subscribers: [],
 
-    mySessionId: 'SessionA',
-    myUserName: 'Participant' + Math.floor(Math.random() * 100),
+    mySessionId: '',
+    myUserName: '',
 
   },
   mutations: {
 
 		CHANGE_JOININFO: function(state, data) {
+			console.log(data.joinCode)
 			state.mySessionId = data.sessionId
 			state.myUserName = data.userName
 		},
@@ -79,8 +80,6 @@ export default new Vuex.Store({
 			// --- Init a session ---
       commit("INIT_SESSION")
 			
-			console.log('조성현',data)
-      console.log(state.session)
 			// --- Specify the actions when events take place in the session ---
       
 			// On every new Stream received...
@@ -167,7 +166,6 @@ export default new Vuex.Store({
 		 *   3) The Connection.token must be consumed in Session.connect() method
 		 */
 
-    // state.mySessionId라고 해야할수도 있음
 		getToken: function ({ dispatch }, data) {
       return dispatch('createSession', data).then(sessionId => dispatch('createToken', sessionId));
 			// return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));

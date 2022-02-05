@@ -1,23 +1,15 @@
 <template>
   <div class="room">
     <v-container><!--세로배열-->
-      <v-row class="div1" style="border: hidden"> <!--div1 로고 & 화면4개--><!--가로배열-->
-        <v-col class="div1-1">
-          <img class="img1" src="../assets/logo.png" alt="logo" @click="leaveSession"> 
-          </v-col> <!--div1-1 로고-->
+      <v-row class="div2" ><!--div2--><!--가로배열-->
+      <div class="div2-1">
         <v-col class="playercamera">
           <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
         </v-col>
         <v-col v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
           <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
         </v-col>
-      </v-row>
-      <v-row class="div2" ><!--div2--><!--가로배열-->
-        <div class="div2-1"><!--div2-1 화면 4개--><!--세로배열-->
-          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
-          <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
-          </div>
-        </div>
+      </div>
         <v-col class="div2-2"> <!--div2-2 게임화면--><!--세로배열-->
         <span v-if="start">
           <span v-if="gameSelected == 'Spyfall'">
@@ -45,7 +37,7 @@
             </v-row> 
             <div class="div3-2"> <!--div3-2 레디 --><!--세로배열-->              
               <v-col>
-                <v-btn>{{ mySessionId }}</v-btn>
+                <v-btn @click="copyJoinCode(mySessionId)">{{ mySessionId }}</v-btn>
               </v-col>
               <v-col><v-btn>레디</v-btn></v-col>
               <v-col><v-btn @click="gameStart(gameSelected)">시작</v-btn></v-col>
@@ -57,6 +49,11 @@
           <v-btn @click="socketTest()">소켓 테스트</v-btn>
           <p>{{message}}</p>
         </v-col> 
+          <div class="div2-1"><!--div2-1 화면 4개--><!--세로배열-->
+          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
+          <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
+          </div>
+        </div>
       </v-row>
     </v-container>    
   </div>
@@ -69,6 +66,7 @@ import Spyfall from '@/components/games/Spyfall';
 import { mapState } from "vuex";
 import Fakeartist from '@/components/games/Fakeartist.vue';
 import Telestation from '@/components/games/Telestation.vue';
+import axios from "axios";
 export default {
   name: "Room", 
 
@@ -124,6 +122,16 @@ export default {
       this.$store.dispatch('socketTest') // 소켓 테스트
     },
 
+
+    copyJoinCode(joinCode) {
+      const joinCodeToCopy = document.createElement("textarea")
+      document.body.appendChild(joinCodeToCopy)
+      joinCodeToCopy.value = joinCode
+      joinCodeToCopy.select()
+      document.execCommand("copy")
+      alert('복사되었습니다')
+    },
+
     leaveSession() {
 			this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
@@ -135,7 +143,22 @@ export default {
     gameStart(game) {
       this.start = true
       this.$router.push({name:game})
-    }
+    
+      axios
+        .post(
+          'api/games/start',
+          
+          JSON.stringify({
+            userNicknames : ["조성현", "정성우", "박준영", "김범주"],
+            roomCode : this.mySessionId,
+            selectedGame: game
+          }),
+
+        )
+        .then(response => response.data)
+        .catch(error => console.log(error))
+  }
+    
   }
 }
 
