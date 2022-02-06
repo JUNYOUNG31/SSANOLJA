@@ -6,6 +6,8 @@ import com.ssanolja.backend.db.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -29,5 +31,16 @@ public class UserService {
             return user.getUsersId().equals(existingUser.getUsersId());
         }
 
+    }
+
+    @Transactional
+    public List<User> getUserList(List<String> userNicknames) {
+        List<User> userList = new ArrayList<User>();
+        for (String userNickname :
+                userNicknames) {
+            userList.add(userRepository.findByUserNickname(userNickname));
+        }
+
+        return userList;
     }
 }
