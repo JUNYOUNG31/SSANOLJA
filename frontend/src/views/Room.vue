@@ -19,8 +19,8 @@
             <router-view></router-view>
           </span>
 
-          <span v-else><!--대기방 게임 초기화면(게임선택하는곳)-->
-            <v-row class="">
+          <div v-else><!--대기방 게임 초기화면(게임선택하는곳)-->
+            <v-row class="control">
 
               <v-col class="col-10 row-cols-3 gameselect">
                   <v-row style="height:100%;">
@@ -58,9 +58,9 @@
               
             </v-row>
 
-            <div class="">게임설명 <!--게임설명-->
+            <div class="gameInfo">게임설명 <!--게임설명-->
             </div>
-          </span>
+          </div>
 
             <!-- <v-btn @click="socketTest()">소켓 테스트</v-btn>
             <p>{{message}}</p> -->
@@ -89,6 +89,10 @@ export default {
       gameSelected: '',
       message: null,
       start : false,
+      viewArea: {
+        width: screen.width,
+        height: screen.height/708
+      }
 		}
 	},
 
@@ -157,8 +161,11 @@ export default {
   justify-content: space-around;
   flex-direction: column;
 }
-.game {
-  
+.gameInfo{
+  height: 20%;
+}
+.control {
+  height: 80%;
 }
 
 
@@ -191,10 +198,24 @@ export default {
 .room div {
   border: 1px solid white;  
 }
+.room{
+    /* height: auto;
+    width: auto;
+    padding : 3% 7%;
+    margin : 0 auto; 
+    height: 671px;
+    width: 1369px;
+    padding: 50px 130px;
+    margin: 0 auto; */
+    display: flex;
+    height: 100vh;
+}
 /* 메인 화면 */
 .room .container {
-  height: 100vh;
-  width: 100%;
+  /* height: auto;
+  width: auto; */
+    width: 90%;
+    margin: auto;
 }
 .wrap {
   height: 100%;
@@ -217,6 +238,37 @@ export default {
 .ready .col{
   overflow: hidden;
 }
+/* 
+@media (max-width: 1455px) {
+  .room .container{
+    max-width: 100%;
+    max-height: 100vh;
+    height: auto; */
 
+        /* transform: scale(0.1,0.1);
+    -ms-transform: scale(0.5, 0.5);
+    -webkit-transform: scale(0.5, 0.5); */
+    /* display: block; height: 100%; margin: 0; position: relative; visibility: hidden; */
+    /* max-width: 100%;
+    max-height: 100vh;
+    margin: auto; */
+  /* }
+}
+@media (max-height: 708px) {
+   .room .container{ */
+    /*max-height:100%;
+    max-width: 100%;
+    height: auto;
+    width: auto; */
+    /*지금화면높이 X 원래컨터이너 높이 708 => x/708 => 줄어든 비율?*/
+    /* transition: 0.1s;
+    transform: scale(0.4, 0.4); */
+    /* -ms-transform: scale(0.5, 0.5);
+    -webkit-transform: scale(0.5, 0.5); */
+    /* max-width: 100vh;
+    max-height: 100%;
+    width: auto; */
+  /* }
 
+} */
 </style>

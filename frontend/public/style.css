@@ -265,3 +265,9 @@ video {
 		max-width: inherit;
 	}
 }
+
+/* @media (max-width: 1369px) {
+  html {
+    overflow-x: scroll;
+  }
+} */
