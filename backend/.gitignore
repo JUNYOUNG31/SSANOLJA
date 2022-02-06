@@ -198,6 +198,7 @@ out/
 # Node artifact files
 node_modules/
 dist/
+src/main/resources/static/
 
 # Compiled Java class files
 *.class
