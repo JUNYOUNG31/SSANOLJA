@@ -58,7 +58,9 @@
           <div>타이머</div>
           <div>
             <div>장소</div>
+            <div> {{place}} </div>
             <div>직업</div>
+            <div> {{job}} </div>
           </div>
           <div>투표</div>
         </v-col>
@@ -71,18 +73,35 @@
 
 <script>
 import OvVideo from '../Video/OvVideo.vue';
+import {mapState} from 'vuex';
+
 export default {
   name: 'Spyfall',
 
+  data () {
+		return {
+      job: this.gameRes.jobs[this.myUserName],
+      place: this.gameRes.place
+		}
+	},
+
   props: {
   streamManager: Object,
+  rules: Object,
+  gameRes: Object
 	},
+
   components: {
 		OvVideo,
 	},
   
 	computed: {
-		
+		...mapState([
+			
+			"myUserName",
+			"mySessionId",
+			
+		]),
 		clientData () {
 			const { clientData } = this.getConnectionData();
 			return clientData;
@@ -97,6 +116,10 @@ export default {
 			return JSON.parse(connection.data);
 		},
 	},
+  mounted() {
+    this.job = this.gameRes.jobs[this.myUserName]
+  }
+  
 }
 </script>
 

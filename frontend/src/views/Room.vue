@@ -13,13 +13,13 @@
         <v-col class="div2-2"> <!--div2-2 게임화면--><!--세로배열-->
         <span v-if="start">
           <span v-if="gameSelected == 'Spyfall'">
-            <spyfall :stream-manager="spyFallVideo"></spyfall>
+            <spyfall :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></spyfall>
           </span >
           <span v-if="gameSelected == 'Fakeartist'">
-            <fakeartist :stream-manager="spyFallVideo"></fakeartist>
+            <fakeartist :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></fakeartist>
           </span>
           <span v-if="gameSelected == 'Telestation'">
-            <telestation :stream-manager="spyFallVideo"></telestation>
+            <telestation :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></telestation>
           </span>
         </span>
         <span v-else>
@@ -75,7 +75,9 @@ export default {
       gameSelected: '',
       message: null,
       start : false,
-      spyFallVideo : null
+      spyFallVideo : null,
+      rules: null,
+      gameRes: null,
 		}
 	},
 
@@ -141,7 +143,7 @@ export default {
       this.spyFallVideo = this.mainStreamManager
     },
     gameStart(game) {
-      this.start = true
+      
       axios.post(
         '/api/games/rules',
 
@@ -151,30 +153,35 @@ export default {
         })
       )
       .then(res => {
-        console.log(res.data)
-        this.$router.push({name:game})
+          this.rules=res.data
+
+          axios
+          .post(
+            '/api/games/start',
+            
+            JSON.stringify({
+              userNicknames : ["조성현", "정성우", "박준영", "김범주"],
+              roomCode : this.mySessionId,
+              selectedGame: game
+            }),
+          )
+          .then(resp =>{
+            
+            this.gameRes = resp.data
+            this.start = true
+          })
+          .catch(error => console.log(error))
 
       })
-      .catch(alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다'))
+      .catch(err =>{
+        console.log(err)
+        alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다')
+      })
 
 
-      axios
-        .post(
-          '/api/games/start',
-          
-          JSON.stringify({
-            userNicknames : ["조성현", "정성우", "박준영", "김범주"],
-            roomCode : this.mySessionId,
-            selectedGame: game
-          }),
-        )
-        .then(res =>{
-          
-          console.log(res.data)
-        }
-          )
-        .catch(error => console.log(error))
-  }
+      
+  },
+  
     
   }
 }
