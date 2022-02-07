@@ -227,7 +227,7 @@ export default {
             }
 
         },
-        immediate: true // This ensures the watcher is triggered upon creation
+        immediate: false // 컴포넌트가 생성되자마자 즉시 실행
     }
 
   },
@@ -236,6 +236,7 @@ export default {
   mounted() {
     this.job = this.gameRes.jobs[this.myUserName]
 		this.timerCount = this.rules.playTime
+    this.play()
   }
   
 }
