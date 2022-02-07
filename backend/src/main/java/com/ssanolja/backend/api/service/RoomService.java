@@ -20,7 +20,7 @@ public class RoomService {
 
     @Transactional
     public String makeRoomCode() {
-        String roomCode = RandomStringUtils.randomAlphanumeric(7);
+        String roomCode = RandomStringUtils.randomAlphanumeric(7).toUpperCase();
         roomRepository.save(Room.builder()
                 .roomCode(roomCode)
                 .build());
