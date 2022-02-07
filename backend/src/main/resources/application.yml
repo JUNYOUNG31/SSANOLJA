@@ -1,5 +1,7 @@
 server:
   port: 8080
+  servlet:
+    context-path: /api
 spring:
   application:
     name: oauth2
@@ -14,7 +16,7 @@ spring:
         format_sql : true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
-    url: jdbc:mysql://localhost:3306/ssanolja_2.3?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
-    username: root
+    url: jdbc:mysql://localhost:3306/ssanolja_2.4?seUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    username: rootu
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

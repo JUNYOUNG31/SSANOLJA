@@ -2,8 +2,8 @@ module.exports = {
   transpileDependencies: [
     'vuetify'
   ],
-  outputDir: "../backend/src/main/resources/static",  
-  indexPath: "../static/index.html",  
+  outputDir: "./dist",  
+  indexPath: "./index.html",  
   devServer: {  
     proxy: "http://localhost:8080"  
   },  

@@ -82,7 +82,7 @@
                 <v-card-title>
                   <span class="text-h5">누가 스파이일까요?</span>
                 </v-card-title>
-                <v-card-text>
+              
                   <v-container class="vote">
                     <v-row>
                       <v-col cols="12">
@@ -133,6 +133,8 @@
                     Close
                   </v-btn>
                 </v-card-actions>
+                </v-row>
+                </v-container>
               </v-card>
             </v-dialog>
           </div>
@@ -227,7 +229,7 @@ export default {
             }
 
         },
-        immediate: true // This ensures the watcher is triggered upon creation
+        immediate: false // This ensures the watcher is triggered upon creation
     }
 
   },
@@ -236,6 +238,8 @@ export default {
   mounted() {
     this.job = this.gameRes.jobs[this.myUserName]
 		this.timerCount = this.rules.playTime
+
+    this.play()
   }
   
 }
