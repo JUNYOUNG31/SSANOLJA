@@ -47,6 +47,7 @@ export default {
 			},
 			joinCode: '',
 			myUserName: '',
+			sendUserEmail: '',
 		}
 	},
 	components: {
@@ -101,7 +102,6 @@ export default {
         .catch(err=> {
           console.log(err)
         })
-
     },
 		leaveSession() {
 				this.$store.dispatch('leaveSession')
@@ -109,13 +109,15 @@ export default {
 		updateMainVideoStreamManager(data) {
 				this.$store.dispatch('updateMainVideoStreamManager',data)
 		},
-		getUserDate() {
+		getUserData() {
+			this.sendUserEmail = this.$route.params.sendUserEmail
 			axios({
-					method:'GET',
-					url: '/sendUser'
+					method:'POST',
+					url: '/api/login/sendUser',
+					data: this.sendUserEmail
 			})
 			.then(res => {
-					this.userData.userName = res.data.userName
+					this.userData.userName = res.data.userNickname
 					this.userData.userNickname = res.data.userNickname
 					this.userData.userEmail = res.data.userEmail
 					console.log(this.userData)
@@ -123,8 +125,8 @@ export default {
 			.catch(err => console.log(err))
 		}
 	},
-	created() {
-		this.getUserDate()
+	mounted() {
+		this.getUserData()
 	}
 }
 </script>
