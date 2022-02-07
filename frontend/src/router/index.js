@@ -3,9 +3,9 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Room from '../views/Room.vue'
 import Lobby from '../views/Lobby.vue'
-import Spyfall from '../components/games/Spyfall.vue'
-import Fakeartist from '../components/games/Fakeartist.vue'
-import Telestation from '../components/games/Telestation.vue'
+// import Spyfall from '../components/games/Spyfall.vue'
+// import Fakeartist from '../components/games/Fakeartist.vue'
+// import Telestation from '../components/games/Telestation.vue'
 
 
 
@@ -18,26 +18,26 @@ const routes = [
     component: Home
   },  
   {
-    path: '/room/:roomId',
+    path: '/room/:joinCode',
     name: 'Room',
     component: Room,
-    children : [
-      {
-        path: '/room/:roomId',
-        name: 'Spyfall',
-        component: Spyfall
-      },
-      {
-        path: '/room/:roomId',
-        name: 'Fakeartist',
-        component: Fakeartist
-      },
-      {
-        path: '/room/:roomId',
-        name: 'Telestation',
-        component: Telestation
-      }
-    ]
+    // children : [
+    //   {
+    //     path: '/spyfall',
+    //     name: 'Spyfall',
+    //     component: Spyfall
+    //   },
+    //   {
+    //     path: '/fakeartist',
+    //     name: 'Fakeartist',
+    //     component: Fakeartist
+    //   },
+    //   {
+    //     path: '/telestation',
+    //     name: 'Telestation',
+    //     component: Telestation
+    //   }
+    // ]
   },
   { 
     path: '/lobby',

@@ -6,6 +6,7 @@ import com.ssanolja.backend.api.response.GameRes;
 import com.ssanolja.backend.api.response.RuleRes;
 import com.ssanolja.backend.api.service.GameService;
 import com.ssanolja.backend.api.service.SpyfallService;
+import com.ssanolja.backend.api.service.UserService;
 import com.ssanolja.backend.db.entity.Game;
 import com.ssanolja.backend.db.entity.User;
 import com.ssanolja.backend.util.RuleUtil;
@@ -24,11 +25,13 @@ public class GameController {
 
     private final GameService gameService;
     private final SpyfallService spyfallService;
+    private final UserService userService;
 
 
-    public GameController(GameService gameService, SpyfallService spyfallService) {
+    public GameController(GameService gameService, SpyfallService spyfallService, UserService userService) {
         this.gameService = gameService;
         this.spyfallService = spyfallService;
+        this.userService = userService;
     }
 
     @PostMapping("/start")
@@ -36,9 +39,9 @@ public class GameController {
         String roomCode = startGameReq.getRoomCode();
         Game game = gameService.makeGame(roomCode);
         List<String> userNicknames = startGameReq.getUserNicknames();
-        List<User> users = gameService.getUserList(userNicknames);
+        List<User> users = userService.getUserList(userNicknames);
         String selectedGame = startGameReq.getSelectedGame();
-        if (selectedGame.equals("spyfall")) {
+        if (selectedGame.equals("Spyfall")) {
 //            spyfallService
             return new ResponseEntity<>(spyfallService.makeSpyfall(users, game), HttpStatus.CREATED);
 //        }

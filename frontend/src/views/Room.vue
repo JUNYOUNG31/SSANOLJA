@@ -14,24 +14,30 @@
         
 
         <v-col id="game"> <!--가운데 게임화면-->
-
-          <span v-if="start"> <!--게임 시작했을때-->
-            <router-view></router-view>
+          <span v-if="start">
+            <span v-if="gameSelected == 'Spyfall'">
+              <spyfall :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></spyfall>
+            </span >
+            <span v-if="gameSelected == 'Fakeartist'">
+              <fakeartist :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></fakeartist>
+            </span>
+            <span v-if="gameSelected == 'Telestation'">
+              <telestation :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></telestation>
+            </span>
           </span>
-
           <div v-else><!--대기방 게임 초기화면(게임선택하는곳)-->
             <v-row class="control">
 
               <v-col class="col-10 row-cols-3 gameselect">
                   <v-row style="height:100%;">
                     <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'spyfall'}" @click="gameSelect('Spyfall')">스파이폴</v-btn>
+                      <v-btn v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</v-btn>
                     </v-col>
                     <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
+                      <v-btn v-bind:class="{'grey': gameSelected == 'Fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
                     </v-col>
                     <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'telestation'}" @click="gameSelect('Telestation')">텔레스테이션</v-btn>
+                      <v-btn v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</v-btn>
                     </v-col>                 
                   </v-row> <!--게임 3개 선택하는 부분-->
               </v-col>
@@ -40,7 +46,7 @@
                 <v-col >
                   <v-btn style="width:100%;">
                     <span>
-                      {{ mySessionId }}
+                      <v-btn @click="copyJoinCode(mySessionId)">{{ mySessionId }}</v-btn>
                     </span>
                   </v-btn>
                 </v-col>
@@ -80,24 +86,30 @@
 
 <script>
 import UserVideo from '@/components/Video/UserVideo';
+import Spyfall from '@/components/games/Spyfall';
 import { mapState } from "vuex";
+import Fakeartist from '@/components/games/Fakeartist.vue';
+import Telestation from '@/components/games/Telestation.vue';
+import axios from "axios";
 export default {
   name: "Room", 
-
   data () {
 		return {
       gameSelected: '',
       message: null,
       start : false,
-      viewArea: {
-        width: screen.width,
-        height: screen.height/708
-      }
+      spyFallVideo : null,
+      rules: null,
+      gameRes: null,
+
 		}
 	},
 
 	components: {
 		UserVideo,
+    Spyfall,
+    Fakeartist,
+    Telestation,
 	},
 
   computed: {
@@ -136,17 +148,64 @@ export default {
       this.$store.dispatch('socketTest') // 소켓 테스트
     },
 
+
+    copyJoinCode(joinCode) {
+      const joinCodeToCopy = document.createElement("textarea")
+      document.body.appendChild(joinCodeToCopy)
+      joinCodeToCopy.value = joinCode
+      joinCodeToCopy.select()
+      document.execCommand("copy")
+      alert('복사되었습니다')
+    },
+
     leaveSession() {
 			this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
 		},
     gameSelect(game) {
       this.gameSelected = game
+      this.spyFallVideo = this.mainStreamManager
     },
     gameStart(game) {
-      this.start = true
-      this.$router.push({name:game})
-    }
+      
+      axios.post(
+        '/api/games/rules',
+
+        JSON.stringify({
+          personnel: 4, // userNicknames의 길이로 대체
+          selectedGame: game
+        })
+      )
+      .then(res => {
+          this.rules=res.data
+          axios
+          .post(
+            '/api/games/start',
+            
+            JSON.stringify({
+              userNicknames : ["조성현", "정성우", "박준영", "김범주"],
+              roomCode : this.mySessionId,
+              selectedGame: game
+            }),
+          )
+          .then(resp =>{
+            
+            this.gameRes = resp.data
+            this.start = true
+          })
+          .catch(error => console.log(error))
+
+      })
+      .catch(err =>{
+        console.log(err)
+        alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다')
+      })
+
+
+      
+  },
+  
+    
   }
 }
 
@@ -187,12 +246,6 @@ export default {
 .playercamera > div{
   height: 100%;
 }
-
-
-/* .playercamera > video {
-  width: 70%;
-  max-height: 160px;
-} */
 .room div {
   border: 1px solid white;  
 }
