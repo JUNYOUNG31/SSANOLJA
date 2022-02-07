@@ -55,7 +55,7 @@
           </div>
         </v-col>
         <v-col cols="3" class="right_menu">
-          <div>타이머</div>
+          <div>{{timerCount}}</div>
           <div>
             <div>장소</div>
             <div> {{place}} </div>
@@ -81,7 +81,10 @@ export default {
   data () {
 		return {
       job: this.gameRes.jobs[this.myUserName],
-      place: this.gameRes.place
+      place: this.gameRes.place,
+      timerEnabled: true,
+      timerCount: 30
+
 		}
 	},
 
@@ -115,9 +118,45 @@ export default {
 			const { connection } = this.streamManager.stream;
 			return JSON.parse(connection.data);
 		},
+
+    play() {
+      this.timerEnabled = true;
+    },
+
+    pause() {
+      this.timerEnabled = false;
+    }
 	},
+
+  watch: {
+
+    timerEnabled(value) {
+        if (value) {
+            setTimeout(() => {
+                this.timerCount--;
+            }, 1000);
+        }
+    },
+
+    timerCount: {
+        handler(value) {
+
+            if (value > 0 && this.timerEnabled) {
+                setTimeout(() => {
+                    this.timerCount--;
+                }, 1000);
+            }
+
+        },
+        immediate: true // This ensures the watcher is triggered upon creation
+    }
+
+  },
+
+
   mounted() {
     this.job = this.gameRes.jobs[this.myUserName]
+		this.timerCount = this.rules.playTime
   }
   
 }

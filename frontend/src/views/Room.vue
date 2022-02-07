@@ -46,8 +46,6 @@
           <div class="div4">게임설명
           </div><!--div4 게임설명-->
         </span>
-          <v-btn @click="socketTest()">소켓 테스트</v-btn>
-          <p>{{message}}</p>
         </v-col> 
           <div class="div2-1"><!--div2-1 화면 4개--><!--세로배열-->
           <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
@@ -154,7 +152,6 @@ export default {
       )
       .then(res => {
           this.rules=res.data
-
           axios
           .post(
             '/api/games/start',
