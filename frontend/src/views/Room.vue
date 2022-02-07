@@ -13,7 +13,7 @@
         </div>
         
 
-        <v-col class="game"> <!--가운데 게임화면-->
+        <v-col id="game"> <!--가운데 게임화면-->
 
           <span v-if="start"> <!--게임 시작했을때-->
             <router-view></router-view>
@@ -161,11 +161,9 @@ export default {
   justify-content: space-around;
   flex-direction: column;
 }
+
 .gameInfo{
-  height: 20%;
-}
-.control {
-  height: 80%;
+  height: 560px;
 }
 
 
@@ -199,22 +197,13 @@ export default {
   border: 1px solid white;  
 }
 .room{
-    /* height: auto;
-    width: auto;
-    padding : 3% 7%;
-    margin : 0 auto; 
-    height: 671px;
-    width: 1369px;
-    padding: 50px 130px;
-    margin: 0 auto; */
     display: flex;
     height: 100vh;
 }
 /* 메인 화면 */
 .room .container {
-  /* height: auto;
-  width: auto; */
-    width: 90%;
+    width: 1455px;
+    height: 730px;
     margin: auto;
 }
 .wrap {
@@ -238,37 +227,18 @@ export default {
 .ready .col{
   overflow: hidden;
 }
-/* 
-@media (max-width: 1455px) {
-  .room .container{
-    max-width: 100%;
-    max-height: 100vh;
-    height: auto; */
-
-        /* transform: scale(0.1,0.1);
-    -ms-transform: scale(0.5, 0.5);
-    -webkit-transform: scale(0.5, 0.5); */
-    /* display: block; height: 100%; margin: 0; position: relative; visibility: hidden; */
-    /* max-width: 100%;
-    max-height: 100vh;
-    margin: auto; */
-  /* }
+#game {
+  padding: 10px;
 }
-@media (max-height: 708px) {
-   .room .container{ */
-    /*max-height:100%;
-    max-width: 100%;
-    height: auto;
-    width: auto; */
-    /*지금화면높이 X 원래컨터이너 높이 708 => x/708 => 줄어든 비율?*/
-    /* transition: 0.1s;
-    transform: scale(0.4, 0.4); */
-    /* -ms-transform: scale(0.5, 0.5);
-    -webkit-transform: scale(0.5, 0.5); */
-    /* max-width: 100vh;
-    max-height: 100%;
-    width: auto; */
-  /* }
 
-} */
+@media (max-width: 1455px) {
+  .room{
+    width: 1455px;
+  }
+}
+@media (max-height: 730px) {
+  .room {
+    height: 730px;
+  }
+}
 </style>

@@ -1,4 +1,5 @@
 <template>
+
 <div v-if="streamManager" style="display: flex; align-items: center;">
 	<ov-video :stream-manager="streamManager"/>
 	<!--<div id="p-name"><p>{{ clientData }}</p></div>-->
