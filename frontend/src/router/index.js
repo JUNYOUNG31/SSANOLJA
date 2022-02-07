@@ -18,22 +18,22 @@ const routes = [
     component: Home
   },  
   {
-    path: '/room/:roomId',
+    path: '/room/:joinCode',
     name: 'Room',
     component: Room,
     children : [
       {
-        path: '/room/:roomId/spyfall',
+        path: '/room/:joinCode',
         name: 'Spyfall',
         component: Spyfall
       },
       {
-        path: '/room/:roomId/takeartist',
+        path: '/room/:joinCode',
         name: 'Fakeartist',
         component: Fakeartist
       },
       {
-        path: '/room/:roomId/telestation',
+        path: '/room/:joinCode',
         name: 'Telestation',
         component: Telestation
       }
