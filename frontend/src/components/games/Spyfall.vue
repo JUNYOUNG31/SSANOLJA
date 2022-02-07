@@ -55,7 +55,7 @@
           </div>
         </v-col>
         <v-col cols="3" class="right_menu">
-          <div>{{timerCount}}</div>
+          
           <div>
             <div>장소</div>
             <div> {{place}} </div>
@@ -87,7 +87,7 @@
                     <v-row>
                       <v-col cols="12">
                         <v-text-field
-                          타이머
+                          {{ timerCount }}
                         ></v-text-field>
                       </v-col>
                       <v-col cols="5" class="prosecutor">
