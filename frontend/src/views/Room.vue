@@ -13,13 +13,13 @@
         <v-col class="div2-2"> <!--div2-2 게임화면--><!--세로배열-->
         <span v-if="start">
           <span v-if="gameSelected == 'Spyfall'">
-            <spyfall :stream-manager="spyFallVideo"></spyfall>
+            <spyfall :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></spyfall>
           </span >
           <span v-if="gameSelected == 'Fakeartist'">
-            <fakeartist :stream-manager="spyFallVideo"></fakeartist>
+            <fakeartist :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></fakeartist>
           </span>
           <span v-if="gameSelected == 'Telestation'">
-            <telestation :stream-manager="spyFallVideo"></telestation>
+            <telestation :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></telestation>
           </span>
         </span>
         <span v-else>
@@ -46,8 +46,6 @@
           <div class="div4">게임설명
           </div><!--div4 게임설명-->
         </span>
-          <v-btn @click="socketTest()">소켓 테스트</v-btn>
-          <p>{{message}}</p>
         </v-col> 
           <div class="div2-1"><!--div2-1 화면 4개--><!--세로배열-->
           <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
@@ -75,7 +73,9 @@ export default {
       gameSelected: '',
       message: null,
       start : false,
-      spyFallVideo : null
+      spyFallVideo : null,
+      rules: null,
+      gameRes: null,
 		}
 	},
 
@@ -141,23 +141,44 @@ export default {
       this.spyFallVideo = this.mainStreamManager
     },
     gameStart(game) {
-      this.start = true
-      this.$router.push({name:game})
-    
-      axios
-        .post(
-          'api/games/start',
-          
-          JSON.stringify({
-            userNicknames : ["조성현", "정성우", "박준영", "김범주"],
-            roomCode : this.mySessionId,
-            selectedGame: game
-          }),
+      
+      axios.post(
+        '/api/games/rules',
 
-        )
-        .then(response => response.data)
-        .catch(error => console.log(error))
-  }
+        JSON.stringify({
+          personnel: 4, // userNicknames의 길이로 대체
+          selectedGame: game
+        })
+      )
+      .then(res => {
+          this.rules=res.data
+          axios
+          .post(
+            '/api/games/start',
+            
+            JSON.stringify({
+              userNicknames : ["조성현", "정성우", "박준영", "김범주"],
+              roomCode : this.mySessionId,
+              selectedGame: game
+            }),
+          )
+          .then(resp =>{
+            
+            this.gameRes = resp.data
+            this.start = true
+          })
+          .catch(error => console.log(error))
+
+      })
+      .catch(err =>{
+        console.log(err)
+        alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다')
+      })
+
+
+      
+  },
+  
     
   }
 }
