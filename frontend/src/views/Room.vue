@@ -96,7 +96,7 @@ export default {
     
 	},
   mounted () {
-    this.session.on('signal:session-test', (event) => {
+    this.session.on('signal:socket-test', (event) => {
     console.log(event.data, '이것은 데이터'); // Message
     console.log(event.from, '이것은 메시지 보낸사람'); // Connection object of the sender
     console.log(event.type, '이것은 메시지 타입'); // The type of message
