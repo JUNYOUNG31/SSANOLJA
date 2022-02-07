@@ -11,7 +11,10 @@ import com.ssanolja.backend.db.entity.User;
 import com.ssanolja.backend.util.RuleUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -36,12 +39,16 @@ public class GameController {
         List<User> users = gameService.getUserList(userNicknames);
         String selectedGame = startGameReq.getSelectedGame();
         if (selectedGame.equals("spyfall")) {
+//            spyfallService
             return new ResponseEntity<>(spyfallService.makeSpyfall(users, game), HttpStatus.CREATED);
 //        }
 //        else if (selectedGame.equals("telestation")) {
+////            telestationService
 //            return "telestation";
 //        }
-//    }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
     @PostMapping("/rules")
     public ResponseEntity getRule(@RequestBody GetRuleReq getRuleReq) {
@@ -51,7 +58,7 @@ public class GameController {
         RuleUtil rule = RuleUtil.valueOf(selectedGame.toUpperCase());
         if (personnel > rule.getMaxPeople() || personnel < rule.getMinPeople()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }else {
+        } else {
             int gameType = rule.getGameType();
             RuleRes res = RuleRes.builder()
                     .playTime(rule.getPlayTime())
@@ -63,7 +70,5 @@ public class GameController {
 
             return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
         }
-
-
     }
 }
