@@ -56,7 +56,7 @@
                     </v-btn>
                 </v-col>
                 <v-col>
-                  <v-btn style="width:100%;" @click="gameStart(gameSelected)">
+                  <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isRoomMaker">
                     <span>시작</span>
                   </v-btn>
                 </v-col>
@@ -68,8 +68,6 @@
             </div>
           </div>
 
-            <!-- <v-btn @click="socketTest()">소켓 테스트</v-btn>
-            <p>{{message}}</p> -->
         </v-col>
 
 
@@ -96,12 +94,11 @@ export default {
   data () {
 		return {
       gameSelected: '',
-      message: null,
       start : false,
       spyFallVideo : null,
       rules: null,
       gameRes: null,
-
+      isRoomMaker: localStorage.getItem('isRoomMaker')
 		}
 	},
 
@@ -135,18 +132,32 @@ export default {
     
 	},
   mounted () {
-    this.session.on('signal:session-test', (event) => {
-    console.log(event.data, '이것은 데이터'); // Message
-    console.log(event.from, '이것은 메시지 보낸사람'); // Connection object of the sender
-    console.log(event.type, '이것은 메시지 타입'); // The type of message
-    this.message=event.data
-    
-});
+    this.session.on('signal:rules', (event) => {
+    console.log(JSON.parse(event.data))
+    this.rules = JSON.parse(event.data)
+    }),
+
+    this.session.on('signal:gameRes', (event)=>{
+      this.gameRes = JSON.parse(event.data)
+    })
+
+    this.session.on('signal:gameStart', (event)=>{
+      this.gameSelected = event.data
+      this.start = true
+    })
   },
   methods : {
-    socketTest() {
-      this.$store.dispatch('socketTest') // 소켓 테스트
-    },
+    sendMessageToEveryBody(data, type) {
+			this.session.signal({
+				data: data,
+				to: [],
+				type: type
+			})
+			.then(() => {})
+			.catch(error => {
+				console.error(error);
+			})
+		},
 
 
     copyJoinCode(joinCode) {
@@ -178,6 +189,7 @@ export default {
       )
       .then(res => {
           this.rules=res.data
+          this.sendMessageToEveryBody(JSON.stringify(this.rules), 'rules')
           axios
           .post(
             '/api/games/start',
@@ -191,6 +203,8 @@ export default {
           .then(resp =>{
             
             this.gameRes = resp.data
+            this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
+            this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
             this.start = true
           })
           .catch(error => console.log(error))

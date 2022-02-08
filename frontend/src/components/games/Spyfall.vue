@@ -55,7 +55,7 @@
           </div>
         </v-col>
         <v-col cols="3" class="right_menu">
-          
+          <div><h2>{{timerCount}}</h2></div>
           <div>
             <div>장소</div>
             <div> {{place}} </div>
@@ -206,7 +206,9 @@ export default {
       var select = `x${num}`
       var con = document.getElementById(select)
       con.style.display = (con.style.display!= 'none') ? "none":"block"
-    }
+    },
+    vote_true(){},
+    vote_false(){}
 	},
 
   watch: {
