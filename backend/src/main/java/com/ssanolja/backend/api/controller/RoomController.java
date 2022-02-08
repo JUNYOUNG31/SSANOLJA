@@ -26,7 +26,7 @@ public class RoomController {
     }
 
     @GetMapping("/{roomCode}")
-    public ResponseEntity joinRoom(@PathVariable String roomCode) {
+    public ResponseEntity joinRoom(@PathVariable String roomCode ) {
         Optional<Room> room = roomService.findRoom(roomCode);
         if (room.isPresent()) {
             return new ResponseEntity<>(HttpStatus.OK);
