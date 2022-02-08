@@ -52,11 +52,7 @@
             </div>
           </div>
         </v-col>
-<<<<<<< HEAD
         <v-col cols="2" class="right_menu">
-=======
-        <v-col cols="3" class="right_menu">
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
           <div><h2>{{timerCount}}</h2></div>
           <div>
             <div><h2>장소</h2></div>
@@ -73,14 +69,6 @@
                 <v-card-title>
                   <span class="text-h5">누가 스파이일까요?</span>
                 </v-card-title>
-<<<<<<< HEAD
-                <v-container class="vote">
-                  <v-row>
-                    <v-col cols="12">
-                      <v-text-field> 타이머 </v-text-field>
-                    </v-col>
-                    <v-col cols="5" class="prosecutor">
-=======
               
                   <v-container class="vote">
                     <v-row>
@@ -90,11 +78,9 @@
                         ></v-text-field>
                       </v-col>
                       <v-col cols="5" class="prosecutor">
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
                       <div v-if="streamManager" >
                         <ov-video :stream-manager="streamManager"/>
                       </div>
-<<<<<<< HEAD
                     </v-col>
                     <v-col cols="2">
                       <img src="../../assets/places_image/투표용.jpg" alt="투표용" style="width:100px">
@@ -117,47 +103,6 @@
                     <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
 
                   </v-row>
-=======
-                      </v-col>
-                      <v-col cols="2">
-                        <img src="../../assets/places_image/투표용.jpg" alt="투표용" style="width:100px">
-                      </v-col>
-                      <v-col cols="5" class="suspect">                        
-                        <div v-if="streamManager" >
-                          <ov-video :stream-manager="streamManager"/>
-                          <div id="p-name"><p>{{ clientData }}</p></div>
-                        </div>
-                      </v-col>        
-                      <v-card-actions>              
-                      <v-col cols="5">
-                        <v-btn
-                          color="blue darken-1"
-                          @click="vote_true"
-                        >
-                          찬성
-                        </v-btn>
-                      </v-col>    
-                      <v-col cols="2">
-                        ddd
-                      </v-col>
-                      <v-col cols="5">
-                        <v-btn
-                          color="red lighten-1"
-                          @click="vote_false"
-                        >
-                          반대
-                        </v-btn>
-                      </v-col>          
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="dialog = false"
-                  >
-                    Close
-                  </v-btn>
-                </v-card-actions>
-                </v-row>
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
                 </v-container>
               </v-card>
             </v-dialog>
@@ -235,7 +180,6 @@ export default {
       var con = document.getElementById(select)
       con.style.display = (con.style.display!= 'none') ? "none":"block"
     },
-<<<<<<< HEAD
     voteTrue() {
       this.vote_cnt += 1
     },
@@ -246,10 +190,6 @@ export default {
       this.answer_video = this.streamManager[0] // 변수 설정하기
     }
 
-=======
-    vote_true(){},
-    vote_false(){}
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
 	},
 
   watch: {

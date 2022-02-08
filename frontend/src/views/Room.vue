@@ -60,12 +60,6 @@
             <div class="gameInfo">게임설명 <!--게임설명-->
             </div>
           </div>
-<<<<<<< HEAD
-            <!-- <v-btn @click="socketTest()">소켓 테스트</v-btn>
-            <p>{{message}}</p> -->
-=======
-
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
         </v-col>
           <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
             <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
@@ -94,10 +88,7 @@ export default {
       spyFallVideo : null,
       rules: null,
       gameRes: null,
-<<<<<<< HEAD
-=======
       isRoomMaker: localStorage.getItem('isRoomMaker')
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
 		}
 	},
 
@@ -128,21 +119,13 @@ export default {
       })
     },    
 	},
-<<<<<<< HEAD
-mounted () {
-=======
   mounted () {
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
     this.session.on('signal:rules', (event) => {
     console.log(JSON.parse(event.data))
     this.rules = JSON.parse(event.data)
     }),
 
     this.session.on('signal:gameRes', (event)=>{
-<<<<<<< HEAD
-      console.log(JSON.parse(event.data))
-=======
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
       this.gameRes = JSON.parse(event.data)
     })
 
@@ -152,11 +135,6 @@ mounted () {
     })
   },
   methods : {
-<<<<<<< HEAD
-    socketTest() {
-      this.$store.dispatch('socketTest') // 소켓 테스트
-    },
-=======
     sendMessageToEveryBody(data, type) {
 			this.session.signal({
 				data: data,
@@ -170,7 +148,6 @@ mounted () {
 		},
 
 
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
     copyJoinCode(joinCode) {
       const joinCodeToCopy = document.createElement("textarea")
       document.body.appendChild(joinCodeToCopy)
@@ -196,24 +173,6 @@ mounted () {
         })
       )
       .then(res => {
-<<<<<<< HEAD
-        this.rules=res.data
-        axios
-        .post(
-          '/api/games/start',
-          
-          JSON.stringify({
-            userNicknames : ["조성현", "정성우", "박준영", "김범주","배소원","강광은"],
-            roomCode : this.mySessionId,
-            selectedGame: game
-          }),
-        )
-        .then(resp =>{          
-          this.gameRes = resp.data
-          this.start = true
-        })
-        .catch(error => console.log(error))
-=======
           this.rules=res.data
           this.sendMessageToEveryBody(JSON.stringify(this.rules), 'rules')
           axios
@@ -235,7 +194,6 @@ mounted () {
           })
           .catch(error => console.log(error))
 
->>>>>>> 9ceba029120d988cc1f910978edce572e5399a68
       })
       .catch(err =>{
         console.log(err)
