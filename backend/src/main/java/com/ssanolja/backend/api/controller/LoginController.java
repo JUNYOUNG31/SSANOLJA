@@ -1,9 +1,16 @@
 package com.ssanolja.backend.api.controller;
 
+import com.ssanolja.backend.api.service.LoginService;
+import com.ssanolja.backend.api.service.UserService;
 import com.ssanolja.backend.db.entity.User;
 import com.ssanolja.backend.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/login")
@@ -12,26 +19,18 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/postTest")
-    public String  inputKey3(@RequestBody User user) {
+    @Autowired
+    private LoginService loginService;
 
-        User inputUser = userRepository.findByUserEmail(user.getUserEmail());
-        if(inputUser == null){
-            inputUser = User.builder()
-                    .userEmail(user.getUserEmail())
-                    .userNickname(user.getUserNickname())
-                    .build();
-            userRepository.save(user);
-            System.out.println("포스트 테스트 저장됨");
-        }else {
-            System.out.println("이미 회원가입 되어 있습니다.");
-        }
-        return "ok";
+    @PostMapping("/insertUser")
+    public ResponseEntity insertUser(@RequestBody User user) {
+        Map res = loginService.insertUser(user);
+        return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/sendUser")
-    public User senduser(@RequestBody String userEmail){
-        User user = userRepository.findByUserEmail(userEmail);
-        return user;
+    public ResponseEntity senduser(@RequestBody String userEmail){
+        User res = loginService.senduser(userEmail);
+        return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
     }
 }
