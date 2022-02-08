@@ -16,5 +16,6 @@ export default {
 <style>
 .telestation-container {
   height: 100%;
+  
 }
 </style>
