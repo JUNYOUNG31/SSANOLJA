@@ -192,6 +192,8 @@ export default {
             
             this.gameRes = resp.data
             this.start = true
+            
+            console.log("gameRes 확인 " + this.gameRes)
           })
           .catch(error => console.log(error))
 

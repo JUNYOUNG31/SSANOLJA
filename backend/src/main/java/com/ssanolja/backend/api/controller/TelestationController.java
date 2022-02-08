@@ -1,34 +1,48 @@
 package com.ssanolja.backend.api.controller;
 
+import com.ssanolja.backend.api.request.TelestationReq;
+import com.ssanolja.backend.api.service.TelestationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/telestations")
 public class TelestationController {
+    private final TelestationService telestationService;
 
-//    @GetMapping("/inputKeyword")
-//    public String inputKey() {
-//        System.out.println("input KeyWord 실행 확인");
-//        return "이거 가나?";
-//    }
+    public TelestationController(TelestationService telestationService){
+        this.telestationService = telestationService;
+    }
 
-    @GetMapping("/inputKeyword")
-    public ResponseEntity<String> inputKey1() {
+
+    @PostMapping("/InputKeyword")
+    public ResponseEntity<Map<String , Object>> InputKeyword(@RequestBody TelestationReq telestationReq) {
+        System.out.println("emfhdlddhej"+telestationReq.getDrawingOrder());
+        Map<String, Object> res = telestationService.keywordInsert(telestationReq);
+
+        System.out.println("res 체크 "+ res);
+        return new ResponseEntity<>(res,  HttpStatus.ACCEPTED);
+
+//        return new ResponseEntity<>(, HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/getData")
+    public ResponseEntity<String> getData() {
+//
         String keyword = "리스폰스 엔티티 테스트";
         System.out.println("리스폰스 엔티티 테스트");
+//
         return ResponseEntity.ok(keyword);
     }
 
-    //    @PostMapping("/postTest")
-//    public String inputKey2(@RequestBody String keyword) {
-//        System.out.println("포스트 테스트 : " + keyword);
-//        return null;
-//    }
-    @PostMapping("/postTest")
-    public ResponseEntity<String> inputKey3(@RequestBody String keyword) {
-        System.out.println("keyWordTest1 : " + keyword);
-        System.out.println("keyWordTest2 : " + keyword.toString());
-        return ResponseEntity.ok(keyword);
-    }
 }
+
+
+
+
+
+

@@ -2,6 +2,7 @@ package com.ssanolja.backend.db.repository;
 
 import com.ssanolja.backend.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -10,5 +11,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUserNickname(String userNickname);
     User findByUserEmail(String userEmail);
+
+    @Query(value = "select user_nickname from users where users_id = ?", nativeQuery = true)
+    String findByUserNicknameFromUsersId(Integer usersId);
 
 }

@@ -4,7 +4,6 @@ import com.ssanolja.backend.api.request.GetRuleReq;
 import com.ssanolja.backend.api.request.StartGameReq;
 import com.ssanolja.backend.api.response.GameRes;
 import com.ssanolja.backend.api.response.RuleRes;
-import com.ssanolja.backend.api.response.TelestationRes;
 import com.ssanolja.backend.api.service.GameService;
 import com.ssanolja.backend.api.service.SpyfallService;
 import com.ssanolja.backend.api.service.TelestationService;
@@ -54,6 +53,7 @@ public class GameController {
 //            telestationService
             telestationService.userInsert(users, game);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
+//            return new ResponseEntity<>(telestationService.userInsert(users, game), HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
