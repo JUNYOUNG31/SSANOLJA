@@ -202,20 +202,6 @@ export default new Vuex.Store({
 					.then(data => resolve(data.token))
 					.catch(error => reject(error.response));
 			});
-		},
-
-		socketTest: function({state}) {
-			state.session.signal({
-				data: 'socketTest',
-				to: [],
-				type: 'socket-test'
-			})
-			.then(() => {
-				console.log('Message successfully sent');
-			})
-			.catch(error => {
-				console.error(error);
-			})
 		}
   },
   modules: {

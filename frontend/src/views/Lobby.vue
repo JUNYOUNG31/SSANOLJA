@@ -9,7 +9,7 @@
 				<div >
 					<p>
 						<label>닉네임</label>
-						<input v-model="userData.userName" class="form-control" type="text" required placeholder="닉네임을 입력하세요">
+						<input v-model="userData.userNickname" class="form-control" type="text" required placeholder="닉네임을 입력하세요">
 					</p>
 					<p>
 						<label>방 참여코드</label>
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		</div>
-		<preview ref="preview" :joinCode="joinCode" :myUserName="userData.userName">
+		<preview ref="preview" :joinCode="joinCode" :myUserName="userData.userNickName">
 		</preview>
   </div>
 </template>
@@ -63,26 +63,44 @@ export default {
 	},    
 	methods: {
 		checkRoom(joinCode) {
-			
 			axios({
-			method: 'get',
-				url:`/api/rooms/${joinCode}`,
-			})
-				.then(()=>{
-					
+				method: 'post',
+				url: '/api/users/update',
+				data: {
+					userEmail: this.userData.userEmail,
+					updatedUserNickname: this.userData.userNickname
+				}
+			}).then(() =>{
+				axios({
+					method: 'get',
+						url:`/api/rooms/${joinCode}`,
+					})
+					.then(()=>{
+							
 						console.log(this.$refs.preview)
 						localStorage.setItem("isRoomMaker", false)
 						this.$refs.preview.dialog = true
 					
 						// console.log(res.status)
-					
-				})
-				.catch(() => {
-					alert('일치하는 방이 존재하지 않습니다.')
-				})
+							
+					})
+					.catch(() => {
+						alert('일치하는 방이 존재하지 않습니다.')
+					})
+			})
 		},
+
 		makeRoom() {
-      axios({
+			axios({
+				method: 'post',
+				url: '/api/users/update',
+				data: {
+					userEmail: this.userData.userEmail,
+					updatedUserNickname: this.userData.userNickname
+				}
+			})
+			.then(() => {
+				axios({
         method: 'post',
         url:'/api/rooms',
       })
@@ -90,12 +108,14 @@ export default {
 					this.joinCode = res.data
 					localStorage.setItem("isRoomMaker", true)
 					this.$refs.preview.dialog = true
-					
-					
         })
         .catch(err=> {
           console.log(err)
         })
+			})
+			.catch(()=>{
+				alert('이미 존재하는 닉네임입니다. 다른 닉네임을 입력해주세요')
+			})
     },
 		leaveSession() {
 				this.$store.dispatch('leaveSession')
