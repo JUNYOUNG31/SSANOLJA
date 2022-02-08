@@ -4,8 +4,10 @@ import com.ssanolja.backend.api.request.GetRuleReq;
 import com.ssanolja.backend.api.request.StartGameReq;
 import com.ssanolja.backend.api.response.GameRes;
 import com.ssanolja.backend.api.response.RuleRes;
+import com.ssanolja.backend.api.response.TelestationRes;
 import com.ssanolja.backend.api.service.GameService;
 import com.ssanolja.backend.api.service.SpyfallService;
+import com.ssanolja.backend.api.service.TelestationService;
 import com.ssanolja.backend.api.service.UserService;
 import com.ssanolja.backend.db.entity.Game;
 import com.ssanolja.backend.db.entity.User;
@@ -26,12 +28,15 @@ public class GameController {
     private final GameService gameService;
     private final SpyfallService spyfallService;
     private final UserService userService;
+    private final TelestationService telestationService;
 
 
-    public GameController(GameService gameService, SpyfallService spyfallService, UserService userService) {
+    public GameController(GameService gameService, SpyfallService spyfallService, UserService userService, TelestationService telestationService) {
         this.gameService = gameService;
         this.spyfallService = spyfallService;
         this.userService = userService;
+        this.telestationService = telestationService;
+
     }
 
     @PostMapping("/start")
@@ -44,11 +49,11 @@ public class GameController {
         if (selectedGame.equals("Spyfall")) {
 //            spyfallService
             return new ResponseEntity<>(spyfallService.makeSpyfall(users, game), HttpStatus.CREATED);
-//        }
-//        else if (selectedGame.equals("telestation")) {
-////            telestationService
-//            return "telestation";
-//        }
+        }
+        else if (selectedGame.equals("Telestation")) {
+//            telestationService
+            telestationService.userInsert(users, game);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

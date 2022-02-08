@@ -183,7 +183,7 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : ["조성현", "정성우", "박준영", "김범주","배소원","강광은"],
+              userNicknames : ["조성현", "정성우", "박준영", "김범주","붕어뺭","강광은"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),

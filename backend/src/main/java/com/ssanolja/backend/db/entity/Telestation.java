@@ -1,6 +1,7 @@
 package com.ssanolja.backend.db.entity;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,8 +12,10 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert
 public class Telestation {
 
     @Id
@@ -34,8 +37,10 @@ public class Telestation {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
     private List<Telestation> children;
 
-    @Column(name = "users_id")
-    private Integer userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private User user;
 
     @Column(name = "data_index")
     private String dataIndex;

@@ -1,4 +1,13 @@
 package com.ssanolja.backend.api.response;
 
-public class TelestationRes {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+public class TelestationRes implements GameRes{
 }
