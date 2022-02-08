@@ -239,6 +239,9 @@ export default {
 
   mounted() {
     this.job = this.gameRes.jobs[this.myUserName]
+    if(this.job == 'spy') {
+      this.place = null
+    }
 		this.timerCount = this.rules.playTime
     this.play()
   }
