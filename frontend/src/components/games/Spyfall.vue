@@ -82,7 +82,7 @@
                 <v-card-title>
                   <span class="text-h5">누가 스파이일까요?</span>
                 </v-card-title>
-                <v-card-text>
+              
                   <v-container class="vote">
                     <v-row>
                       <v-col cols="12">
@@ -133,6 +133,8 @@
                     Close
                   </v-btn>
                 </v-card-actions>
+                </v-row>
+                </v-container>
               </v-card>
             </v-dialog>
           </div>

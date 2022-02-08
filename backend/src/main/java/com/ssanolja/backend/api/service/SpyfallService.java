@@ -66,7 +66,7 @@ public class SpyfallService {
         return spyfallRes;
     }
 
-
+    @Transactional
     public SpyfallPlace selectPlace() {
 
         List<SpyfallPlace> places = spyfallPlaceRepository.findAll();
