@@ -55,7 +55,7 @@
           </div>
         </v-col>
         <v-col cols="3" class="right_menu">
-          <div>{{timerCount}}</div>
+          <div><h2>{{timerCount}}</h2></div>
           <div>
             <div>장소</div>
             <div> {{place}} </div>
@@ -87,7 +87,7 @@
                     <v-row>
                       <v-col cols="12">
                         <v-text-field
-                          타이머
+                          {{ timerCount }}
                         ></v-text-field>
                       </v-col>
                       <v-col cols="5" class="prosecutor">
@@ -206,7 +206,9 @@ export default {
       var select = `x${num}`
       var con = document.getElementById(select)
       con.style.display = (con.style.display!= 'none') ? "none":"block"
-    }
+    },
+    vote_true(){},
+    vote_false(){}
 	},
 
   watch: {
@@ -229,7 +231,7 @@ export default {
             }
 
         },
-        immediate: false // This ensures the watcher is triggered upon creation
+        immediate: false // 컴포넌트가 생성되자마자 즉시 실행
     }
 
   },
@@ -237,8 +239,10 @@ export default {
 
   mounted() {
     this.job = this.gameRes.jobs[this.myUserName]
+    if(this.job == 'spy') {
+      this.place = null
+    }
 		this.timerCount = this.rules.playTime
-
     this.play()
   }
   
