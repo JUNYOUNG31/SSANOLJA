@@ -133,7 +133,6 @@ export default {
 	},
   mounted () {
     this.session.on('signal:rules', (event) => {
-    console.log(JSON.parse(event.data))
     this.rules = JSON.parse(event.data)
     }),
 
