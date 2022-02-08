@@ -19,7 +19,6 @@
                 item-text="label"
                 item-value="deviceId"
                 solo 
-                rounded
                 placehoder="video"></v-select>
             </div>
             <div>
@@ -31,7 +30,7 @@
                 item-text="label"
                 item-value="deviceId"
                 solo 
-                rounded></v-select>
+                ></v-select>
             </div>
             <div class="d-flex justify-content-around">
               <v-btn fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
@@ -44,11 +43,11 @@
           </div>
         </div>
 
-        <v-divider></v-divider>
+        <v-divider color="white"></v-divider>
         <v-card-actions class="mt-5 d-flex justify-content-center">
           <v-btn
-            color="#1CFD9F"
-            rounded
+            color="white"
+            x-large
             @click="enterRoom"
           >
             입장
@@ -157,5 +156,13 @@ export default {
 <style scoped>
   video {
     width: 500px;
+  }
+  .v-card {
+    background-color: rgb(36, 33, 33);
+    color: white;
+  }
+
+  .v-btn {
+    margin:0 20px;
   }
 </style>
