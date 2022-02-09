@@ -1,7 +1,7 @@
 <template>
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
-	<div v-else >사라진값</div>
+	<div v-else ></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2"><v-btn @click="voteSelect">투표하기</v-btn></div>
 	<div><i v-if="ready" class="fas fa-check-circle"></i></div>
@@ -12,7 +12,6 @@
 <script>
 import OvVideo from './OvVideo';
 import {mapState} from 'vuex';
-
 export default {
 	name: 'UserVideo',
 
@@ -48,26 +47,75 @@ export default {
 			return clientData;
 		},		
 		...mapState([
+			"session",
+			"subscribers",
       "answerPlayer",
       "votePlayer",
 		])
 	},
 
 	methods: {
+	getCircularReplacer() {
+		const seen = new WeakSet();
+		return (key, value) => {
+			if (typeof value === "object" && value !== null) {
+				if (seen.has(value)) {
+					return;
+				}
+				seen.add(value);
+			}
+			return value;
+		};
+	},
+		sendMessageToEveryBody(data, type) {
+      this.session.signal({
+        data: data,
+        to: [],
+        type: type
+      })
+      .then(() => {})
+      .catch(error => {
+        console.error(error);
+      })
+		},
+
 		getConnectionData () {
 		const { connection } = this.streamManager.stream;
 		return JSON.parse(connection.data);
 		},
 		voteSelect () {
-			this.voteVideo = this.streamManager
-			this.$store.commit('SET_ANSWERPLAYER', null)
-			this.$store.commit('SET_VOTEPLAYER', this.voteVideo)	
+			this.voteVideo = JSON.parse(this.streamManager.stream.connection.data)
+			this.sendMessageToEveryBody(JSON.stringify(this.voteVideo), 'votePlayer')
 		},
 		answerSelect () {
-			this.answerVideo = this.streamManager			
-			this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)	
+			this.answerVideo = JSON.parse(this.streamManager.stream.connection.data)		
+			this.sendMessageToEveryBody(JSON.stringify(this.answerVideo), 'answerPlayer')
 		}
 	},
+	mounted() {
+		this.session.on('signal:votePlayer', (event)=>{
+			const votedata = JSON.parse(event.data)
+			for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+				if (votedata.clientData == nickName.clientData) {
+					this.voteVideo = this.subscribers[index]
+				}
+			}
+			this.$store.commit('SET_ANSWERPLAYER', null)
+			this.$store.commit('SET_VOTEPLAYER', this.voteVideo)	
+    })
+
+		this.session.on('signal:answerPlayer', (event)=>{
+			const answerdata = JSON.parse(event.data)
+			for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+				if (answerdata.clientData == nickName.clientData) {
+					this.answerVideo = this.subscribers[index]
+				}
+			}
+			this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
+    })		
+	}
 };
 </script>
 
