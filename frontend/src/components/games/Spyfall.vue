@@ -228,11 +228,11 @@ export default {
 
   mounted() {
     this.place = this.gameRes.place.split(' ').join('_')
+    if(this.job == '스파이') {
+      this.place = 'x'
+    }
     this.placeSrc = require("../../assets/places_image/"+this.place+".jpg")
     this.job = this.gameRes.jobs[this.myUserName]
-    if(this.job == '스파이') {
-      this.place = null
-    }
 		this.timerCount = this.rules.playTime
     this.play()
   }
