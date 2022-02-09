@@ -5,10 +5,10 @@
 
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
           <div class="playercamera">
-            <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+            <user-video :stream-manager="publisher" :readyList="readyList" @click.native="updateMainVideoStreamManager(publisher)"/>
           </div>
           <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
-            <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
+            <user-video :stream-manager="user" :readyList="readyList" @click.native="updateMainVideoStreamManager(user)"/>
           </div>
         </div>
         
@@ -51,12 +51,13 @@
                   </v-btn>
                 </v-col>
                 <v-col >
-                  <v-btn style="width:100%;">
+                  <v-btn style="width:100%;" @click="beReady(myUserName)" :disabled="isRoomMaker">
                     <span>레디</span>
                     </v-btn>
                 </v-col>
                 <v-col>
                   <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isRoomMaker">
+                  <!-- <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart"> -->
                     <span>시작</span>
                   </v-btn>
                 </v-col>
@@ -98,7 +99,8 @@ export default {
       spyFallVideo : null,
       rules: null,
       gameRes: null,
-      isRoomMaker: localStorage.getItem('isRoomMaker')
+      isRoomMaker: localStorage.getItem('isRoomMaker'),
+      readyList: []
 		}
 	},
 
@@ -129,11 +131,31 @@ export default {
         return index % 2 === 0
       })
     },
+    // data에 userNicknames 배열이 생기면 활성화
+    // isReadyToStart() {
+    //   if (this.isRoomMaker) {
+    //     if (this.readyList.length == (this.userNicknames.length - 1)) {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // }
     
 	},
   mounted () {
+    // 방 입장시 준비된 사람들 리스트를 받아옴
+    this.sendMessageToEveryBody('getReadyList', 'getReadyList')
+
+    this.session.on('signal:getReadyList', ()=>{
+      let readyListToString = this.readyList.toString()
+      this.sendMessageToEveryBody(readyListToString,'sendReadyList')
+    })
+
+    this.session.on('signal:sendReadyList', (event)=>{
+      this.readyList = event.data.split(",")
+    })
+
     this.session.on('signal:rules', (event) => {
-    console.log(JSON.parse(event.data))
     this.rules = JSON.parse(event.data)
     }),
 
@@ -144,6 +166,17 @@ export default {
     this.session.on('signal:gameStart', (event)=>{
       this.gameSelected = event.data
       this.start = true
+    })
+
+    this.session.on('signal:ready', (event)=>{
+      const person = event.data
+      if (this.readyList.includes(person)) {
+        const idx = this.readyList.indexOf(person)
+        this.readyList.splice(idx, 1)
+      } else {
+        this.readyList.push(person)
+      }
+      console.log(this.readyList)
     })
   },
   methods : {
@@ -159,6 +192,9 @@ export default {
 			})
 		},
 
+    beReady() {
+      this.sendMessageToEveryBody(this.myUserName,'ready')
+    },
 
     copyJoinCode(joinCode) {
       const joinCodeToCopy = document.createElement("textarea")
@@ -214,12 +250,7 @@ export default {
         console.log(err)
         alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다')
       })
-
-
-      
-  },
-  
-    
+    },
   }
 }
 

@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		</div>
-		<preview ref="preview" :joinCode="joinCode" :myUserName="userData.userNickName">
+		<preview ref="preview" :joinCode="joinCode" :myUserName="userData.userNickname">
 		</preview>
   </div>
 </template>
