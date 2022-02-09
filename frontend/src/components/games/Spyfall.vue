@@ -56,7 +56,9 @@
           <div id="timer_tag"><h2>{{timerCount}}</h2></div>
           <div>
             <div id="job_place_tag"><h3><span>장소</span></h3></div>
-            <div id="job_place_tag"><img :src="`@/assets/place_image/${place}.jpg`" alt="">{{place}}</div>
+            <div id="job_place_tag">
+              <img :src="placeSrc" />
+            </div>
             <div id="job_place_tag"><h3><span>직업</span></h3></div>
             <div id="job_place_tag"><h3><span>{{job}}</span></h3></div>
           </div>
@@ -124,7 +126,8 @@ export default {
   data () {
 		return {
       job: this.gameRes.jobs[this.myUserName],
-      place: this.gameRes.place.split(" ").join("_"),
+      place: null,
+      placeSrc: null,
       timerEnabled: true,
       timerCount: 30,
       dialog: false,
@@ -221,8 +224,10 @@ export default {
 
 
   mounted() {
+    this.place = this.gameRes.place.split(' ').join('_')
+    this.placeSrc = require("../../assets/places_image/"+this.place+".jpg")
     this.job = this.gameRes.jobs[this.myUserName]
-    if(this.job == 'spy') {
+    if(this.job == '스파이') {
       this.place = null
     }
 		this.timerCount = this.rules.playTime
