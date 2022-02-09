@@ -62,6 +62,7 @@
             <div id="job_place_tag"><h3><span>직업</span></h3></div>
             <div id="job_place_tag"><h3><span>{{job}}</span></h3></div>
           </div>
+          <img :src="`@/assets/place_image/${place}.jpg`" alt="">
           <div>
             <v-dialog v-model="dialog" persistent max-width="1000px">
               <template v-slot:activator="{ on, attrs }">
@@ -90,7 +91,7 @@
                     </v-col>        
                     <v-col cols="12" style="height:80px"></v-col>
                     <v-col cols="5" id ="agree">
-                      <v-btn x-large color="blue darken-1" @click="voteTrue">찬성</v-btn>
+                      <v-btn x-large color="blue darken-1" @click="voteTrue" :disabled="isVoted">찬성</v-btn>
                     </v-col>    
                     <v-col cols="2" id="vote_cnt" v-if="voteCnt != streamManager.length">
                       <h2> 투표수 {{voteCnt}}</h2>                   
@@ -99,7 +100,7 @@
                       <h3>찬성:{{agreeCnt}} 반대 {{disagreeCnt}}</h3>
                     </v-col>
                     <v-col cols="5" id="disagree" >
-                      <v-btn x-large color="red lighten-1" @click="voteFalse">반대</v-btn>
+                      <v-btn x-large color="red lighten-1" @click="voteFalse" :disabled="isVoted">반대</v-btn>
                     </v-col >          
                     <v-col style="text-align:right">
                       <v-btn x-large color="blue darken-1"  @click="dialog = false, play()" >Close</v-btn>
@@ -131,6 +132,7 @@ export default {
       timerCount: 30,
       dialog: false,
       voteCnt : 0,
+      isVoted : false,
       agreeCnt: 0,
       disagreeCnt: 0,
       questionPlayer : this.streamManager[0],   
@@ -173,6 +175,7 @@ export default {
       this.voteCnt = 0
       this.agreeCnt = 0
       this.disagreeCnt = 0
+      this.isVoted = false
     },
 
     pause() {
@@ -187,6 +190,7 @@ export default {
     voteTrue() {
       this.voteCnt += 1
       this.agreeCnt += 1
+      this.isVoted = true
       console.log(this.streamManager.length)
       if ( this.voteCnt >= this.streamManager.length) {
         this.voteCnt = this.streamManager.length
@@ -195,6 +199,7 @@ export default {
     voteFalse() {
       this.voteCnt += 1      
       this.disagreeCnt += 1
+      this.isVoted = true
       if ( this.voteCnt >= this.streamManager.length) {
         this.voteCnt = this.streamManager.length
       }
