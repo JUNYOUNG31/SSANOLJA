@@ -3,25 +3,13 @@
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
-<<<<<<< HEAD
           <!-- <div class="playercamera">
             <user-video :stream-manager="publisher" :game-selected="gameSelected" :start="start"/>
           </div> -->
           <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
-            <user-video :stream-manager="user" :game-selected="gameSelected" :start="start"/>
+            <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
-        </div>      
-=======
-          <div class="playercamera">
-            <user-video :stream-manager="publisher" :readyList="readyList" @click.native="updateMainVideoStreamManager(publisher)"/>
-          </div>
-          <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
-            <user-video :stream-manager="user" :readyList="readyList" @click.native="updateMainVideoStreamManager(user)"/>
-          </div>
-        </div>
-        
-
->>>>>>> 7dedd0d2636e82ea6ab23fa5537a9ec76f2a9ff3
+        </div>     
         <v-col id="game"> <!--가운데 게임화면-->
           <span v-if="start">
             <span v-if="gameSelected == 'Spyfall'">
@@ -131,9 +119,6 @@ export default {
       return this.subscribers.filter((user, index) => {
         return index % 2 === 0
       })
-<<<<<<< HEAD
-    },    
-=======
     },
     // data에 userNicknames 배열이 생기면 활성화
     // isReadyToStart() {
@@ -145,7 +130,6 @@ export default {
     //   return false;
     // }
     
->>>>>>> 7dedd0d2636e82ea6ab23fa5537a9ec76f2a9ff3
 	},
   mounted () {
     // 방 입장시 준비된 사람들 리스트를 받아옴
