@@ -4,6 +4,7 @@
 	<div v-else >사라진값</div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2"><v-btn @click="voteSelect">투표하기</v-btn></div>
+	<div><i v-if="ready" class="fas fa-check-circle"></i></div>
 	<p></p>
 </div>
 </template>
@@ -29,10 +30,19 @@ export default {
 	props: {
 		streamManager: Object,
 		gameSelected : String,
-		start : Boolean
+		start : Boolean,
+		readyList: Array,
 	},
 
 	computed: {		
+		ready() {
+			if (this.readyList.includes(this.clientData)) {
+				return true;
+			} else{
+				return false;
+			}
+		},
+		
 		clientData () {
 			const { clientData } = this.getConnectionData();
 			return clientData;
