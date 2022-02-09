@@ -62,7 +62,7 @@
             <div id="job_place_tag"><h3><span>직업</span></h3></div>
             <div id="job_place_tag"><h3><span>{{job}}</span></h3></div>
           </div>
-          <img :src="`@/assets/place_image/${place}.jpg`" alt="">
+          <img :src="`../../assets/place_image/${place}.jpg`" alt="">
           <div>
             <v-dialog v-model="dialog" persistent max-width="1000px">
               <template v-slot:activator="{ on, attrs }">
@@ -90,17 +90,17 @@
                       </div>
                     </v-col>        
                     <v-col cols="12" style="height:80px"></v-col>
-                    <v-col cols="5" id ="agree">
-                      <v-btn x-large color="blue darken-1" @click="voteTrue" :disabled="isVoted">찬성</v-btn>
+                    <v-col cols="4" id ="agree">
+                      <v-btn x-large color="blue darken-1" @click="voteTrue" :disabled="voteList.isVoted">찬성</v-btn>
                     </v-col>    
-                    <v-col cols="2" id="vote_cnt" v-if="voteCnt != streamManager.length">
-                      <h2> 투표수 {{voteCnt}}</h2>                   
+                    <v-col cols="4" id="vote_cnt" v-if="voteList.voteCnt != streamManager.length">
+                      <h2> 투표수 {{voteList.voteCnt}}</h2>                   
                     </v-col>
-                    <v-col cols="2" id="vote_cnt" v-else>
-                      <h3>찬성:{{agreeCnt}} 반대 {{disagreeCnt}}</h3>
+                    <v-col cols="4" id="vote_cnt" v-else>
+                      <h3>찬성:{{voteList.agreeCnt}} 반대 {{voteList.disagreeCnt}}</h3>
                     </v-col>
-                    <v-col cols="5" id="disagree" >
-                      <v-btn x-large color="red lighten-1" @click="voteFalse" :disabled="isVoted">반대</v-btn>
+                    <v-col cols="4" id="disagree" >
+                      <v-btn x-large color="red lighten-1" @click="voteFalse" :disabled="voteList.isVoted">반대</v-btn>
                     </v-col >          
                     <v-col style="text-align:right">
                       <v-btn x-large color="blue darken-1"  @click="dialog = false, play()" >Close</v-btn>
@@ -131,10 +131,12 @@ export default {
       timerEnabled: true,
       timerCount: 30,
       dialog: false,
-      voteCnt : 0,
-      isVoted : false,
-      agreeCnt: 0,
-      disagreeCnt: 0,
+      voteList : {
+        voteCnt : 0,
+        isVoted : false,
+        agreeCnt: 0,
+        disagreeCnt: 0,
+      },
       questionPlayer : this.streamManager[0],   
       selectPlayer : this.streamManager[0],
 		}
@@ -168,14 +170,19 @@ export default {
     const { connection } = this.questionVideo.stream;
     return JSON.parse(connection.data);
 		},
-
+    sendMessageToEveryBody(data, type) {
+      this.session.signal({
+        data: data,
+        to: [],
+        type: type
+      })
+      .then(() => {})
+      .catch(error => {
+        console.error(error);
+      })
+		},
     play() {
-      this.timerEnabled = true;
-      this.$store.commit('SET_VOTEPLAYER', null)
-      this.voteCnt = 0
-      this.agreeCnt = 0
-      this.disagreeCnt = 0
-      this.isVoted = false
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'play')
     },
 
     pause() {
@@ -188,23 +195,13 @@ export default {
       con.style.display = (con.style.display!= 'none') ? "none":"block"
     },
     voteTrue() {
-      this.voteCnt += 1
-      this.agreeCnt += 1
-      this.isVoted = true
-      console.log(this.streamManager.length)
-      if ( this.voteCnt >= this.streamManager.length) {
-        this.voteCnt = this.streamManager.length
-      }
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')   
     },
     voteFalse() {
-      this.voteCnt += 1      
-      this.disagreeCnt += 1
-      this.isVoted = true
-      if ( this.voteCnt >= this.streamManager.length) {
-        this.voteCnt = this.streamManager.length
-      }
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
     }
   },
+
   watch: {
     timerEnabled(value) {
       if (value) {
@@ -235,8 +232,39 @@ export default {
     this.job = this.gameRes.jobs[this.myUserName]
 		this.timerCount = this.rules.playTime
     this.play()
+
+    this.session.on('signal:voteTrue', (event)=>{
+      this.voteList = JSON.parse(event.data)
+      this.voteList.voteCnt += 1
+      this.voteList.agreeCnt += 1
+      this.voteList.isVoted = true
+      console.log(this.streamManager.length)
+      if ( this.voteList.voteCnt >= this.streamManager.length) {
+        this.voteList.voteCnt = this.streamManager.length
+      }
+    })
+
+    this.session.on('signal:voteFalse', (event)=>{
+      this.voteList = JSON.parse(event.data)
+      this.voteList.voteCnt += 1
+      this.voteList.disagreeCnt += 1
+      this.voteList.isVoted = true
+      console.log(this.streamManager.length)
+      if ( this.voteList.voteCnt >= this.streamManager.length) {
+        this.voteList.voteCnt = this.streamManager.length
+      }
+    })
+
+    this.session.on('signal:play', (event)=>{
+      this.voteList = JSON.parse(event.data)
+      this.timerEnabled = true;
+      this.$store.commit('SET_VOTEPLAYER', null)
+      this.voteList.voteCnt = 0
+      this.voteList.agreeCnt = 0
+      this.voteList.disagreeCnt = 0
+      this.voteList.isVoted = false
+    })  
   }
-  
 }
 </script>
 
@@ -253,6 +281,11 @@ h2 {
   text-align: center;
   margin : 0;
 }
+h3 {
+  text-align: center;
+  margin : 0;
+}
+
 #questiont_tag {
   border-radius: 5px;
   padding: 0 1em;
