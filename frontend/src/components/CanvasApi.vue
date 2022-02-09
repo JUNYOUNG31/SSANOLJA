@@ -112,10 +112,11 @@ data:function(){
       },
       onMouseClick(){
           if(this.filling){
+              console.log(this.$refs.canvas.width)
               this.ctx.closePath();
               this.ctx.beginPath();
               this.ctx.fillStyle = this.ctx.strokeStyle;
-              this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+              this.ctx.fillRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
           }
       },
       startPainting(){
@@ -140,10 +141,9 @@ data:function(){
         this.filling = false;
       },
       resetAll(){
-        this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
-        console.log(" 화기ㅣㅣㅣㅣㅣㄴ"+this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0,0,this.$refs.canvas.width, this.$refs.canvas.height);
         this.ctx.fillStyle='white';
-         this.ctx.fillRect(0,0,this.canvas.width, this.canvas.height);
+         this.ctx.fillRect(0,0,this.$refs.canvas.width, this.$refs.canvas.height);
       },
 
     },
