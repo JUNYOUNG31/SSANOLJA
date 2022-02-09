@@ -72,7 +72,7 @@ public class TelestationService {
         // userOrder +1 (다음사람) 의 userNickname과 내 데이터를 프론트로 보낸다.  >> 프론트에서 소켓메시지로 userNickname에게 내가 받은 키워드를 보낸다?
         Map<String, Object> sendKeyword = new HashMap<String, Object>();
 
-        if(tel.getUserOrder()+1 < telestationReq.getPersonnel()){ //처음으로
+        if(tel.getUserOrder() != telestationReq.getPersonnel()){ //처음으로
            Integer byUsersId = telestationRepository.findByUsersId(tel.getUserOrder() + 1 , game.get().getPlayGameId());
 
            System.out.println("============byuserId확인 " + byUsersId);
