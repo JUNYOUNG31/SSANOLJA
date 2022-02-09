@@ -1,17 +1,17 @@
 <template>
-  <div class="spyfall-container">
+  <div>
     <v-container>
       <v-row>
         <v-col cols="10">
           <div>
             <v-row>              
-              <v-col cols="6"><h2>Question</h2></v-col>
-              <v-col cols="6"><h2>Answer</h2></v-col>
+              <v-col cols="6"><h2><span id="questiont_tag">Question</span></h2></v-col>
+              <v-col cols="6"><h2><span id="questiont_tag">Answer</span></h2></v-col>
             </v-row>
             <v-row>
               <v-col class="Question_video" cols="6">
-                <div v-if="question_video" >
-                  <ov-video :stream-manager="question_video"/>
+                <div v-if="questionPlayer" >
+                  <ov-video :stream-manager="questionPlayer"/>
                 </div>
               </v-col>
               <v-col class="Answer_video" cols="6">
@@ -53,33 +53,29 @@
           </div>
         </v-col>
         <v-col cols="2" class="right_menu">
-          <div><h2>{{timerCount}}</h2></div>
+          <div id="timer_tag"><h2>{{timerCount}}</h2></div>
           <div>
-            <div><h2>장소</h2></div>
-            <div><h2>{{place}}</h2></div>
-            <div><h2>직업</h2></div>
-            <div><h2>{{job}}</h2></div>
+            <div id="job_place_tag"><h3><span>장소</span></h3></div>
+            <div id="job_place_tag"><h3><span>{{place}}</span></h3></div>
+            <div id="job_place_tag"><h3><span>직업</span></h3></div>
+            <div id="job_place_tag"><h3><span>{{job}}</span></h3></div>
           </div>
           <div>
             <v-dialog v-model="dialog" persistent max-width="1000px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn x-large color="primary" dark v-bind="attrs" v-on="on">투표</v-btn>
+                <v-btn x-large color="primary" dark v-bind="attrs" v-on="on" @click="pause">투표</v-btn>
               </template>
               <v-card>
                 <v-card-title>
                   <span class="text-h5">누가 스파이일까요?</span>
-                </v-card-title>
-              
+                </v-card-title>              
                   <v-container class="vote">
-                    <v-row>
+                    <v-row class="vote_row">
                       <v-col cols="12">
-                        <v-text-field
-                          {{ timerCount }}
-                        ></v-text-field>
                       </v-col>
                       <v-col cols="5" class="prosecutor">
-                      <div v-if="streamManager" >
-                        <ov-video :stream-manager="streamManager"/>
+                      <div v-if="selectPlayer" >
+                        <ov-video :stream-manager="selectPlayer"/>
                       </div>
                     </v-col>
                     <v-col cols="2">
@@ -90,25 +86,26 @@
                         <ov-video :stream-manager="votePlayer"/>
                       </div>
                     </v-col>        
-                    
-                    <v-col cols="5">
+                    <v-col cols="12" style="height:80px"></v-col>
+                    <v-col cols="5" id ="agree">
                       <v-btn x-large color="blue darken-1" @click="voteTrue">찬성</v-btn>
                     </v-col>    
-                    <v-col cols="2">
-                      <h1>{{vote_cnt}}</h1>                   
+                    <v-col cols="2" id="vote_cnt" v-if="voteCnt != streamManager.length">
+                      <h2> 투표수 {{voteCnt}}</h2>                   
                     </v-col>
-                    <v-col cols="5">
+                    <v-col cols="2" id="vote_cnt" v-else>
+                      <h3>찬성:{{agreeCnt}} 반대 {{disagreeCnt}}</h3>
+                    </v-col>
+                    <v-col cols="5" id="disagree" >
                       <v-btn x-large color="red lighten-1" @click="voteFalse">반대</v-btn>
-                    </v-col>          
-                    <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-
+                    </v-col >          
+                    <v-col style="text-align:right">
+                      <v-btn x-large color="blue darken-1"  @click="dialog = false, play()" >Close</v-btn>
+                    </v-col>
                   </v-row>
-                </v-container>
+                </v-container> 
               </v-card>
             </v-dialog>
-          </div>
-          <div>
-            <button class="primary" @click="chooseplayer">대답자 화면 나오게 하기</button>
           </div>
         </v-col>
       </v-row>
@@ -130,14 +127,16 @@ export default {
       timerEnabled: true,
       timerCount: 30,
       dialog: false,
-      vote_cnt : 0,
-      question_video : null,
-      answer_video : null,
+      voteCnt : 0,
+      agreeCnt: 0,
+      disagreeCnt: 0,
+      questionPlayer : this.streamManager[0],   
+      selectPlayer : this.streamManager[0],
 		}
 	},
 
   props: {
-  streamManager: Object,
+  streamManager: Array,
   rules: Object,
   gameRes: Object
 	},
@@ -145,7 +144,6 @@ export default {
   components: {
 		OvVideo,
 	},
-  
 	computed: {
 		...mapState([
       "answerPlayer",
@@ -156,19 +154,21 @@ export default {
 		clientData () {
 			const { clientData } = this.getConnectionData();
 			return clientData;
-		},
-
-		
+		},		
 	},
 
 	methods: {
     getConnectionData () {
-    const { connection } = this.answer_video.stream;
+    const { connection } = this.questionVideo.stream;
     return JSON.parse(connection.data);
 		},
 
     play() {
       this.timerEnabled = true;
+      this.$store.commit('SET_VOTEPLAYER', null)
+      this.voteCnt = 0
+      this.agreeCnt = 0
+      this.disagreeCnt = 0
     },
 
     pause() {
@@ -181,17 +181,21 @@ export default {
       con.style.display = (con.style.display!= 'none') ? "none":"block"
     },
     voteTrue() {
-      this.vote_cnt += 1
+      this.voteCnt += 1
+      this.agreeCnt += 1
+      console.log(this.streamManager.length)
+      if ( this.voteCnt >= this.streamManager.length) {
+        this.voteCnt = this.streamManager.length
+      }
     },
     voteFalse() {
-      this.vote_cnt -= 1      
-    },
-    chooseplayer() {
-      this.answer_video = this.streamManager[0] // 변수 설정하기
+      this.voteCnt += 1      
+      this.disagreeCnt += 1
+      if ( this.voteCnt >= this.streamManager.length) {
+        this.voteCnt = this.streamManager.length
+      }
     }
-
-	},
-
+  },
   watch: {
     timerEnabled(value) {
       if (value) {
@@ -226,10 +230,8 @@ export default {
 </script>
 
 <style scoped>
-.spyfall-container {
-  height: 640px;
-}
-.spyfall-container .container{
+
+.container{
   padding: 0;
 }
 #game {
@@ -239,6 +241,26 @@ export default {
 h2 {
   text-align: center;
   margin : 0;
+}
+#questiont_tag {
+  border-radius: 5px;
+  padding: 0 1em;
+  background: #48484d;
+}
+#timer_tag {
+  border-radius: 5px;
+  padding: 0 1em;
+  background: #48484d;
+  margin-bottom: 20px;
+}
+#job_place_tag {
+  border-radius: 5px;
+  padding: 30px 1em;
+  background: #48484d;
+}
+
+#job_place_tag > div{
+  margin-top: 20px;
 }
 
 .Question_video {
@@ -411,11 +433,25 @@ video {
 }
 .vote v-row v-col {
   padding: 0;
+  align-self: center;
 }
 
 .v-dialog .v-card {
   background-image: url(../../assets/places_image/투표배경.jpg);
   background-size: cover;  
   background-position: center;
+}
+
+#agree {
+  text-align: center;
+  background-color:rgb(138, 138, 138);
+}
+#vote_cnt {
+  text-align: center;
+  background-color:rgb(138, 138, 138);
+}
+#disagree {
+  text-align: center;
+  background-color:rgb(138, 138, 138);
 }
 </style>

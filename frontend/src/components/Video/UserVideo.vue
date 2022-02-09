@@ -1,14 +1,17 @@
 <template>
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div">
-	<ov-video :stream-manager="streamManager"/>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerPlayer">지목하기</v-btn></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn2"><v-btn @click="votePlayer">투표하기</v-btn></div>
+	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
+	<div v-else >사라진값</div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect">지목하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn2"><v-btn @click="voteSelect">투표하기</v-btn></div>
 	<p></p>
 </div>
 </template>
 
 <script>
 import OvVideo from './OvVideo';
+import {mapState} from 'vuex';
+
 export default {
 	name: 'UserVideo',
 
@@ -18,8 +21,8 @@ export default {
 
 	data () {
 		return {			
-      answerplayer: null,
-      voteplayer : null
+      answerVideo: null,
+      voteVideo : null
 		}
 	},
 
@@ -34,6 +37,10 @@ export default {
 			const { clientData } = this.getConnectionData();
 			return clientData;
 		},		
+		...mapState([
+      "answerPlayer",
+      "votePlayer",
+		])
 	},
 
 	methods: {
@@ -41,13 +48,14 @@ export default {
 		const { connection } = this.streamManager.stream;
 		return JSON.parse(connection.data);
 		},
-		votePlayer () {
-			this.voteplayer = this.streamManager
-			this.$store.commit('SET_VOTEPLAYER', this.voteplayer)	
+		voteSelect () {
+			this.voteVideo = this.streamManager
+			this.$store.commit('SET_ANSWERPLAYER', null)
+			this.$store.commit('SET_VOTEPLAYER', this.voteVideo)	
 		},
-		answerPlayer () {
-			this.answerplayer = this.streamManager			
-			this.$store.commit('SET_ANSWERPLAYER', this.answerplayer)	
+		answerSelect () {
+			this.answerVideo = this.streamManager			
+			this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)	
 		}
 	},
 };
