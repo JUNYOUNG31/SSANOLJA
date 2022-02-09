@@ -64,7 +64,7 @@
         </v-col>
           <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
             <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
-              <user-video :stream-manager="user" :game-selected="gameSelected" :start="start"/>
+              <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
             </div>
           </div>
       </v-row>
@@ -89,7 +89,7 @@ export default {
       spyFallVideo : null,
       rules: null,
       gameRes: null,
-      isRoomMaker: localStorage.getItem('isRoomMaker'),
+      isRoomMaker: localStorage.getItem('isRoomMaker') ==='true',
       readyList: []
 		}
 	},
@@ -133,6 +133,7 @@ export default {
 	},
   mounted () {
     // 방 입장시 준비된 사람들 리스트를 받아옴
+    console.log(this.myUserName)
     this.sendMessageToEveryBody('getReadyList', 'getReadyList')
 
     this.session.on('signal:getReadyList', ()=>{
@@ -159,6 +160,7 @@ export default {
 
     this.session.on('signal:ready', (event)=>{
       const person = event.data
+      console.log(person)
       if (this.readyList.includes(person)) {
         const idx = this.readyList.indexOf(person)
         this.readyList.splice(idx, 1)
