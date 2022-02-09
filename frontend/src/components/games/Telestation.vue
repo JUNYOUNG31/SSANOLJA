@@ -1,6 +1,7 @@
 <template>
   <div class="telestation-container">
     <h1>텔레스테이션</h1>
+    <!-- <button @click="getUsers">ssss</button> -->
     <div v-show="gameMode ==='text'" style="display:flex; flex-direction: column; align-items: center;"> <!-- 키워드 입력 -->
       <div>
         {{textingTime}}
@@ -72,10 +73,11 @@ export default {
       textingTime:0,
       drawingEnabled: false,
       textingEnabled: false,
-      gameMode: "drawing",
+      gameMode: "text",
       drawingOrder:1, /* 라운드 */
       completedPlayers:0,
       personnel:3,
+      participant: new Map(),
 		}
 	},
   methods: {
@@ -150,6 +152,17 @@ export default {
           console.error(error);
       })
     },
+    getUsers() {
+      let myNickName = JSON.parse(this.publisher.stream.connection.data)
+      this.participant.set(myNickName.clientData, this.publisher.stream.connection.connectionId)
+      for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+        this.participant.set(nickName.clientData, this.subscribers[index].stream.connection.connectionId)
+      }
+      console.log(this.publisher)
+      console.log(this.participant, '과여양아ㅏ아아아앙')
+      console.log(this.participant.get('조성현'))
+    },
 
 // this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
   },
@@ -157,6 +170,8 @@ export default {
     ...mapState([
     "myUserName",
     "mySessionId",
+    "subscribers",
+    "publisher",
     ]),
   },
   watch: {
@@ -212,6 +227,7 @@ export default {
     this.textingTime = this.rules.textingTime
     this.drawingTime = this.rules.drawingTime
     this.startTexting()
+    this.getUsers()
   }
 }
 
