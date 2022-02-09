@@ -103,7 +103,7 @@
                       <v-btn x-large color="red lighten-1" @click="voteFalse" :disabled="voteList.isVoted">반대</v-btn>
                     </v-col >          
                     <v-col style="text-align:right">
-                      <v-btn x-large color="blue darken-1"  @click="dialog = false, play()" >Close</v-btn>
+                      <v-btn x-large color="blue darken-1"  @click="dialog = false, restart()" >Close</v-btn>
                     </v-col>
                   </v-row>
                 </v-container> 
@@ -182,11 +182,15 @@ export default {
       })
 		},
     play() {
-      this.timerEnabled = true;
+      this.timerEnabled = true;      
     },
 
     pause() {
       this.timerEnabled = false;
+    },
+    
+    restart() {
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'restart')
     },
     
     toggle(num) {
@@ -255,7 +259,7 @@ export default {
       }
     })
 
-    this.session.on('signal:play', (event)=>{
+    this.session.on('signal:restart', (event)=>{
       this.voteList = JSON.parse(event.data)
       this.timerEnabled = true;
       this.$store.commit('SET_VOTEPLAYER', null)
