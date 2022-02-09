@@ -25,7 +25,6 @@ export default new Vuex.Store({
   },
   mutations: {
 		CHANGE_JOININFO: function(state, data) {
-			console.log(data.joinCode)
 			state.mySessionId = data.sessionId
 			state.myUserName = data.userName
 		},

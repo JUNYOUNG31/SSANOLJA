@@ -63,11 +63,7 @@
           </div>
         </v-col>
           <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
-<<<<<<< HEAD
             <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
-=======
-            <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
->>>>>>> b9497ae3b158396b9d5751104475a7535d86da6e
               <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
             </div>
           </div>
@@ -126,8 +122,8 @@ export default {
     },
     // data에 userNicknames 배열이 생기면 활성화
     isReadyToStart() {
-      
-      if (this.readyList.length == (this.userNicknames.length - 1)) {
+      // if (this.readyList.length == (this.userNicknames.length - 1)) {
+      if (this.readyList.length == 2) {
         return true;
       }
       return false;
@@ -137,7 +133,6 @@ export default {
 	},
   mounted () {
     // 방 입장시 준비된 사람들 리스트를 받아옴
-    console.log(this.myUserName)
     this.sendMessageToEveryBody('getReadyList', 'getReadyList')
 
     this.session.on('signal:getReadyList', ()=>{

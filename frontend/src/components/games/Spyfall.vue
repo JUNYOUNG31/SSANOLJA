@@ -182,7 +182,7 @@ export default {
       })
 		},
     play() {
-      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'play')
+      this.timerEnabled = true;
     },
 
     pause() {
