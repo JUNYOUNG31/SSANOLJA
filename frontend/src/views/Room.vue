@@ -45,13 +45,13 @@
                     </span>
                   </v-btn>
                 </v-col>
-                <v-col >
-                  <v-btn style="width:100%;" @click="beReady(myUserName)" :disabled="isRoomMaker">
+                <v-col v-if="!isRoomMaker">
+                  <v-btn style="width:100%;" @click="beReady(myUserName)" :disabled="isReadyToStart">
                     <span>레디</span>
-                    </v-btn>
+                  </v-btn>
                 </v-col>
-                <v-col>
-                  <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isRoomMaker">
+                <v-col v-if="isRoomMaker">
+                  <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart">
                   <!-- <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart"> -->
                     <span>시작</span>
                   </v-btn>
@@ -121,14 +121,14 @@ export default {
       })
     },
     // data에 userNicknames 배열이 생기면 활성화
-    // isReadyToStart() {
-    //   if (this.isRoomMaker) {
-    //     if (this.readyList.length == (this.userNicknames.length - 1)) {
-    //       return true;
-    //     }
-    //   }
-    //   return false;
-    // }
+    isReadyToStart() {
+      
+      if (this.readyList.length == (this.userNicknames.length - 1)) {
+        return true;
+      }
+      return false;
+      
+    }
     
 	},
   mounted () {
