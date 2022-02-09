@@ -2,17 +2,14 @@
   <div class="room"> <!--전체화면-->
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
-
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
-          <div class="playercamera">
-            <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+          <!-- <div class="playercamera">
+            <user-video :stream-manager="publisher" :game-selected="gameSelected" :start="start"/>
+          </div> -->
+          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
+            <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
-          <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
-            <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
-          </div>
-        </div>
-        
-
+        </div>     
         <v-col id="game"> <!--가운데 게임화면-->
           <span v-if="start">
             <span v-if="gameSelected == 'Spyfall'">
@@ -27,7 +24,6 @@
           </span>
           <div v-else><!--대기방 게임 초기화면(게임선택하는곳)-->
             <v-row class="control">
-
               <v-col class="col-10 row-cols-3 gameselect">
                   <v-row style="height:100%;">
                     <v-col>
@@ -41,7 +37,6 @@
                     </v-col>                 
                   </v-row> <!--게임 3개 선택하는 부분-->
               </v-col>
-
               <v-col class="col-2 ready">        
                 <v-col >
                   <v-btn style="width:100%;">
@@ -51,29 +46,25 @@
                   </v-btn>
                 </v-col>
                 <v-col >
-                  <v-btn style="width:100%;">
+                  <v-btn style="width:100%;" @click="beReady(myUserName)" :disabled="isRoomMaker">
                     <span>레디</span>
                     </v-btn>
                 </v-col>
                 <v-col>
                   <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isRoomMaker">
+                  <!-- <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart"> -->
                     <span>시작</span>
                   </v-btn>
                 </v-col>
-              </v-col>
-              
+              </v-col>              
             </v-row>
-
             <div class="gameInfo">게임설명 <!--게임설명-->
             </div>
           </div>
-
         </v-col>
-
-
           <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
-            <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
-              <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
+            <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
+              <user-video :stream-manager="user" :game-selected="gameSelected" :start="start"/>
             </div>
           </div>
       </v-row>
@@ -98,7 +89,8 @@ export default {
       spyFallVideo : null,
       rules: null,
       gameRes: null,
-      isRoomMaker: localStorage.getItem('isRoomMaker')
+      isRoomMaker: localStorage.getItem('isRoomMaker'),
+      readyList: []
 		}
 	},
 
@@ -122,18 +114,37 @@ export default {
       return this.subscribers.filter((user, index) => {
         return index % 2 === 1
       })
-    }
-    ,
+    },
     evenplayer : function() {
       return this.subscribers.filter((user, index) => {
         return index % 2 === 0
       })
     },
+    // data에 userNicknames 배열이 생기면 활성화
+    // isReadyToStart() {
+    //   if (this.isRoomMaker) {
+    //     if (this.readyList.length == (this.userNicknames.length - 1)) {
+    //       return true;
+    //     }
+    //   }
+    //   return false;
+    // }
     
 	},
   mounted () {
+    // 방 입장시 준비된 사람들 리스트를 받아옴
+    this.sendMessageToEveryBody('getReadyList', 'getReadyList')
+
+    this.session.on('signal:getReadyList', ()=>{
+      let readyListToString = this.readyList.toString()
+      this.sendMessageToEveryBody(readyListToString,'sendReadyList')
+    })
+
+    this.session.on('signal:sendReadyList', (event)=>{
+      this.readyList = event.data.split(",")
+    })
+
     this.session.on('signal:rules', (event) => {
-    console.log(JSON.parse(event.data))
     this.rules = JSON.parse(event.data)
     }),
 
@@ -144,6 +155,17 @@ export default {
     this.session.on('signal:gameStart', (event)=>{
       this.gameSelected = event.data
       this.start = true
+    })
+
+    this.session.on('signal:ready', (event)=>{
+      const person = event.data
+      if (this.readyList.includes(person)) {
+        const idx = this.readyList.indexOf(person)
+        this.readyList.splice(idx, 1)
+      } else {
+        this.readyList.push(person)
+      }
+      console.log(this.readyList)
     })
   },
   methods : {
@@ -159,6 +181,9 @@ export default {
 			})
 		},
 
+    beReady() {
+      this.sendMessageToEveryBody(this.myUserName,'ready')
+    },
 
     copyJoinCode(joinCode) {
       const joinCodeToCopy = document.createElement("textarea")
@@ -168,20 +193,17 @@ export default {
       document.execCommand("copy")
       alert('복사되었습니다')
     },
-
     leaveSession() {
 			this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
 		},
     gameSelect(game) {
       this.gameSelected = game
-      this.spyFallVideo = this.mainStreamManager
+      this.spyFallVideo = this.session.streamManagers
     },
-    gameStart(game) {
-      
+    gameStart(game) {      
       axios.post(
         '/api/games/rules',
-
         JSON.stringify({
           personnel: 6, // userNicknames의 길이로 대체
           selectedGame: game
@@ -214,12 +236,7 @@ export default {
         console.log(err)
         alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다')
       })
-
-
-      
-  },
-  
-    
+    },
   }
 }
 
