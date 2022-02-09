@@ -61,13 +61,12 @@ export default new Vuex.Store({
     },
 
 		SET_ANSWERPLAYER: function(state, value) {
-			state.answerPlayer = null,
 			state.answerPlayer = value;
 			console.log(state.answerPlayer)
 		},
 		SET_VOTEPLAYER: function(state, value) {
-			state.votePlayer = null,
 			state.votePlayer = value;
+			console.log(state.votePlayer)
 		}
     
   },
@@ -110,6 +109,7 @@ export default new Vuex.Store({
               // --- Get your own camera stream with the desired properties ---              
               let publisher = state.OV.initPublisher(undefined, data.publishInfo);  
               state.mainStreamManager = publisher;
+							state.subscribers.push(publisher) // subscribers 에 publisher 추가
               state.publisher = publisher;  
               // --- Publish your stream ---
               state.session.publish(state.publisher);
