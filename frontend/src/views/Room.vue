@@ -59,6 +59,15 @@
               </v-col>              
             </v-row>
             <div class="gameInfo">게임설명 <!--게임설명-->
+            <span v-if="gameSelected == 'Spyfall'">
+              <spyfallDescription :gameSelected="gameSelected"></spyfallDescription>
+            </span>
+            <span v-if="gameSelected == 'Fakeartist'">
+              <fakeartistDescription :gameSelected="gameSelected"></fakeartistDescription>
+            </span>
+            <span v-if="gameSelected == 'Telestation'">
+              <telestationDescription :gameSelected="gameSelected"></telestationDescription>
+            </span>
             </div>
           </div>
         </v-col>
@@ -76,15 +85,19 @@
 <script>
 import UserVideo from '@/components/Video/UserVideo';
 import Spyfall from '@/components/games/Spyfall';
-import { mapState } from "vuex";
 import Fakeartist from '@/components/games/Fakeartist.vue';
 import Telestation from '@/components/games/Telestation.vue';
+import SpyfallDescription from '@/components/descriptions/SpyfallDescription';
+import FakeartistDescription from '@/components/descriptions/FakeartistDescription';
+import TelestationDescription from '@/components/descriptions/TelestationDescription';
+import { mapState } from "vuex";
 import axios from "axios";
+
 export default {
   name: "Room", 
   data () {
 		return {
-      gameSelected: '',
+      gameSelected: 'Spyfall',
       start : false,
       spyFallVideo : null,
       rules: null,
@@ -99,6 +112,9 @@ export default {
     Spyfall,
     Fakeartist,
     Telestation,
+    SpyfallDescription,
+    FakeartistDescription,
+    TelestationDescription,
 	},
 
   computed: {
@@ -153,8 +169,10 @@ export default {
     })
 
     this.session.on('signal:gameStart', (event)=>{
+      this.spyFallVideo = this.session.streamManagers
       this.gameSelected = event.data
       this.start = true
+      this.beReady() // 게임 시작시 레디 해제
     })
 
     this.session.on('signal:ready', (event)=>{
@@ -200,7 +218,6 @@ export default {
 		},
     gameSelect(game) {
       this.gameSelected = game
-      this.spyFallVideo = this.session.streamManagers
     },
     gameStart(game) {      
       axios.post(
@@ -228,7 +245,7 @@ export default {
             this.gameRes = resp.data
             this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
             this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
-            this.start = true
+            // this.start = true
           })
           .catch(error => console.log(error))
 
