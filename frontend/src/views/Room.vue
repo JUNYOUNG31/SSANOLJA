@@ -223,7 +223,7 @@ export default {
       axios.post(
         '/api/games/rules',
         JSON.stringify({
-          personnel: 6, // userNicknames의 길이로 대체
+          personnel: 3, // userNicknames의 길이로 대체
           selectedGame: game
         })
       )
@@ -235,7 +235,7 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : ["조성현", "정성우", "박준영", "김범주","배소원","강광은"],
+              userNicknames : ["정성우", "박준영", "김범주"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),
