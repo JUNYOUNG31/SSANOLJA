@@ -23,6 +23,8 @@ export default new Vuex.Store({
 		votePlayer: null,		
 		dialog : false,
 		voteClick : false,
+		citizenWin : false,
+		spyWin : false,
     mySessionId: '',
     myUserName: '',
 
@@ -87,8 +89,13 @@ export default new Vuex.Store({
 			state.questionPlayer = value;
 			console.log(state.questionPlayer)
 		},
-		
-    
+		CITIZEN_WIN: function(state) {
+			state.citizenWin = true
+		},
+
+		SPY_WIN: function(state) {
+			state.spyWin = true
+		},		    
   },
   actions: {
     joinSession: function ({ commit, dispatch, state}, data) {

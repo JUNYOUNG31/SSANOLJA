@@ -94,11 +94,11 @@
                       <v-btn x-large color="blue darken-1" @click="voteTrue" 
                       :disabled="voteList.isVoted || myUserName == suspectPlayer">찬성</v-btn>
                     </v-col>    
-                    <v-col cols="4" id="vote_cnt" v-if="voteList.voteCnt != streamManager.length">
+                    <v-col cols="4" id="vote_cnt" v-if="voteList.voteCnt != streamManager.length-1">
                       <h2> 투표수 {{voteList.voteCnt}}</h2>                   
                     </v-col>
                     <v-col cols="4" id="vote_cnt" v-else>
-                      <h3>찬성:{{voteList.agreeCnt}} 반대 {{voteList.disagreeCnt}}</h3>
+                      <h3>찬성:{{voteList.agreeCnt}}  반대:{{voteList.disagreeCnt}}</h3>
                     </v-col>
                     <v-col cols="4" id="disagree" >
                       <v-btn x-large color="red lighten-1" @click="voteFalse"
@@ -262,12 +262,34 @@ export default {
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
       this.voteList.agreeCnt += 1
-      console.log(this.streamManager.length)
+      console.log(this.streamManager.length)  
+      // 투표가 끝나고 3초 보여주기      
+
       if ( this.voteList.voteCnt >= this.streamManager.length -1) {
         this.voteList.voteCnt = this.streamManager.length - 1        
+        setTimeout(() => {
+          alert('투표가 완료 되었습니다.')
+          console.log("settime 하는중")
+        }, 3000);
+        console.log("settime 끝")
+        //만약 만장일치 일때
         if (this.voteList.agreeCnt == this.streamManager.length - 1) {
           // 스파이가 맞으면 시민 승리
+          if (this.spyName == JSON.parse(this.votePlayer.stream.connection.data).clientData) {
+            //spyfallend로 이동하고 // v-if 시민 승리
+              this.$store.commit("CITIZEN_WIN")
+              this.isEnded = true
+          }          
           // 스파이가 아니라면 스파이 승리
+          else {
+            //spyfallend로 이동하고 // v-if 스파이 승리
+            this.$store.commit("SPY_WIN")
+            this.isEnded = true
+          }
+        }
+        // 만약 만장일치가 아닐때
+        else {
+          this.restart()
         }
       }      
     })
@@ -276,9 +298,18 @@ export default {
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
       this.voteList.disagreeCnt += 1
-      console.log(this.streamManager.length)
+      console.log(this.streamManager.length-1)
       if ( this.voteList.voteCnt >= this.streamManager.length-1) {
         this.voteList.voteCnt = this.streamManager.length-1
+
+        setTimeout(() => {
+          alert('투표가 완료 되었습니다.')
+          console.log("settime 하는중")
+          this.restart()
+        }, 3000);
+        console.log("settime 끝")
+
+        
       }
     })
 
