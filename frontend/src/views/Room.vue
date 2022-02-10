@@ -139,7 +139,7 @@ export default {
     // data에 userNicknames 배열이 생기면 활성화
     isReadyToStart() {
       // if (this.readyList.length == (this.userNicknames.length - 1)) {
-      if (this.readyList.length == 2) {
+      if (this.readyList.length == 0) {
         return true;
       }
       return false;
@@ -172,6 +172,11 @@ export default {
       this.spyFallVideo = this.session.streamManagers
       this.gameSelected = event.data
       this.start = true
+      if (this.gameSelected == "Spyfall") {
+        console.log("여기는 룸")
+        console.log(this.session.streamManagers)
+        this.$store.commit("SET_FIRSTQUESTIONPLAYER", this.session.streamManagers)
+      }
       this.beReady() // 게임 시작시 레디 해제
     })
 
