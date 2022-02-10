@@ -18,7 +18,9 @@ export default new Vuex.Store({
     publisher: undefined,
     subscribers: [],
 		answerPlayer: null,
-		votePlayer: null,
+		selectPlayer: null,
+		votePlayer: null,		
+		dialog : false,
     mySessionId: '',
     myUserName: '',
 
@@ -66,9 +68,18 @@ export default new Vuex.Store({
 		},
 		SET_VOTEPLAYER: function(state, value) {
 			state.votePlayer = value;
+			if (state.votePlayer == null) {
+				state.dialog = false
+			}
+			if (state.votePlayer != null) {
+				state.dialog = true
+			}
 			console.log(state.votePlayer)
-		}
-    
+		},
+		SET_SELECTPLAYER: function(state, value) {
+			state.selectPlayer = value;
+			console.log(state.selectPlayer)
+		},	
   },
   actions: {
     joinSession: function ({ commit, dispatch, state}, data) {

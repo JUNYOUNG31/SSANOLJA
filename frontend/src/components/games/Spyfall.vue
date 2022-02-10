@@ -65,9 +65,6 @@
           <img :src="`../../assets/place_image/${place}.jpg`" alt="">
           <div>
             <v-dialog v-model="dialog" persistent max-width="1000px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn x-large color="primary" dark v-bind="attrs" v-on="on" @click="pause">투표</v-btn>
-              </template>
               <v-card>
                 <v-card-title>
                   <span class="text-h5">누가 스파이일까요?</span>
@@ -91,7 +88,8 @@
                     </v-col>        
                     <v-col cols="12" style="height:80px"></v-col>
                     <v-col cols="4" id ="agree">
-                      <v-btn x-large color="blue darken-1" @click="voteTrue" :disabled="voteList.isVoted">찬성</v-btn>
+                      <v-btn x-large color="blue darken-1" @click="voteTrue" 
+                      :disabled="voteList.isVoted || myUserName == suspectPlayer">찬성</v-btn>
                     </v-col>    
                     <v-col cols="4" id="vote_cnt" v-if="voteList.voteCnt != streamManager.length">
                       <h2> 투표수 {{voteList.voteCnt}}</h2>                   
@@ -100,10 +98,11 @@
                       <h3>찬성:{{voteList.agreeCnt}} 반대 {{voteList.disagreeCnt}}</h3>
                     </v-col>
                     <v-col cols="4" id="disagree" >
-                      <v-btn x-large color="red lighten-1" @click="voteFalse" :disabled="voteList.isVoted">반대</v-btn>
+                      <v-btn x-large color="red lighten-1" @click="voteFalse"
+                      :disabled="voteList.isVoted || myUserName == suspectPlayer">반대</v-btn>
                     </v-col >          
                     <v-col style="text-align:right">
-                      <v-btn x-large color="blue darken-1"  @click="dialog = false, restart()" >Close</v-btn>
+                      <v-btn x-large color="blue darken-1"  @click="restart()" >Close</v-btn>
                     </v-col>
                   </v-row>
                 </v-container> 
@@ -130,7 +129,7 @@ export default {
       placeSrc: null,
       timerEnabled: true,
       timerCount: 30,
-      dialog: false,
+      // dialog: false,
       voteList : {
         voteCnt : 0,
         isVoted : false,
@@ -138,8 +137,7 @@ export default {
         disagreeCnt: 0,
       },
       questionPlayer : this.streamManager[0],   
-      selectPlayer : this.streamManager[0],
-		}
+}
 	},
 
   props: {
@@ -154,15 +152,24 @@ export default {
 	computed: {
 		...mapState([
       "session",
-      "answerPlayer",
-      "votePlayer",
+      "dialog",
+      "answerPlayer",   // 질문받는 사람
+      "selectPlayer",   // 투표를 시작한 사람
+      "votePlayer",     // 투표를 지목당한 사람
       "myUserName",
-			"mySessionId",			
+			"mySessionId",	
+      "publisher"
 		]),
 		clientData () {
 			const { clientData } = this.getConnectionData();
 			return clientData;
 		},		
+    suspectPlayer () {
+      if (this.votePlayer) {
+        return JSON.parse(this.votePlayer.stream.connection.data).clientData      
+      }
+      return null
+    },
 	},
 
 	methods: {
@@ -180,7 +187,8 @@ export default {
       .catch(error => {
         console.error(error);
       })
-		},
+		}, 
+
     play() {
       this.timerEnabled = true;      
     },
@@ -199,9 +207,14 @@ export default {
       con.style.display = (con.style.display!= 'none') ? "none":"block"
     },
     voteTrue() {
-      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')   
+      this.voteList.isVoted = true
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')     
+      console.log('여기')    
+      console.log(this.myUserName)
+      console.log(JSON.parse(this.votePlayer.stream.connection.data).clientData)
     },
     voteFalse() {
+      this.voteList.isVoted = true
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
     }
   },
@@ -235,27 +248,33 @@ export default {
       this.place = null
     }
 		this.timerCount = this.rules.playTime
-    this.play()
+    this.play()    
+
+    this.session.on('signal:votePlayer', ()=> {
+      this.pause()
+    })
 
     this.session.on('signal:voteTrue', (event)=>{
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
       this.voteList.agreeCnt += 1
-      this.voteList.isVoted = true
       console.log(this.streamManager.length)
-      if ( this.voteList.voteCnt >= this.streamManager.length) {
-        this.voteList.voteCnt = this.streamManager.length
-      }
+      if ( this.voteList.voteCnt >= this.streamManager.length -1) {
+        this.voteList.voteCnt = this.streamManager.length - 1        
+        if (this.voteList.agreeCnt == this.streamManager.length - 1) {
+          // 스파이가 맞으면 시민 승리
+          // 스파이가 아니라면 스파이 승리
+        }
+      }      
     })
 
     this.session.on('signal:voteFalse', (event)=>{
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
       this.voteList.disagreeCnt += 1
-      this.voteList.isVoted = true
       console.log(this.streamManager.length)
-      if ( this.voteList.voteCnt >= this.streamManager.length) {
-        this.voteList.voteCnt = this.streamManager.length
+      if ( this.voteList.voteCnt >= this.streamManager.length-1) {
+        this.voteList.voteCnt = this.streamManager.length-1
       }
     })
 

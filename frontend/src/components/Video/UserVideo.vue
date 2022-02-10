@@ -22,7 +22,8 @@ export default {
 	data () {
 		return {			
       answerVideo: null,
-      voteVideo : null
+      voteVideo : null,
+			selectVideo: null,
 		}
 	},
 
@@ -50,23 +51,12 @@ export default {
 			"session",
 			"subscribers",
       "answerPlayer",
+			"selectPlayer",
       "votePlayer",
 		])
 	},
 
 	methods: {
-	getCircularReplacer() {
-		const seen = new WeakSet();
-		return (key, value) => {
-			if (typeof value === "object" && value !== null) {
-				if (seen.has(value)) {
-					return;
-				}
-				seen.add(value);
-			}
-			return value;
-		};
-	},
 		sendMessageToEveryBody(data, type) {
       this.session.signal({
         data: data,
@@ -94,14 +84,21 @@ export default {
 	},
 	mounted() {
 		this.session.on('signal:votePlayer', (event)=>{
-			const votedata = JSON.parse(event.data)
+			const votedata = JSON.parse(event.data) 
+			const selectdata = JSON.parse(event.from.data)
 			for (let index = 0; index < this.subscribers.length; index++) {
         let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
 				if (votedata.clientData == nickName.clientData) {
 					this.voteVideo = this.subscribers[index]
 				}
+				if (selectdata.clientData == nickName.clientData) {
+					this.selectVideo = this.subscribers[index]
+				}
 			}
-			this.$store.commit('SET_ANSWERPLAYER', null)
+			
+			this.$store.commit('SET_SELECTPLAYER', this.selectVideo)
+			// this.$store.commit('SET_ANSWERPLAYER', null)
+			// this.$store.commit('SET_QUESTIONPLAYER', null)
 			this.$store.commit('SET_VOTEPLAYER', this.voteVideo)	
     })
 
