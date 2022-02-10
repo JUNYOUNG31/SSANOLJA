@@ -14,7 +14,7 @@ import lombok.Setter;
 public class TelestationReq implements GameRes {
 
     private String userNickname;
-    private String keyword;
+    private String data;
     private String roomCode;
     private Integer drawingOrder;;
     private Integer personnel;

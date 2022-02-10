@@ -51,7 +51,7 @@ public class GameController {
         }
         else if (selectedGame.equals("Telestation")) {
 //            telestationService
-            telestationService.userInsert(users, game);
+            telestationService.usersInsert(users, game);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
 //            return new ResponseEntity<>(telestationService.userInsert(users, game), HttpStatus.ACCEPTED);
         }

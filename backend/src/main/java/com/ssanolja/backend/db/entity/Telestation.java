@@ -45,13 +45,10 @@ public class Telestation {
     private User user;
 
     @Column(name = "data_index")
-    private String dataIndex;
+    private Integer dataIndex;
 
-    @Column(name = "text_data")
-    private String textData;
-
-    @Column(name = "drawing_data")
-    private String drawingData;
+    @Column(name = "data")
+    private String data;
 
     @Column(name = "drawing_order")
     private Integer drawingOrder;
@@ -64,5 +61,6 @@ public class Telestation {
 
     @Column(name = "user_order")
     private Integer userOrder;
+
 
 }

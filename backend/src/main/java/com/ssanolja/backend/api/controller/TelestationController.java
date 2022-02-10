@@ -18,15 +18,11 @@ public class TelestationController {
     }
 
 
-    @PostMapping("/InputKeyword")
-    public ResponseEntity<Map<String , Object>> InputKeyword(@RequestBody TelestationReq telestationReq) {
-        System.out.println("emfhdlddhej"+telestationReq.getDrawingOrder());
-        Map<String, Object> res = telestationService.keywordInsert(telestationReq);
-
-        System.out.println("res 체크 "+ res);
+    @PostMapping("/saveData")
+    public ResponseEntity<Map<String , Object>> saveData(@RequestBody TelestationReq telestationReq) {
+        Map<String, Object> res = telestationService.saveData(telestationReq);
+        System.out.println("res : "+ res);
         return new ResponseEntity<>(res,  HttpStatus.ACCEPTED);
-
-//        return new ResponseEntity<>(, HttpStatus.CREATED);
     }
 
 
