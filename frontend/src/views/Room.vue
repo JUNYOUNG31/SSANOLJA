@@ -3,10 +3,10 @@
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
-          <div class="playercamera">
-            <user-video :stream-manager="publisher" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
-          </div>
-          <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
+          <!-- <div class="playercamera">
+            <user-video :stream-manager="publisher" :game-selected="gameSelected" :start="start" :readyList="readyList"/> -->
+          <!-- </div> -->
+          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
             <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
         </div>     
@@ -45,25 +45,33 @@
                     </span>
                   </v-btn>
                 </v-col>
-                <v-col >
-                  <v-btn style="width:100%;" @click="beReady(myUserName)" :disabled="isRoomMaker">
+                <v-col v-if="!isRoomMaker">
+                  <v-btn style="width:100%;" @click="beReady(myUserName)" :disabled="isReadyToStart">
                     <span>레디</span>
-                    </v-btn>
+                  </v-btn>
                 </v-col>
-                <v-col>
-                  <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isRoomMaker">
-                  <!-- <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart"> -->
+                <v-col v-if="isRoomMaker">
+                  <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart">
                     <span>시작</span>
                   </v-btn>
                 </v-col>
               </v-col>              
             </v-row>
             <div class="gameInfo">게임설명 <!--게임설명-->
+            <span v-if="gameSelected == 'Spyfall'">
+              <spyfallDescription :gameSelected="gameSelected"></spyfallDescription>
+            </span>
+            <span v-if="gameSelected == 'Fakeartist'">
+              <fakeartistDescription :gameSelected="gameSelected"></fakeartistDescription>
+            </span>
+            <span v-if="gameSelected == 'Telestation'">
+              <telestationDescription :gameSelected="gameSelected"></telestationDescription>
+            </span>
             </div>
           </div>
         </v-col>
           <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
-            <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
+            <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
               <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
             </div>
           </div>
@@ -76,20 +84,23 @@
 <script>
 import UserVideo from '@/components/Video/UserVideo';
 import Spyfall from '@/components/games/Spyfall';
-import { mapState } from "vuex";
 import Fakeartist from '@/components/games/Fakeartist.vue';
 import Telestation from '@/components/games/Telestation.vue';
+import SpyfallDescription from '@/components/descriptions/SpyfallDescription';
+import FakeartistDescription from '@/components/descriptions/FakeartistDescription';
+import TelestationDescription from '@/components/descriptions/TelestationDescription';
+import { mapState } from "vuex";
 import axios from "axios";
+
 export default {
   name: "Room", 
   data () {
 		return {
-      gameSelected: '',
+      gameSelected: 'Spyfall',
       start : false,
       spyFallVideo : null,
       rules: null,
       gameRes: null,
-      isRoomMaker: localStorage.getItem('isRoomMaker') ==='true',
       readyList: []
 		}
 	},
@@ -99,6 +110,9 @@ export default {
     Spyfall,
     Fakeartist,
     Telestation,
+    SpyfallDescription,
+    FakeartistDescription,
+    TelestationDescription,
 	},
 
   computed: {
@@ -109,6 +123,7 @@ export default {
 			"publisher",
 			"subscribers",
 			"mainStreamManager",
+      "isRoomMaker"
 		]),
     oddplayer: function () {
       return this.subscribers.filter((user, index) => {
@@ -121,19 +136,18 @@ export default {
       })
     },
     // data에 userNicknames 배열이 생기면 활성화
-    // isReadyToStart() {
-    //   if (this.isRoomMaker) {
-    //     if (this.readyList.length == (this.userNicknames.length - 1)) {
-    //       return true;
-    //     }
-    //   }
-    //   return false;
-    // }
+    isReadyToStart() {
+      // if (this.readyList.length == (this.userNicknames.length - 1)) {
+      if (this.readyList.length == 0) {
+        return true;
+      }
+      return false;
+      
+    }
     
 	},
   mounted () {
     // 방 입장시 준비된 사람들 리스트를 받아옴
-    console.log(this.myUserName)
     this.sendMessageToEveryBody('getReadyList', 'getReadyList')
 
     this.session.on('signal:getReadyList', ()=>{
@@ -154,8 +168,19 @@ export default {
     })
 
     this.session.on('signal:gameStart', (event)=>{
+      this.spyFallVideo = this.session.streamManagers
       this.gameSelected = event.data
       this.start = true
+      if (this.gameSelected == "Spyfall") {
+        console.log("여기는 룸")
+        console.log(this.session.streamManagers)
+        this.$store.commit("SET_FIRSTQUESTIONPLAYER", this.session.streamManagers)
+      }
+      this.beReady() // 게임 시작시 레디 해제
+    })
+
+    this.session.on('signal:backToLobby', ()=>{
+      this.start = false
     })
 
     this.session.on('signal:ready', (event)=>{
@@ -201,13 +226,12 @@ export default {
 		},
     gameSelect(game) {
       this.gameSelected = game
-      this.spyFallVideo = this.session.streamManagers
     },
     gameStart(game) {      
       axios.post(
         '/api/games/rules',
         JSON.stringify({
-          personnel: 6, // userNicknames의 길이로 대체
+          personnel: 3, // userNicknames의 길이로 대체
           selectedGame: game
         })
       )
@@ -219,7 +243,7 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : ["조성현", "정성우", "박준영", "김범주","배소원","강광은"],
+              userNicknames : ["정성우", "박준영", "김범주"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),
@@ -229,7 +253,7 @@ export default {
             this.gameRes = resp.data
             this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
             this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
-            this.start = true
+            // this.start = true
           })
           .catch(error => console.log(error))
 

@@ -10,22 +10,29 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 		OPENVIDU_SERVER_URL : "https://i6e106.p.ssafy.io:9002",
-    // OPENVIDU_SERVER_URL : "https://" + location.hostname + ":4443",
     OPENVIDU_SERVER_SECRET : "MY_SECRET",
     OV: undefined,
     session: undefined,
     mainStreamManager: undefined,
     publisher: undefined,
     subscribers: [],
-		answerPlayer: null,
-		votePlayer: null,
+		firstQuestionPlayer: null,	// 처음 질문하는 사람
+		questionPlayer: null,				// 질문하는 사람
+		answerPlayer: null,					// 질문받는 사람
+		selectPlayer: null,					// 투표지목한 사람
+		votePlayer: null,						// 투표당하는 사람
+		dialog : false,							// 투표 화면
+		voteClick : false,					// 투표 횟수 1
+		citizenWin : false,					// 시민 승리
+		spyWin : false,							// 스파이 승리
     mySessionId: '',
     myUserName: '',
+		isRoomMaker: localStorage.getItem('isRoomMaker') ==='true',
 
   },
+
   mutations: {
 		CHANGE_JOININFO: function(state, data) {
-			console.log(data.joinCode)
 			state.mySessionId = data.sessionId
 			state.myUserName = data.userName
 		},
@@ -47,18 +54,20 @@ export default new Vuex.Store({
     LEAVE_SESSION: function (state) {
       // --- Leave the session by calling 'disconnect' method over the Session object ---
 			if (state.session) state.session.disconnect();
-
 			state.session = undefined;
 			state.mainStreamManager = undefined;
 			state.publisher = undefined;
 			state.subscribers = [];
 			state.OV = undefined;
-
     },
 
     UPDATE_MAINVIDEO_STREAMMANAGER: function (state, stream) {
       state.mainStreamManager = stream;
     },
+
+		SET_FIRSTQUESTIONPLAYER: function(state, value) {
+			state.firstQuestionPlayer = value[Math.floor(Math.random() * value.length)]
+		},
 
 		SET_ANSWERPLAYER: function(state, value) {
 			state.answerPlayer = value;
@@ -66,10 +75,35 @@ export default new Vuex.Store({
 		},
 		SET_VOTEPLAYER: function(state, value) {
 			state.votePlayer = value;
+			if (state.votePlayer == null) {
+				state.dialog = false
+			}
+			if (state.votePlayer != null) {
+				state.dialog = true
+			}
+			state.voteClick = true;
 			console.log(state.votePlayer)
-		}
-    
+		},
+
+		SET_SELECTPLAYER: function(state, value) {
+			state.selectPlayer = value;
+			console.log(state.selectPlayer)
+		},
+
+		SET_QUESTIONPLAYER: function(state, value) {
+			state.questionPlayer = value;
+			console.log(state.questionPlayer)
+		},
+		
+		CITIZEN_WIN: function(state) {
+			state.citizenWin = true
+		},
+
+		SPY_WIN: function(state) {
+			state.spyWin = true
+		},		    
   },
+
   actions: {
     joinSession: function ({ commit, dispatch, state}, data) {
 			// --- Get an OpenVidu object ---
@@ -109,7 +143,7 @@ export default new Vuex.Store({
               // --- Get your own camera stream with the desired properties ---              
               let publisher = state.OV.initPublisher(undefined, data.publishInfo);  
               state.mainStreamManager = publisher;
-							// state.subscribers.push(publisher) // subscribers 에 publisher 추가
+							state.subscribers.push(publisher) // subscribers 에 publisher 추가
               state.publisher = publisher;  
               // --- Publish your stream ---
               state.session.publish(state.publisher);
@@ -133,13 +167,11 @@ export default new Vuex.Store({
 			window.removeEventListener('beforeunload', this.leaveSession);
 		},
 
-		updateMainVideoStreamManager: function ({ commit, state }, stream) {
-      
+		updateMainVideoStreamManager: function ({ commit, state }, stream) {      
       console.log(this.publisher)
       console.log(stream)
 			if (state.mainStreamManager === stream) return;
-      commit('UPDATE_MAINVIDEO_STREAMMANAGER')
-			
+      commit('UPDATE_MAINVIDEO_STREAMMANAGER')			
 		},
 
 		/**
