@@ -40,7 +40,7 @@
               <button class="place10" @click="toggle(10)"><div id="x10" style="display:none"></div><p>해변</p></button> 
             </div>
             <div>
-              <button class="place11 dis" @click="toggle(11)"><div id="x11" style="display:none"></div><p>우주 정거장</p></button>  
+              <button class="place11" @click="toggle(11)"><div id="x11" style="display:none"></div><p>우주 정거장</p></button>  
               <button class="place12" @click="toggle(12)"><div id="x12" style="display:none"></div><p>잠수함</p></button>  
               <button class="place13" @click="toggle(13)"><div id="x13" style="display:none"></div><p>놀이공원</p></button>  
               <button class="place14" @click="toggle(14)"><div id="x14" style="display:none"></div><p>공항</p></button>  
@@ -155,14 +155,14 @@ export default {
 	computed: {
 		...mapState([
       "session",
-      "dialog",
+      "dialog",         // 투표 지목시 투표창 활성
       "questionPlayer", // 질문하는 사람
       "answerPlayer",   // 질문받는 사람
       "selectPlayer",   // 투표를 시작한 사람
       "votePlayer",     // 투표를 지목당한 사람
       "myUserName",
 			"mySessionId",	
-      "publisher"
+      "publisher",
 		]),
 		clientData () {
 			const { clientData } = this.getConnectionData();

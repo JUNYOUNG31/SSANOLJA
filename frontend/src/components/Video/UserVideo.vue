@@ -3,7 +3,7 @@
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
 	<div v-else ></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect">지목하기</v-btn></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn2"><v-btn @click="voteSelect">투표하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="voteClick">투표하기</v-btn></div>
 	<div><i v-if="ready" class="fas fa-check-circle"></i></div>
 	<p></p>
 </div>
@@ -55,6 +55,7 @@ export default {
       "answerPlayer",
 			"selectPlayer",
       "votePlayer",
+			"voteClick"       // 투표버튼 클릭 여부
 		])
 	},
 

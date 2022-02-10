@@ -22,6 +22,7 @@ export default new Vuex.Store({
 		selectPlayer: null,
 		votePlayer: null,		
 		dialog : false,
+		voteClick : false,
     mySessionId: '',
     myUserName: '',
 
@@ -75,6 +76,7 @@ export default new Vuex.Store({
 			if (state.votePlayer != null) {
 				state.dialog = true
 			}
+			state.voteClick = true;
 			console.log(state.votePlayer)
 		},
 		SET_SELECTPLAYER: function(state, value) {
