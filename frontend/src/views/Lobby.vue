@@ -77,7 +77,6 @@ export default {
 					})
 					.then(()=>{
 							
-						console.log(this.$refs.preview)
 						localStorage.setItem("isRoomMaker", false)
 						this.$refs.preview.dialog = true
 					

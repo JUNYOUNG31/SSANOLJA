@@ -13,13 +13,13 @@
         <v-col id="game"> <!--가운데 게임화면-->
           <span v-if="start">
             <span v-if="gameSelected == 'Spyfall'">
-              <spyfall :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></spyfall>
+              <spyfall :stream-manager="streamManagers" :gameRes="gameRes" :rules="rules"></spyfall>
             </span >
             <span v-if="gameSelected == 'Fakeartist'">
-              <fakeartist :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></fakeartist>
+              <fakeartist :stream-manager="streamManagers" :gameRes="gameRes" :rules="rules"></fakeartist>
             </span>
             <span v-if="gameSelected == 'Telestation'">
-              <telestation :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></telestation>
+              <telestation :stream-manager="streamManagers" :gameRes="gameRes" :rules="rules"></telestation>
             </span>
           </span>
           <div v-else><!--대기방 게임 초기화면(게임선택하는곳)-->
@@ -98,7 +98,7 @@ export default {
 		return {
       gameSelected: 'Spyfall',
       start : false,
-      spyFallVideo : null,
+      streamManagers : null,
       rules: null,
       gameRes: null,
       readyList: []
@@ -138,7 +138,7 @@ export default {
     // data에 userNicknames 배열이 생기면 활성화
     isReadyToStart() {
       // if (this.readyList.length == (this.userNicknames.length - 1)) {
-      if (this.readyList.length == 0) {
+      if (this.readyList.length == 2) {
         return true;
       }
       return false;
@@ -168,15 +168,13 @@ export default {
     })
 
     this.session.on('signal:gameStart', (event)=>{
-      this.spyFallVideo = this.session.streamManagers
+      this.streamManagers = this.session.streamManagers
       this.gameSelected = event.data
       this.start = true
       if (this.gameSelected == "Spyfall") {
-        console.log("여기는 룸")
-        console.log(this.session.streamManagers)
+        // console.log(this.session.streamManagers)
         this.$store.commit("SET_FIRSTQUESTIONPLAYER", this.session.streamManagers)
       }
-      this.beReady() // 게임 시작시 레디 해제
     })
 
     this.session.on('signal:backToLobby', ()=>{
@@ -185,14 +183,18 @@ export default {
 
     this.session.on('signal:ready', (event)=>{
       const person = event.data
-      console.log(person)
+      // console.log(person)
       if (this.readyList.includes(person)) {
         const idx = this.readyList.indexOf(person)
         this.readyList.splice(idx, 1)
       } else {
         this.readyList.push(person)
       }
-      console.log(this.readyList)
+      // console.log(this.readyList)
+    }),
+
+    this.session.on('signal:initRoom', ()=>{
+      this.readyList = []
     })
   },
   methods : {
@@ -254,6 +256,7 @@ export default {
             this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
             this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
             // this.start = true
+            this.sendMessageToEveryBody('initRoom')
           })
           .catch(error => console.log(error))
 
