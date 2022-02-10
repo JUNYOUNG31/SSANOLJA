@@ -27,6 +27,7 @@ export default new Vuex.Store({
 		spyWin : false,
     mySessionId: '',
     myUserName: '',
+		isRoomMaker: localStorage.getItem('isRoomMaker') ==='true',
 
   },
   mutations: {

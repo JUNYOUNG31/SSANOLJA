@@ -110,7 +110,7 @@
                 </v-card>
               </v-dialog>
             </div>
-            <v-btn x-large color="primary" dark v-bind="attrs" v-on="on" @click="spyfall" v-if="isSpy">스파이폴</v-btn>
+            <v-btn x-large color="primary" dark @click="spyfall" v-if="isSpy">스파이폴</v-btn>
           </v-col>
         </v-row>
       </v-container>

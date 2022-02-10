@@ -52,7 +52,6 @@
                 </v-col>
                 <v-col v-if="isRoomMaker">
                   <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart">
-                  <!-- <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart"> -->
                     <span>시작</span>
                   </v-btn>
                 </v-col>
@@ -102,7 +101,6 @@ export default {
       spyFallVideo : null,
       rules: null,
       gameRes: null,
-      isRoomMaker: localStorage.getItem('isRoomMaker') ==='true',
       readyList: []
 		}
 	},
@@ -125,6 +123,7 @@ export default {
 			"publisher",
 			"subscribers",
 			"mainStreamManager",
+      "isRoomMaker"
 		]),
     oddplayer: function () {
       return this.subscribers.filter((user, index) => {
@@ -139,7 +138,7 @@ export default {
     // data에 userNicknames 배열이 생기면 활성화
     isReadyToStart() {
       // if (this.readyList.length == (this.userNicknames.length - 1)) {
-      if (this.readyList.length == 2) {
+      if (this.readyList.length == 0) {
         return true;
       }
       return false;
@@ -173,6 +172,10 @@ export default {
       this.gameSelected = event.data
       this.start = true
       this.beReady() // 게임 시작시 레디 해제
+    })
+
+    this.session.on('signal:backToLobby', ()=>{
+      this.start = false
     })
 
     this.session.on('signal:ready', (event)=>{

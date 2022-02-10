@@ -4,7 +4,7 @@
       <ov-video :stream-manager="spyPlayer"/>
     </div>
 
-    <div class="place_check">
+    <div v-if="!spyWin && !citizenWin" class="place_check">
         <div>              
           <button class="place1" @click="decide('경찰서')"><div id="x1" style="display:none"></div><p>경찰서</p></button>  
           <button class="place2" @click="decide('자동차_정비소')"><div id="x2" style="display:none"></div><p>자동차 정비소</p></button>  
@@ -34,6 +34,17 @@
           <button class="place20" @click="decide('동물원')"><div id="x20" style="display:none"></div><p>동물원</p></button> 
         </div>
       </div>
+      <div v-if="spyWin">
+        <p>스파이 승리</p>
+      </div>
+      <div v-if="citizenWin">
+        <p>시민 승리</p>
+      </div>
+      <div v-if="isRoomMaker & (spyWin || citizenWin)">
+        <v-btn style="width:100%;" @click="backToLobby()">
+            <span>로비로 돌아가기</span>
+        </v-btn>
+      </div>
   </div>
 </template>
 
@@ -48,8 +59,6 @@ export default {
   data() {
     return {
       spyPlayer : null,
-      spyWin : false,
-      citizenWin : false,
       
     }
   },
@@ -64,7 +73,11 @@ export default {
   },
   computed: {
     ...mapState([
+      "session",
       "subscribers",
+      "spyWin",
+      "citizenWin",
+      "isRoomMaker"
     ])
   },
   mounted() {
@@ -75,16 +88,42 @@ export default {
 				}
 			}
 
+    this.session.on('signal:spyWin', ()=>{
+      this.$store.commit("SPY_WIN")
+    })
+
+    this.session.on('signal:citizenWin', () =>{
+      this.$store.commit("CITIZEN_WIN")
+    })
+
   },
 
   methods: {
-    // decide(here) {
-    //   if (this.place == here) {
-    //     this.spyWin = true
-    //   } else {
-    //     this.citizenWin = true
-    //   }
-    // }
+    backToLobby() {
+      this.sendMessageToEveryBody('','backToLobby')
+    },
+
+    sendMessageToEveryBody(data, type) {
+      this.session.signal({
+        data: data,
+        to: [],
+        type: type
+      })
+      .then(() => {})
+      .catch(error => {
+        console.error(error);
+      })
+		}, 
+
+    decide(here) {
+      if (this.place == here) {
+        this.sendMessageToEveryBody('','spyWin')
+        this.$store.commit("SPY_WIN")
+      } else {
+        this.sendMessageToEveryBody('','citizenWin')
+        this.$store.commit("CITIZEN_WIN")
+      }
+    }
   }
 }
 </script>
