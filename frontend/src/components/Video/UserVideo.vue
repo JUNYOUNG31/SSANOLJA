@@ -3,7 +3,7 @@
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
 	<div v-else ></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect">지목하기</v-btn></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn2"><v-btn @click="voteSelect">투표하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="voteClick">투표하기</v-btn></div>
 	<div><i v-if="ready" class="fas fa-check-circle"></i></div>
 	<p></p>
 </div>
@@ -21,8 +21,10 @@ export default {
 
 	data () {
 		return {			
+			questionVideo: null,
       answerVideo: null,
-      voteVideo : null
+      voteVideo : null,
+			selectVideo: null,
 		}
 	},
 
@@ -49,24 +51,15 @@ export default {
 		...mapState([
 			"session",
 			"subscribers",
+			"questionPlayer",
       "answerPlayer",
+			"selectPlayer",
       "votePlayer",
+			"voteClick"       // 투표버튼 클릭 여부
 		])
 	},
 
 	methods: {
-	getCircularReplacer() {
-		const seen = new WeakSet();
-		return (key, value) => {
-			if (typeof value === "object" && value !== null) {
-				if (seen.has(value)) {
-					return;
-				}
-				seen.add(value);
-			}
-			return value;
-		};
-	},
 		sendMessageToEveryBody(data, type) {
       this.session.signal({
         data: data,
@@ -94,25 +87,37 @@ export default {
 	},
 	mounted() {
 		this.session.on('signal:votePlayer', (event)=>{
-			const votedata = JSON.parse(event.data)
+			const votedata = JSON.parse(event.data) 
+			const selectdata = JSON.parse(event.from.data)
 			for (let index = 0; index < this.subscribers.length; index++) {
         let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
 				if (votedata.clientData == nickName.clientData) {
 					this.voteVideo = this.subscribers[index]
 				}
+				if (selectdata.clientData == nickName.clientData) {
+					this.selectVideo = this.subscribers[index]
+				}
 			}
-			this.$store.commit('SET_ANSWERPLAYER', null)
+			
+			this.$store.commit('SET_SELECTPLAYER', this.selectVideo)
+			// this.$store.commit('SET_ANSWERPLAYER', null)
+			// this.$store.commit('SET_QUESTIONPLAYER', null)
 			this.$store.commit('SET_VOTEPLAYER', this.voteVideo)	
     })
 
 		this.session.on('signal:answerPlayer', (event)=>{
+			const questiondata = JSON.parse(event.from.data)
 			const answerdata = JSON.parse(event.data)
 			for (let index = 0; index < this.subscribers.length; index++) {
         let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
 				if (answerdata.clientData == nickName.clientData) {
 					this.answerVideo = this.subscribers[index]
 				}
+				if (questiondata.clientData == nickName.clientData) {
+				this.questionVideo = this.subscribers[index]
+				}
 			}
+			this.$store.commit('SET_QUESTIONPLAYER', this.questionVideo)
 			this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
     })		
 	}

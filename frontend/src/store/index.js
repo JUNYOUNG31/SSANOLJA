@@ -17,8 +17,14 @@ export default new Vuex.Store({
     mainStreamManager: undefined,
     publisher: undefined,
     subscribers: [],
+		questionPlayer: null,
 		answerPlayer: null,
-		votePlayer: null,
+		selectPlayer: null,
+		votePlayer: null,		
+		dialog : false,
+		voteClick : false,
+		citizenWin : false,
+		spyWin : false,
     mySessionId: '',
     myUserName: '',
 
@@ -65,9 +71,30 @@ export default new Vuex.Store({
 		},
 		SET_VOTEPLAYER: function(state, value) {
 			state.votePlayer = value;
+			if (state.votePlayer == null) {
+				state.dialog = false
+			}
+			if (state.votePlayer != null) {
+				state.dialog = true
+			}
+			state.voteClick = true;
 			console.log(state.votePlayer)
-		}
-    
+		},
+		SET_SELECTPLAYER: function(state, value) {
+			state.selectPlayer = value;
+			console.log(state.selectPlayer)
+		},
+		SET_QUESTIONPLAYER: function(state, value) {
+			state.questionPlayer = value;
+			console.log(state.questionPlayer)
+		},
+		CITIZEN_WIN: function(state) {
+			state.citizenWin = true
+		},
+
+		SPY_WIN: function(state) {
+			state.spyWin = true
+		},		    
   },
   actions: {
     joinSession: function ({ commit, dispatch, state}, data) {
