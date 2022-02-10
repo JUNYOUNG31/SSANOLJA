@@ -66,7 +66,7 @@ export default new Vuex.Store({
     },
 
 		SET_FIRSTQUESTIONPLAYER: function(state, value) {
-			state.firstQuestionPlayer = value[Math.floor(Math.random() * value.length)]
+			state.firstQuestionPlayer = value
 		},
 
 		SET_ANSWERPLAYER: function(state, value) {

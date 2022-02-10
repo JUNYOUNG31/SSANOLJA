@@ -172,9 +172,8 @@ export default {
       this.gameSelected = event.data
       this.start = true
       if (this.gameSelected == "Spyfall") {
-        console.log("여기는 룸")
-        console.log(this.session.streamManagers)
-        this.$store.commit("SET_FIRSTQUESTIONPLAYER", this.session.streamManagers)
+        const firstquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
+        this.$store.commit("SET_FIRSTQUESTIONPLAYER", firstquestionplayerdata)
       }
       this.beReady() // 게임 시작시 레디 해제
     })

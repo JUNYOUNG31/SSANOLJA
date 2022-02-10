@@ -147,7 +147,6 @@ export default {
       timerEnabled: true,
       timerCount: 30,
       votetimeCnt: 30,
-      dialog: false,
       voteEnabled: false,
       voteList : {
         voteCnt : 0,
