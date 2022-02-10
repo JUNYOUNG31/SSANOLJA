@@ -17,6 +17,7 @@ export default new Vuex.Store({
     mainStreamManager: undefined,
     publisher: undefined,
     subscribers: [],
+		questionPlayer: null,
 		answerPlayer: null,
 		selectPlayer: null,
 		votePlayer: null,		
@@ -79,7 +80,13 @@ export default new Vuex.Store({
 		SET_SELECTPLAYER: function(state, value) {
 			state.selectPlayer = value;
 			console.log(state.selectPlayer)
-		},	
+		},
+		SET_QUESTIONPLAYER: function(state, value) {
+			state.questionPlayer = value;
+			console.log(state.questionPlayer)
+		},
+		
+    
   },
   actions: {
     joinSession: function ({ commit, dispatch, state}, data) {

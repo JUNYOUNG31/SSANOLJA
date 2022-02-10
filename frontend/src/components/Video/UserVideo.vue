@@ -21,6 +21,7 @@ export default {
 
 	data () {
 		return {			
+			questionVideo: null,
       answerVideo: null,
       voteVideo : null,
 			selectVideo: null,
@@ -50,6 +51,7 @@ export default {
 		...mapState([
 			"session",
 			"subscribers",
+			"questionPlayer",
       "answerPlayer",
 			"selectPlayer",
       "votePlayer",
@@ -103,13 +105,18 @@ export default {
     })
 
 		this.session.on('signal:answerPlayer', (event)=>{
+			const questiondata = JSON.parse(event.from.data)
 			const answerdata = JSON.parse(event.data)
 			for (let index = 0; index < this.subscribers.length; index++) {
         let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
 				if (answerdata.clientData == nickName.clientData) {
 					this.answerVideo = this.subscribers[index]
 				}
+				if (questiondata.clientData == nickName.clientData) {
+				this.questionVideo = this.subscribers[index]
+				}
 			}
+			this.$store.commit('SET_QUESTIONPLAYER', this.questionVideo)
 			this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
     })		
 	}

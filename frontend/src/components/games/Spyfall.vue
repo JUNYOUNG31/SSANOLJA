@@ -13,6 +13,9 @@
                 <div v-if="questionPlayer" >
                   <ov-video :stream-manager="questionPlayer"/>
                 </div>
+                <!-- <div v-else >
+                  <ov-video :stream-manager="firstQuestionPlayer"/>
+                </div> -->
               </v-col>
               <v-col class="Answer_video" cols="6">
                 <div v-if="answerPlayer" >
@@ -136,8 +139,8 @@ export default {
         agreeCnt: 0,
         disagreeCnt: 0,
       },
-      questionPlayer : this.streamManager[0],   
-}
+      firstQuestionPlayer : null,
+		}
 	},
 
   props: {
@@ -153,6 +156,7 @@ export default {
 		...mapState([
       "session",
       "dialog",
+      "questionPlayer", // 질문하는 사람
       "answerPlayer",   // 질문받는 사람
       "selectPlayer",   // 투표를 시작한 사람
       "votePlayer",     // 투표를 지목당한 사람
