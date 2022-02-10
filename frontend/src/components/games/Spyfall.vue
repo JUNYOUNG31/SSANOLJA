@@ -14,6 +14,9 @@
                   <div v-if="questionPlayer" >
                     <ov-video :stream-manager="questionPlayer"/>
                   </div>
+                  <div v-else-if="firstQuestionPlayer" >
+                    <ov-video :stream-manager="firstQuestionPlayer"/>
+                  </div>
                 </v-col>
                 <v-col class="Answer_video" cols="6">
                   <div v-if="answerPlayer" >
@@ -142,13 +145,10 @@ export default {
         isVoted : false,
         agreeCnt: 0,
         disagreeCnt: 0,
-      },
-      questionPlayer : this.streamManager[0],   
-      selectPlayer : this.streamManager[0],
+      },  
       isEnded: false,
       isSpy: false,
       spyName: null,
-      firstQuestionPlayer : null,
 		}
 	},
 
@@ -165,11 +165,12 @@ export default {
 	computed: {
 		...mapState([
       "session",
-      "dialog",         // 투표 지목시 투표창 활성
-      "questionPlayer", // 질문하는 사람
-      "answerPlayer",   // 질문받는 사람
-      "selectPlayer",   // 투표를 시작한 사람
-      "votePlayer",     // 투표를 지목당한 사람
+      "dialog",              // 투표 지목시 투표창 활성
+      "firstQuestionPlayer", // 처음 질문하는 사람
+      "questionPlayer",      // 질문하는 사람
+      "answerPlayer",        // 질문받는 사람
+      "selectPlayer",        // 투표를 시작한 사람
+      "votePlayer",          // 투표를 지목당한 사람
       "myUserName",
 			"mySessionId",	
       "publisher",
@@ -188,8 +189,7 @@ export default {
 
 	methods: {
     spyfall(){
-      this.pause()
-      
+      this.pause()      
       this.sendMessageToEveryBody(this.myUserName,'spyfall')
       this.isEnded = true
 
@@ -274,52 +274,45 @@ export default {
 		this.timerCount = this.rules.playTime
     this.play()    
 
+    this.session.on('signal:gameStart', ()=> {
+      console.log('여기 실행됨')
+    })
+
     this.session.on('signal:votePlayer', ()=> {
       this.pause()
     })
 
-
-
     this.session.on('signal:spyfall', (event)=>{
       this.spyName = event.data
       this.isEnded=true
-
     })
-
 
     this.session.on('signal:voteTrue', (event)=>{
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
       this.voteList.agreeCnt += 1
-      console.log(this.streamManager.length)  
-      // 투표가 끝나고 3초 보여주기      
-
       if ( this.voteList.voteCnt >= this.streamManager.length -1) {
         this.voteList.voteCnt = this.streamManager.length - 1        
+        // 투표가 끝나고 3초 보여주기     
         setTimeout(() => {
-          alert('투표가 완료 되었습니다.')
-          console.log("settime 하는중")
-        }, 3000);
-        console.log("settime 끝")
-        //만약 만장일치 일때
-        if (this.voteList.agreeCnt == this.streamManager.length - 1) {
-          // 스파이가 맞으면 시민 승리
-          if (this.spyName == JSON.parse(this.votePlayer.stream.connection.data).clientData) {
-            //spyfallend로 이동하고 // v-if 시민 승리
+          // 만약 만장일치일때
+          if (this.voteList.agreeCnt == this.streamManager.length - 1) {
+            // 스파이가 맞으면 시민 승리
+            if (this.spyName == JSON.parse(this.votePlayer.stream.connection.data).clientData) {            
               this.$store.commit("CITIZEN_WIN")
               this.isEnded = true
-          }          
-          // 스파이가 아니라면 스파이 승리
-          else {
-            //spyfallend로 이동하고 // v-if 스파이 승리
-            this.$store.commit("SPY_WIN")
-            this.isEnded = true
+            }          
+            // 스파이가 아니라면 스파이 승리
+            else {
+              this.$store.commit("SPY_WIN")
+              this.isEnded = true
+            }
           }
-        }
-        // 만약 만장일치가 아닐때
-        else {
-          this.restart()
-        }
+          // 만약 만장일치가 아닐때 다시 게임 진행
+          else {
+            this.restart()
+          }
+        }, 3000);
       }      
     })
 
@@ -327,18 +320,12 @@ export default {
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
       this.voteList.disagreeCnt += 1
-      console.log(this.streamManager.length-1)
       if ( this.voteList.voteCnt >= this.streamManager.length-1) {
         this.voteList.voteCnt = this.streamManager.length-1
-
         setTimeout(() => {
           alert('투표가 완료 되었습니다.')
-          console.log("settime 하는중")
           this.restart()
         }, 3000);
-        console.log("settime 끝")
-
-        
       }
     })
 
@@ -356,14 +343,12 @@ export default {
 </script>
 
 <style scoped>
-
 .container{
   padding: 0;
 }
 #game {
   padding: 0;
 }
-
 h2 {
   text-align: center;
   margin : 0;
@@ -372,7 +357,6 @@ h3 {
   text-align: center;
   margin : 0;
 }
-
 #questiont_tag {
   border-radius: 5px;
   padding: 0 1em;
@@ -389,11 +373,9 @@ h3 {
   padding: 30px 1em;
   background: #48484d;
 }
-
 #job_place_tag > div{
   margin-top: 20px;
 }
-
 .Question_video {
   position: relative;
 }
@@ -412,7 +394,6 @@ h3 {
 video {
   width: 350px;  
 }
-
 .right_menu {
   display: flex;
   flex-direction: column;  
@@ -434,7 +415,6 @@ video {
   margin: 0;
   background-color: rgba(68, 68, 68, 0.3);
 }
-
 .place_check button > div {
   height: 90px;
   width: 120px;
@@ -444,7 +424,6 @@ video {
   position: absolute;
   top: 0;
 }
-
 .place1 {
   background-image: url(../../assets/places_image/경찰서.jpg);
   background-size: cover;
@@ -545,10 +524,8 @@ video {
   background-size: cover;
   background-position: center;
 }
-
 .v-dialog > * {
-  height: 700px;
-  
+  height: 700px;  
 }
 .prosecutor {
   position: relative;
@@ -566,13 +543,11 @@ video {
   padding: 0;
   align-self: center;
 }
-
 .v-dialog .v-card {
   background-image: url(../../assets/places_image/투표배경.jpg);
   background-size: cover;  
   background-position: center;
 }
-
 #agree {
   text-align: center;
   background-color:rgb(138, 138, 138);

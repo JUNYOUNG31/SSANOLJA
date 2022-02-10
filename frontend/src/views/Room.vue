@@ -171,6 +171,11 @@ export default {
       this.spyFallVideo = this.session.streamManagers
       this.gameSelected = event.data
       this.start = true
+      if (this.gameSelected == "Spyfall") {
+        console.log("여기는 룸")
+        console.log(this.session.streamManagers)
+        this.$store.commit("SET_FIRSTQUESTIONPLAYER", this.session.streamManagers)
+      }
       this.beReady() // 게임 시작시 레디 해제
     })
 

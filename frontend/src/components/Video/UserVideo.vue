@@ -2,7 +2,7 @@
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
 	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect">지목하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="!answerPlayer && !firstQuestionPlayer">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="voteClick">투표하기</v-btn></div>
 	<div><i v-if="ready" class="fas fa-check-circle"></i></div>
 	<p></p>
@@ -51,6 +51,7 @@ export default {
 		...mapState([
 			"session",
 			"subscribers",
+			"firstQuestionPlayer",
 			"questionPlayer",
       "answerPlayer",
 			"selectPlayer",
