@@ -83,6 +83,13 @@
                     </v-col>
                     <v-col cols="2">
                       <img src="../../assets/places_image/투표용.jpg" alt="투표용" style="width:100px">
+                      <hr>
+
+                      <div id = vote_cnt> <!-- 투표 시간 추가중 --> 
+                        투표 시간 : {{this.votetimeCnt}}
+                        <br>
+                        
+                      </div>
                     </v-col>
                     <v-col cols="5" class="suspect">                        
                       <div v-if="votePlayer" >
@@ -130,14 +137,17 @@ export default {
       placeSrc: null,
       timerEnabled: true,
       timerCount: 30,
+      votetimeCnt: 30,
       dialog: false,
+      voteEnabled: false,
       voteList : {
         voteCnt : 0,
         isVoted : false,
         agreeCnt: 0,
         disagreeCnt: 0,
+        votetime: 0,
       },
-      questionPlayer : this.streamManager[0],   
+      questionPlayer : this.streamManager[Math.floor(Math.random()*this.streamManager.length)],   
       selectPlayer : this.streamManager[0],
 		}
 	},
@@ -154,6 +164,7 @@ export default {
 	computed: {
 		...mapState([
       "session",
+      "qiestionPlayer",
       "answerPlayer",
       "votePlayer",
       "myUserName",
@@ -187,6 +198,9 @@ export default {
 
     pause() {
       this.timerEnabled = false;
+      this.votetimeCnt = 30;
+      this.voteEnabled = true;
+      console.log(this.voteEnabled)
     },
     
     restart() {
@@ -221,11 +235,29 @@ export default {
             this.timerCount--;
           }, 1000);
         }
+        if(this.timerCount == 0) alert("끝")
+      },
+      immediate: false // 컴포넌트가 생성되자마자 즉시 실행
+    },
+
+    voteEnabled(value) {
+      if (value) {
+        setTimeout(() => {
+            this.votetimeCnt--;
+        }, 1000);
+      }
+    },
+    votetimeCnt: {
+      handler(value) {
+        if(value > 0 && this.voteEnabled) {
+          setTimeout(() => {
+            this.votetimeCnt--;
+          }, 1000);
+        }
       },
       immediate: false // 컴포넌트가 생성되자마자 즉시 실행
     }
   },
-
 
   mounted() {
     this.place = this.gameRes.place.split(' ').join('_')
@@ -247,6 +279,8 @@ export default {
         this.voteList.voteCnt = this.streamManager.length
       }
     })
+
+    
 
     this.session.on('signal:voteFalse', (event)=>{
       this.voteList = JSON.parse(event.data)
