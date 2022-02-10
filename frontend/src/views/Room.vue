@@ -3,10 +3,10 @@
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
-          <div class="playercamera">
-            <user-video :stream-manager="publisher" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
-          </div>
-          <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
+          <!-- <div class="playercamera">
+            <user-video :stream-manager="publisher" :game-selected="gameSelected" :start="start" :readyList="readyList"/> -->
+          <!-- </div> -->
+          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
             <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
         </div>     
@@ -63,7 +63,7 @@
           </div>
         </v-col>
           <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
-            <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
+            <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
               <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
             </div>
           </div>
@@ -154,6 +154,7 @@ export default {
     })
 
     this.session.on('signal:gameStart', (event)=>{
+      this.spyFallVideo = this.session.streamManagers
       this.gameSelected = event.data
       this.start = true
     })
@@ -200,8 +201,7 @@ export default {
       this.$router.push('lobby')
 		},
     gameSelect(game) {
-      this.gameSelected = game
-      this.spyFallVideo = this.session.streamManagers
+      this.gameSelected = game      
     },
     gameStart(game) {      
       axios.post(
@@ -229,7 +229,7 @@ export default {
             this.gameRes = resp.data
             this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
             this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
-            this.start = true
+            // this.start = true
           })
           .catch(error => console.log(error))
 
