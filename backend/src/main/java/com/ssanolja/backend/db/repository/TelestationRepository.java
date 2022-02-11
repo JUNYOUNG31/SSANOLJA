@@ -53,6 +53,29 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     List<Telestation> findDataIndexDataByGamesIdUserOrder(Integer gamesId, Integer dataIndex, Integer gamesId2, Integer round);
 
 
+    //----------VOTE RESULT--------------------
+    // 베스트, 워스트 유저 id 찾기 ( user_nickname 찾기 ) 
+    @Query(value = "select users_id from telestations where games_id = ? group by users_id order by SUM(best_vote) limit 1" , nativeQuery = true)
+    Integer findSumBestVoteUsersIdByGamesId(Integer gamesId);
+
+    @Query(value = "users_id from telestations where games_id = ? group by users_id order by SUM(worst_vote)limit 1" , nativeQuery = true)
+    Integer findSumWorstVoteUsersIdByGamesId(Integer gamesId);
+
+    // 베스트, 워스트 유저 최다 득표 컬럼 찾기 ( data, drawing_order 찾기 위해 )
+   @Query(value = "select * from telestations where games_id = ? and users_id = ? order by best_vote desc limit 1", nativeQuery = true)
+    Telestation findBestUserByGamesIdUsersId(Integer gamesId, Integer usersId);
+
+    @Query(value = "select * from telestations where games_id = ? and users_id = ? order by worst_vote desc limit 1", nativeQuery = true)
+    Telestation findWorstUserByGamesIdUsersId(Integer gamesId, Integer usersId);
+
+    // 이전 유저 컬럼 찾기 (  data, drawing_order 찾기 위해 )
+    @Query(value ="select * from telestations where games_id = ? and data_index = ? and drawing_order = ?", nativeQuery = true)
+    Telestation findPreUserByGamesIdDataIndexDrawingOrder(Integer gamesId, Integer dataIndex, Integer drawingOrder);
+
+    // 게임 방의 인원수 찾기
+    @Query(value = "select count(*) from telestations where games_id = ? and drawing_order = 1", nativeQuery = true)
+    Integer findCountByGamesIdDrawing_order(Integer gamesId);
+
 
 
 }
