@@ -66,13 +66,13 @@ export default new Vuex.Store({
     },
 
 		SET_FIRSTQUESTIONPLAYER: function(state, value) {
-			state.firstQuestionPlayer = value[Math.floor(Math.random() * value.length)]
+			state.firstQuestionPlayer = value
 		},
 
 		SET_ANSWERPLAYER: function(state, value) {
 			state.answerPlayer = value;
-			console.log(state.answerPlayer)
 		},
+
 		SET_VOTEPLAYER: function(state, value) {
 			state.votePlayer = value;
 			if (state.votePlayer == null) {
@@ -82,17 +82,14 @@ export default new Vuex.Store({
 				state.dialog = true
 			}
 			state.voteClick = true;
-			console.log(state.votePlayer)
 		},
 
 		SET_SELECTPLAYER: function(state, value) {
 			state.selectPlayer = value;
-			console.log(state.selectPlayer)
 		},
 
 		SET_QUESTIONPLAYER: function(state, value) {
 			state.questionPlayer = value;
-			console.log(state.questionPlayer)
 		},
 		
 		CITIZEN_WIN: function(state) {
@@ -101,7 +98,20 @@ export default new Vuex.Store({
 
 		SPY_WIN: function(state) {
 			state.spyWin = true
-		},		    
+		},
+
+		INIT_SPYFALL: function(state) {
+			state.spyWin = false
+			state.citizenWin = false
+			state.firstQuestionPlayer = null
+			state.questionPlayer = null
+			state.answerPlayer = null
+			state.selectPlayer = null
+			state.votePlayer = null
+			state.dialog = false
+			state.voteClick = false
+
+		}
   },
 
   actions: {
@@ -168,8 +178,8 @@ export default new Vuex.Store({
 		},
 
 		updateMainVideoStreamManager: function ({ commit, state }, stream) {      
-      console.log(this.publisher)
-      console.log(stream)
+      // console.log(this.publisher)
+      // console.log(stream)
 			if (state.mainStreamManager === stream) return;
       commit('UPDATE_MAINVIDEO_STREAMMANAGER')			
 		},

@@ -1,10 +1,18 @@
 <template>
   <div style="display : flex">
+    <div v-if="!spyWin && !citizenWin">
+      <p>
+        스파이가 나타났습니다!
+      </p>
+      <p>
+        스파이가 시민들이 있는 장소를 추리하는 중 입니다
+      </p>
+      </div>
     <div v-if="spyPlayer">
       <ov-video :stream-manager="spyPlayer"/>
     </div>
 
-    <div v-if="!spyWin && !citizenWin" class="place_check">
+    <div v-if="(!spyWin && !citizenWin) && isSpy" class="place_check">
         <div>              
           <button class="place1" @click="decide('경찰서')"><div id="x1" style="display:none"></div><p>경찰서</p></button>  
           <button class="place2" @click="decide('자동차_정비소')"><div id="x2" style="display:none"></div><p>자동차 정비소</p></button>  
@@ -58,14 +66,14 @@ export default {
 
   data() {
     return {
-      spyPlayer : null,
       
     }
   },
 
   props: {
-    spyName : String,
+    spyPlayer: Object,
     place: String,
+    isSpy: Boolean,
   },
 
   components: {
@@ -81,12 +89,7 @@ export default {
     ])
   },
   mounted() {
-    for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-				if (this.spyName == nickName.clientData) {
-          this.spyPlayer = this.subscribers[index]
-				}
-			}
+    
 
     this.session.on('signal:spyWin', ()=>{
       this.$store.commit("SPY_WIN")

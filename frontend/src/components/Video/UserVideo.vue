@@ -2,7 +2,7 @@
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
 	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="!answerPlayer && !firstQuestionPlayer">지목하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="!isAnswerPlayer && !isFirstQuestionPlayer">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="voteClick">투표하기</v-btn></div>
 	<div><i v-if="ready" class="fas fa-check-circle"></i></div>
 	<p></p>
@@ -25,6 +25,8 @@ export default {
       answerVideo: null,
       voteVideo : null,
 			selectVideo: null,
+			isAnswerPlayer : false,
+			isFirstQuestionPlayer : false,
 		}
 	},
 
@@ -36,6 +38,17 @@ export default {
 	},
 
 	computed: {		
+		...mapState([
+			"session",
+			"subscribers",
+			"firstQuestionPlayer",
+			"questionPlayer",
+			"answerPlayer",
+			"selectPlayer",
+			"votePlayer",
+			"voteClick",       // 투표버튼 클릭 여부
+			"myUserName"
+		]),
 		ready() {
 			if (this.readyList.includes(this.clientData)) {
 				return true;
@@ -48,16 +61,28 @@ export default {
 			const { clientData } = this.getConnectionData();
 			return clientData;
 		},		
-		...mapState([
-			"session",
-			"subscribers",
-			"firstQuestionPlayer",
-			"questionPlayer",
-      "answerPlayer",
-			"selectPlayer",
-      "votePlayer",
-			"voteClick"       // 투표버튼 클릭 여부
-		])
+
+	},
+
+	watch: {
+		answerPlayer: function() {
+			console.log(this.myUserName)
+			console.log(JSON.parse(this.answerPlayer.stream.connection.data).clientData)
+			if (this.myUserName == JSON.parse(this.answerPlayer.stream.connection.data).clientData) {
+				this.isAnswerPlayer = true
+			}
+			else {
+				this.isAnswerPlayer = false
+			}
+		},
+		FirstQuestionPlayer: function() {
+			if (this.myUserName == JSON.parse(this.FirstQuestionPlayer.stream.connection.data).clientData) {
+				this.isFirstQuestionPlayer = true
+			}
+			else {
+				this.isFirstQuestionPlayer = false
+			}
+		}		
 	},
 
 	methods: {
