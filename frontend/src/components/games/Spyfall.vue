@@ -147,14 +147,13 @@ export default {
       timerEnabled: true,
       timerCount: 30,
       votetimeCnt: 30,
-      dialog: false,
       voteEnabled: false,
+      isVoted : false,
       voteList : {
-        voteCnt : 0,
-        isVoted : false,
+        voteCnt : 0, 
         agreeCnt: 0,
         disagreeCnt: 0,
-      },  
+      },      
       isEnded: false,
       isSpy: false,
       spyName: null,
@@ -249,13 +248,13 @@ export default {
       con.style.display = (con.style.display!= 'none') ? "none":"block"
     },
     voteTrue() {
-      this.voteList.isVoted = true
+      this.isVoted = true
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')     
       console.log(this.myUserName)
       console.log(JSON.parse(this.votePlayer.stream.connection.data).clientData)
     },
     voteFalse() {
-      this.voteList.isVoted = true
+      this.isVoted = true
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
     }
   },
@@ -380,7 +379,7 @@ export default {
       this.voteList.voteCnt = 0
       this.voteList.agreeCnt = 0
       this.voteList.disagreeCnt = 0
-      this.voteList.isVoted = false
+      this.isVoted = false
     })  
   }
 }
