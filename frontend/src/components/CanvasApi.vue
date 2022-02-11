@@ -83,7 +83,7 @@ data:function(){
 },
   methods:{
     canvasComplete() {
-      $this.$emit("canvasComplete")
+      this.$emit("canvasCompleted")
     },
     saveClick(){//그림 저장하는 코드
       this.image = this.$refs.canvas.toDataURL("image/jpeg");

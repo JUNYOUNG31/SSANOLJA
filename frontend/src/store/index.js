@@ -118,7 +118,7 @@ export default new Vuex.Store({
               // --- Get your own camera stream with the desired properties ---
               
               let publisher = state.OV.initPublisher(undefined, data.publishInfo);
-  
+							// state.subscribers.push(publisher)
               state.mainStreamManager = publisher;
               state.publisher = publisher;
   

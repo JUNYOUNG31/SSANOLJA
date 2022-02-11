@@ -20,16 +20,61 @@
       <button class="btn btn-lg btn-success" @click="sendMessageToEveryBody('','completed')">입력 완료</button>
       </p>    
     </div>
+    
+    
     <div  v-show="gameMode ==='drawing'" style="display:flex; flex-direction: column; align-items: center;">
       {{drawingTime}}
-      <div id="gamearea">
-        <canvasApi ref="canvasApi"></canvasApi>
-      </div>
-      <p class="text-center">
-        <button class="btn btn-lg btn-success" @click="this.$refs.canvasAip.canavasComplete()">입력 완료</button>
-      </p> 
-      </div>
       <div>{{receiveKeyword}}</div>
+      <div id="gamearea">
+        <canvasApi ref="canvasApi" @canvasCompleted="canvasCompleted" @setDrawData="setDrawData"></canvasApi>
+      </div>
+    </div>
+
+
+    <div v-show="gameMode ==='album'" style="display:flex; flex-direction: column; align-items: center;">
+      <div v-for="(data,index) in recieveAlbum" :key="index">
+        <div v-if="index%2 === 0">
+            <p>{{data}}</p>
+            <button @click="bestPick(index)">좋아요</button>
+            <button @click="worstPick(index)">싫어요</button>
+        </div>
+        <div v-else>
+          <img :src="data" alt="">
+            <button @click="bestPick(index)">좋아요</button>
+            <button @click="worstPick(index)">싫어요</button>
+        </div>
+      </div>
+        <button v-show="isRoomMaker && round<personnel" @click="sendMessageToEveryBody('','nextAlbum')">다음앨범</button>
+        <button v-show="isRoomMaker && round===personnel" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
+        <p>{{round}}</p>
+    </div>
+
+    <div v-show="gameMode ==='best'" style="display:flex; flex-direction: column; align-items: center;">
+      <div>bestPlayer</div>
+      <div v-show="bestResultMode === 1">
+        <p>{{bestPreData}}</p>
+        <img :src="bestData" alt="">
+      </div>
+      <div v-show="bestResultMode === 2">
+        <img :src="bestPreData" alt="">
+        <p>{{bestData}}</p>
+      </div>
+      <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','worst')">worst보러가기</button>
+    </div>
+    
+    <div v-show="gameMode ==='worst'" style="display:flex; flex-direction: column; align-items: center;">
+      <div>worstPlayer</div>
+      <div v-show="worstResultMode === 1">
+        <p>{{worstPreData}}</p>
+        <img :src="worstData" alt="">
+      </div>
+      <div v-show="worstResultMode === 2">
+        <img :src="worstPreData" alt="">
+        <p>{{worstData}}</p>
+      </div>
+      <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','room')">다시하기</button>
+    </div>
+
     
   </div>
 </template>
@@ -53,22 +98,39 @@ export default {
 		return {
 			keyword: '',
       draw:'',
+      // 타이머
       drawingTime:this.rules.drawingTime,
       textingTime:this.rules.textingTime,
       voteTime: this.rules.voteTime,
       drawingEnabled: false,
       textingEnabled: false,
       votingEnabled: false,
-      gameMode: "drawing",
+
+      gameMode: "text",
+      
       drawingOrder:1, /* 라운드 */
       completedPlayers:0, /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */
       readyPlayers:0, /* 전 라운드에서 키워드나 그림정보를 웹소켓으로 받은 플레이어 수*/
-      personnel:3,
-      participant: new Map(),
-      targetUser: '',
-      receiveKeyword:'',
-      receiveDraw:'',
-      dataIndex:''
+      personnel:3, //인원수
+      participant: new Map(), // 참가자들
+      targetUser: '', // 웹소켓 받는 사람
+      receiveKeyword:'', // 받은 키워드
+      recieveDraw:'', // 받은 그림
+      recieveAlbum:null,
+      round:0,
+      gameId: this.gameRes.gameId,
+      dataIndex: 0, // 앨범 번호
+      worst:0,
+      best:0,
+      worstPlayer:'',
+      bestPlayer:'',
+      worstResultMode: 0, //1 이면 키워드 사진 2이면 사진 키워드
+      bestResultMode:0,
+      worstPreData:'',
+      worstData:'',
+      bestPreData:'',
+      bestData:'',
+      isRoomMaker:localStorage.getItem('isRoomMaker')
 		}
 	},
   methods: {
@@ -116,12 +178,18 @@ export default {
     pauseTexting(){ //Texting 타이머 off
       this.textingEnabled = false;
     },
-    startAlbum(){
-      this.votingEnabled = true;
+    worstPick(index) {
+      this.worst = index +1
     },
-    pauseAlbum(){
-      this.votingEnabled = false;
+    bestPick(index) {
+      this.best = index +1
     },
+    // startAlbum(){
+    //   this.votingEnabled = true;
+    // },
+    // pauseAlbum(){
+    //   this.votingEnabled = false;
+    // },
 
     // startTimer(){
     //   if (gmaeMode === 'drawing') {
@@ -137,10 +205,12 @@ export default {
     // 타이머 함수 모음 끝
 
     // 캔버스 관련 함수 시작
-    canvasComplete(){
+    canvasCompleted(){
       this.sendMessageToEveryBody('','completed')
+      console.log('캔버스에서 완료 버튼 눌렀나 ?')
     },
     setDrawData(imageData){
+      console.log('그림데이터 저장완료@@@@@@@@@@@@')
       this.draw = imageData
     },
     // 캔버스 관련 함수 시작
@@ -151,9 +221,9 @@ export default {
       this.textingTime = this.rules.textingTime
       axios({
         method:'POST',
-        url: '/api/telestations/InputKeyword',
+        url: '/api/telestations/saveData',
         data: {
-          keyword: this.keyword,
+          data: this.keyword,
           userNickname: this.myUserName,
           roomCode: this.mySessionId,
           drawingOrder: this.drawingOrder,
@@ -162,6 +232,7 @@ export default {
       })
       .then((res)=> {
         this.targetUser = res.data.userNickname
+        this.keyword = ''
         this.sendMessageToTargetUser(JSON.stringify(res.data), "keyword", this.participant.get(this.targetUser))
       })
     },
@@ -169,17 +240,18 @@ export default {
       this.pauseDrawing()
       this.DrawingTime = this.rules.DrawingTime
       this.$refs.canvasApi.saveClick()
+      console.log(this.drawingOrder)
+      console.log(this.myUserName,this.mySessionId,this.drawingOrder,this.personnel,this.draw)
       // canvas에서 그림 축출해서 this.darw에 저장
       axios({
         method:'POST',
-        url: '/api/telestations/InputKeyword',
+        url: '/api/telestations/saveData',
         data: {
-          draw: this.draw,
+          data: this.draw,
           userNickname: this.myUserName,
           roomCode: this.mySessionId,
           drawingOrder: this.drawingOrder,
           personnel: this.personnel,
-          dataIndex: this.dataIndex,
         }
       })
       .then((res)=> {
@@ -188,27 +260,80 @@ export default {
       })
     },
     startTextRound() {
-      this.sendMessageToEveryBody('', "drawingOrder")
+      // this.sendMessageToEveryBody('', "drawingOrder")
+      this.drawingOrder++;
       if (this.drawingOrder === this.personnel +1) {
-        this.startAlbum()
+        this.startAlbumRound()
       }else {
       this.gameMode = 'text'
       this.startTexting()
       }
     },
     startDrawRound() {
-      this.sendMessageToEveryBody('', "drawingOrder")
+      // this.sendMessageToEveryBody('', "drawingOrder")
+      this.drawingOrder++
       if (this.drawingOrder === this.personnel +1) {
-        this.startAlbum()
+        this.startAlbumRound()
       }else {
         this.gameMode = 'drawing'
         this.startDrawing()
       }
     },
-    startAlbum(){
-      console.log('앨범라운드')
+    startAlbumRound(){
+      this.round ++;
+      if (this.round <= this.personnel) {
+        axios({
+          method:'POST',
+          url: '/api/telestations/showAlbum',
+          data: {
+            gameId: this.gameId,
+            round: this.round,
+            dataIndex: this.dataIndex,
+            worstVote: this.worst,
+            bestVote: this.best,
+          }
+        })
+        .then((res)=> {
+          this.dataIndex = res.data.dataIndex
+          this.recieveAlbum = res.data.dataList
+        })
+        .catch((err)=> {
+          console.log(err, '앨범에러')
+        })
+        this.gameMode = 'album'     
+      }else {
+        this.startResult()
+      }
     },
-    //라운드 끝내기& 시작 함수 모음 끝
+    startResult() {
+      axios({
+        method:'POST',
+        url: '/api/telestations/voteResult',
+        data: {
+          gameId: this.gameId
+        }
+      })
+      .then((res)=> {
+        this.bestPlayer = res.data.best.nickName
+        this.worstPlayer = res.data.worst.nickName
+        this.worstPreData = res.data.worst.preData
+        this.worstData = res.data.worst.data
+        this.bestPreData = res.data.best.preData
+        this.bestData = res.data.best.data
+        if (res.data.best.preDrawingOrder%2 === 1) {
+          this.bestResultMode = 1
+        }else {
+          this.bestResultMode = 2
+        }
+        if (res.data.worst.preDrawingOrder%2 === 1) {
+          this.worstResultMode = 1
+        }else {
+          this.worstResultMode = 2
+        }
+        this.gameMode='best'
+      })
+      
+    },
 
 
 
@@ -220,7 +345,8 @@ export default {
     "mySessionId",
     "subscribers",
     "publisher",
-    "session"
+    "session",
+    "isRoomMaker",
     ]),
   },
   watch: {
@@ -241,7 +367,7 @@ export default {
                     this.drawingTime--;
                 }, 1000);
             }
-            if (value === 0) {
+            else if (value === 0) {
               this.endDrawRound()
             }
         },
@@ -262,7 +388,27 @@ export default {
                     this.textingTime--;
                 }, 1000);
             }
-            if (value === 0) {
+            else if (value === 0) {
+              this.endTextRound()
+            }
+        },
+        immediate: false
+    },
+    votingEnabled(value) {
+          if (value) {
+              setTimeout(() => {
+                  this.voteTime--;
+              }, 1000);
+          }
+    },
+    voteTime: {
+        handler(value) {
+            if (value > 0 && this.votingEnabled) {
+                setTimeout(() => {
+                    this.voteTime--;
+                }, 1000);
+            }
+            else if (value === 0) {
               this.endTextRound()
             }
         },
@@ -275,7 +421,7 @@ export default {
           this.completedPlayers = 0
           this.endTextRound()
         }
-        if (value === this.personnel && this.gameMode==='drawing') {
+        else if (value === this.personnel && this.gameMode==='drawing') {
           this.completedPlayers = 0
           this.endDrawRound()
         }
@@ -287,7 +433,7 @@ export default {
           this.readyPlayers = 0
           this.startDrawRound()
         }
-        if (value === this.personnel && this.gameMode==='drawing') {
+        else if (value === this.personnel && this.gameMode==='drawing') {
           this.readyPlayers = 0
           this.startTextRound()
         }
@@ -299,14 +445,12 @@ export default {
     this.getUsers()
     this.session.on('signal:keyword', (event) => { // 입력한 키워드 백에 보내기
       let data = JSON.parse(event.data)
-      this.receiveKeyword = data.keyword
-      this.dataIndex = data.dataIndex
+      this.receiveKeyword = data.data
       this.sendMessageToEveryBody('', "ready")
     })
     this.session.on('signal:draw', (event) => { // 그린 그림 백에 보내기 
       let data = JSON.parse(event.data)
-      this.receiveDraw = data.draw
-      this.dataIndex = data.dataIndex
+      this.recieveDraw = data.data
       this.sendMessageToEveryBody('', "ready")
     })
     this.session.on('signal:completed', (event) => { // 입력버튼 누르면 완료된 사람 +1
@@ -317,9 +461,20 @@ export default {
       console.log(event.data)
       this.readyPlayers++
     })
-    this.session.on('signal:drawingOrder', (event) => { // 각 라운드 시작시 라운드 +1
+    this.session.on('signal:nextAlbum', (event) => { // 그린 그림 백에 보내기 
       console.log(event.data)
-      this.drawingOrder++
+      this.startAlbumRound()
+    })
+    this.session.on('signal:result', (event) => { // 그린 그림 백에 보내기 
+      console.log(event.data)
+      this.startResult()
+    })
+    this.session.on('signal:worst', (event) => { // 그린 그림 백에 보내기 
+      console.log(event.data)
+      this.gameMode = 'worst'
+    })
+    this.session.on('signal:result', (event) => { // 그린 그림 백에 보내기 
+      this.$router.push({ name: 'Room', params: { joinCode: this.joinCode}})
     })
   
 

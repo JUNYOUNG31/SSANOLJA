@@ -70,7 +70,7 @@ import axios from 'axios'
     insertUser: function() {
       axios({
                 method:'POST',
-                url: '/api/login/postTest',
+                url: '/api/login/userLogin',
          data: { 
            userEmail : this.userData.userEmail,
            userNickname : this.userData.userNickname

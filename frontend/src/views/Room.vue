@@ -172,7 +172,7 @@ export default {
         '/api/games/rules',
 
         JSON.stringify({
-          personnel: 2, // userNicknames의 길이로 대체
+          personnel: 3, // userNicknames의 길이로 대체
           selectedGame: game
         })
       )
@@ -183,7 +183,7 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : ["조성현","강광은"],
+              userNicknames : ["조성현","강광은","배소원"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),
