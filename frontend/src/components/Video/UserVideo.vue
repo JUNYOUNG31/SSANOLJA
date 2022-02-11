@@ -2,10 +2,9 @@
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
 	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="isMyself || (!isAnswerPlayer && !isFirstQuestionPlayer)">지목하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="(!isAnswerPlayer && !isFirstQuestionPlayer)">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="isMyself || voteClick">투표하기</v-btn></div>
 	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
-	<p></p>
 </div>
 </template>
 
@@ -66,23 +65,25 @@ export default {
 	},
 
 	watch: {
-		answerPlayer: function() {
-			console.log(this.myUserName)
-			console.log(JSON.parse(this.answerPlayer.stream.connection.data).clientData)
-			if (this.myUserName == JSON.parse(this.answerPlayer.stream.connection.data).clientData) {
-				this.isAnswerPlayer = true
+		answerPlayer: function() {			
+			if (this.answerPlayer != null)	{		
+				if (this.myUserName == JSON.parse(this.answerPlayer.stream.connection.data).clientData) {
+					this.isAnswerPlayer = true
+				}
 			}
 			else {
 				this.isAnswerPlayer = false
 			}
 		},
-		FirstQuestionPlayer: function() {
-			if (this.myUserName == JSON.parse(this.FirstQuestionPlayer.stream.connection.data).clientData) {
-				this.isFirstQuestionPlayer = true
+		firstQuestionPlayer: function() {
+			if (this.firstQuestionPlayer != null)	{		
+				if (this.myUserName == JSON.parse(this.firstQuestionPlayer.stream.connection.data).clientData) {
+					this.isFirstQuestionPlayer = true
+				}
 			}
 			else {
 				this.isFirstQuestionPlayer = false
-			}
+			}			
 		}		
 	},
 
@@ -146,6 +147,7 @@ export default {
 				this.questionVideo = this.subscribers[index]
 				}
 			}
+			this.$store.commit('SET_FIRSTQUESTIONPLAYER', null)
 			this.$store.commit('SET_QUESTIONPLAYER', this.questionVideo)
 			this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
     })		

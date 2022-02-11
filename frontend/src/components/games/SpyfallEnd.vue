@@ -131,7 +131,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .place_check {
   display: flex;
   flex-direction: column;
