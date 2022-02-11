@@ -46,14 +46,10 @@ public class GameController {
         List<User> users = userService.getUserList(userNicknames);
         String selectedGame = startGameReq.getSelectedGame();
         if (selectedGame.equals("Spyfall")) {
-//            spyfallService
             return new ResponseEntity<>(spyfallService.makeSpyfall(users, game), HttpStatus.CREATED);
         }
         else if (selectedGame.equals("Telestation")) {
-//            telestationService
-            telestationService.usersInsert(users, game);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
-//            return new ResponseEntity<>(telestationService.userInsert(users, game), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(telestationService.usersInsert(users, game), HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

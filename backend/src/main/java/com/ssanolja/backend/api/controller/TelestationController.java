@@ -32,24 +32,24 @@ public class TelestationController {
 
 
     @GetMapping("/showAlbum")//라운드마다 앨범 보내주는거
-    public ResponseEntity<List<Telestation>> showAlbum(@RequestBody TelestationReq telestationReq) throws  Exception {
+    public ResponseEntity<Map<String,Object>> showAlbum(@RequestBody TelestationReq telestationReq) throws  Exception {
 
 
-        List<Telestation> res = telestationService.showAlbum(telestationReq);
+        Map<String,Object> res = telestationService.showAlbum(telestationReq);
 
         System.out.println("res : " + res);
 
         return new ResponseEntity<>(res,  HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/voteResult")
-    public ResponseEntity<List<Telestation>> voteResult(@RequestBody TelestationReq telestationReq) throws Exception{
-
-        List<Telestation> res = telestationService.voteResult(telestationReq);
-        System.out.println("res : " + res);
-
-        return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
-    }
+//    @GetMapping("/voteResult")
+//    public ResponseEntity<List<Telestation>> voteResult(@RequestBody TelestationReq telestationReq) throws Exception{
+//
+//        List<Telestation> res = telestationService.voteResult(telestationReq);
+//        System.out.println("res : " + res);
+//
+//        return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+//    }
 
 
 
