@@ -138,7 +138,7 @@ export default {
     // data에 userNicknames 배열이 생기면 활성화
     isReadyToStart() {
       // if (this.readyList.length == (this.userNicknames.length - 1)) {
-      if (this.readyList.length == 1) {
+      if (this.readyList.length == 0) {
         return true;
       }
       return false;
@@ -171,10 +171,7 @@ export default {
       this.streamManagers = this.session.streamManagers
       this.gameSelected = event.data
       this.start = true
-      if (this.gameSelected == "Spyfall") {
-        const firstquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
-        this.$store.commit("SET_FIRSTQUESTIONPLAYER", firstquestionplayerdata)
-      }
+      this.readyList=[]
     })
 
     this.session.on('signal:backToLobby', ()=>{
@@ -191,11 +188,6 @@ export default {
       } else {
         this.readyList.push(person)
       }
-      // console.log(this.readyList)
-    }),
-
-    this.session.on('signal:initRoom', ()=>{
-      this.readyList = []
     })
   },
   methods : {
@@ -257,7 +249,7 @@ export default {
             this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
             this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
             // this.start = true
-            this.sendMessageToEveryBody('initRoom')
+            // this.sendMessageToEveryBody('initRoom')
           })
           .catch(error => console.log(error))
 
