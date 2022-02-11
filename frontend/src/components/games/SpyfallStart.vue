@@ -22,6 +22,7 @@ export default {
   props: {
     job: String,
     placeSrc: String,
+    place: String,
   },
 
   computed: {

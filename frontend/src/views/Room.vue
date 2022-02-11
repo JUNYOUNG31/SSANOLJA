@@ -135,14 +135,14 @@ export default {
         return index % 2 === 0
       })
     },
-    // data에 userNicknames 배열이 생기면 활성화
+
     isReadyToStart() {
-      // if (this.readyList.length == (this.userNicknames.length - 1)) {
-      if (this.readyList.length == 1) {
+      // if (this.readyList.length == (this.subscribers.length - 1)) {
+      if (this.readyList.length == 0) {
         return true;
       }
       return false;
-      
+      // }
     }
     
 	},

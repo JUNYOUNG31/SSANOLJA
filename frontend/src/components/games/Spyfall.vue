@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!isStarted">
-      <spyfall-start :job="job" :place-src="placeSrc"></spyfall-start>
+      <spyfall-start :job="job" :place-src="placeSrc" :place="place"></spyfall-start>
     </div>
     <div v-else>
       <div v-if="!isEnded">
@@ -129,7 +129,7 @@
         </v-container>
       </div>
       <div v-if="isEnded">
-        <spyfallEnd :spy-player="spyPlayer" :place="place" :id-spy="isSpy"></spyfallEnd>
+        <spyfallEnd :spy-player="spyPlayer" :place="place" :is-spy="isSpy"></spyfallEnd>
       </div>
     </div>
   </div>

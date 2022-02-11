@@ -2,8 +2,8 @@
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
 	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="!isAnswerPlayer && !isFirstQuestionPlayer">지목하기</v-btn></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="voteClick">투표하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="isMyself || (!isAnswerPlayer && !isFirstQuestionPlayer)">지목하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="isMyself || voteClick">투표하기</v-btn></div>
 	<div><i v-if="ready" class="fas fa-check-circle"></i></div>
 	<p></p>
 </div>
@@ -27,6 +27,7 @@ export default {
 			selectVideo: null,
 			isAnswerPlayer : false,
 			isFirstQuestionPlayer : false,
+			isMyself: false
 		}
 	},
 
@@ -112,6 +113,8 @@ export default {
 		}
 	},
 	mounted() {
+		this.isMyself = (this.myUserName === this.clientData)
+
 		this.session.on('signal:votePlayer', (event)=>{
 			const votedata = JSON.parse(event.data) 
 			const selectdata = JSON.parse(event.from.data)
