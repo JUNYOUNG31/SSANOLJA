@@ -71,8 +71,8 @@ export default new Vuex.Store({
 
 		SET_ANSWERPLAYER: function(state, value) {
 			state.answerPlayer = value;
-			console.log(state.answerPlayer)
 		},
+
 		SET_VOTEPLAYER: function(state, value) {
 			state.votePlayer = value;
 			if (state.votePlayer == null) {
@@ -82,17 +82,14 @@ export default new Vuex.Store({
 				state.dialog = true
 			}
 			state.voteClick = true;
-			console.log(state.votePlayer)
 		},
 
 		SET_SELECTPLAYER: function(state, value) {
 			state.selectPlayer = value;
-			console.log(state.selectPlayer)
 		},
 
 		SET_QUESTIONPLAYER: function(state, value) {
 			state.questionPlayer = value;
-			console.log(state.questionPlayer)
 		},
 		
 		CITIZEN_WIN: function(state) {

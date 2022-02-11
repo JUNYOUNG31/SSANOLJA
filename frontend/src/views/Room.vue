@@ -138,7 +138,7 @@ export default {
     // data에 userNicknames 배열이 생기면 활성화
     isReadyToStart() {
       // if (this.readyList.length == (this.userNicknames.length - 1)) {
-      if (this.readyList.length == 0) {
+      if (this.readyList.length == 1) {
         return true;
       }
       return false;
