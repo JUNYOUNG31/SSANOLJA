@@ -20,6 +20,11 @@ public class TelestationReq implements GameRes {
     private Integer personnel;
     private Integer dataIndex;
     private Integer round;
-    private Integer gamesId;
+
+    private Integer gameId;
+
+    private Integer bestVote;
+    private Integer worstVote;
+
 
 }

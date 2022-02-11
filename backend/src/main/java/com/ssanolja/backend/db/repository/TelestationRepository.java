@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TelestationRepository extends JpaRepository<Telestation, Integer> {
@@ -53,13 +52,20 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     Integer findDataIndexByGamesIdUserOrder(Integer gamesId, Integer round);
 
     //--------DataGet-------------------
-    @Query(value = "select data from telestations where games_id = ? and data_index = ?", nativeQuery = true)
-    List<Telestation> findDataByGamesIdUserOrder(Integer gamesId, Integer dataIndex);
+    @Query(value = "select data from telestations where games_id = ? and data_index = ? and drawing_order = ?", nativeQuery = true)
+    String findDataByGamesIdUserOrder(Integer gamesId, Integer dataIndex, Integer drawingOrder);
 
 
     //----------VOTE--------------------
-    @Query(value = "select best_vote, worst_vote  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
-    Telestation findVoteByDataIndexandDrawingOrder(Integer dataIndex, Integer drawinOrder);
+    @Query(value = "select best_vote  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
+    Integer findBestByDataIndexandDrawingOrder(Integer dataIndex, Integer bestVote);
+
+    @Query(value = "select worst_vote  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
+    Integer findWorstByDataIndexandDrawingOrder(Integer dataIndex, Integer worstVote);
+
+    @Query(value = "select *  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
+    Telestation findByIndexAndDrawingOrder(Integer dataIndex, Integer bestVote);
+
 
     //--------DataGet-------------------
     @Query(value = "select data_index, data from telestations where games_id = ? and data_index = ( select data_index from telestations where games_id = ? and user_order = ? and drawing_order = 1)", nativeQuery = true)

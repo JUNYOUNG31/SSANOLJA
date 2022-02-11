@@ -31,7 +31,7 @@ public class TelestationController {
     }
 
 
-    @GetMapping("/showAlbum")//라운드마다 앨범 보내주는거
+    @PostMapping("/showAlbum")//라운드마다 앨범 보내주는거
     public ResponseEntity<Map<String,Object>> showAlbum(@RequestBody TelestationReq telestationReq) throws  Exception {
 
 
@@ -42,7 +42,7 @@ public class TelestationController {
         return new ResponseEntity<>(res,  HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/voteResult") // 투표 최종 결과 보내주는거
+    @PostMapping("/voteResult") // 투표 최종 결과 보내주는거
     public ResponseEntity<Map<String, Object>> voteResult(@RequestBody TelestationReq telestationReq) throws Exception{
 
         Map<String, Object> res = telestationService.voteResult(telestationReq);

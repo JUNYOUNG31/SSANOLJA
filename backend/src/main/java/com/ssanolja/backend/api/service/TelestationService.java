@@ -12,8 +12,6 @@ import com.ssanolja.backend.db.repository.TelestationRepository;
 import com.ssanolja.backend.db.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -49,7 +47,7 @@ public class TelestationService {
                         .userOrder(i+1)
                         .build());
             }
-
+            System.out.println("game_id 보내는거 확인"+ game);
             telestationRes.setPlayGameId(game.getPlayGameId());
 
             return telestationRes;
@@ -126,12 +124,12 @@ public class TelestationService {
         }
 
         //--------------------DUMMY-------------------------------
-        SetDataAndDataIndex(user1.getUsersId(), game.get().getPlayGameId(), telestationReq, dataIndex1);
-        SetDataAndDataIndex(user2.getUsersId(), game.get().getPlayGameId(), telestationReq, dataIndex2);
+        SetDataAndDataIndex(user1.getUsersId(), game.get().getPlayGameId(), telestationReq.getDrawingOrder(), "조성현데이타", dataIndex1);
+        SetDataAndDataIndex(user2.getUsersId(), game.get().getPlayGameId(), telestationReq.getDrawingOrder(), "data:image/jpeg", dataIndex2);
         //------------------------------------------------------------------
 
 
-        Telestation tel = SetDataAndDataIndex(user.getUsersId(), game.get().getPlayGameId(), telestationReq, dataIndex);
+        Telestation tel = SetDataAndDataIndex(user.getUsersId(), game.get().getPlayGameId(), telestationReq.getDrawingOrder(), telestationReq.getData(), dataIndex);
 
 
        //-------------------------------------뿌리는 과정---------------------------------
@@ -189,9 +187,9 @@ public class TelestationService {
 
 
 
-   private Telestation SetDataAndDataIndex(Integer usersId, Integer gamesId, TelestationReq telestationReq, Integer dataIndex){
-       Telestation tel = telestationRepository.FindByUsersIdGamesIdDrawingOrder(usersId, gamesId, telestationReq.getDrawingOrder());
-       tel.setData(telestationReq.getData());
+   private Telestation SetDataAndDataIndex(Integer usersId, Integer gamesId, Integer drawingOrder, String data, Integer dataIndex){
+       Telestation tel = telestationRepository.FindByUsersIdGamesIdDrawingOrder(usersId, gamesId, drawingOrder);
+       tel.setData(data);
        tel.setDataIndex(dataIndex);
        telestationRepository.save(tel);
        return tel;
@@ -199,26 +197,43 @@ public class TelestationService {
 
 
     public   Map<String,Object> showAlbum(TelestationReq telestationReq){
-
+        System.out.println("111111111111111111telestationReq" + telestationReq);
         if(telestationReq.getRound() != 1){
             System.out.println("2.라운드부터 여기서 투표 결과 저장합니다!");
-            Telestation telestation =  findVote(telestationReq);
-            System.out.println("2-1. telestationVote잘 찾아 왔는지 " + telestation.getBestVote() + "베스트 : 워스트" + telestation.getWorstVote());
-            telestation.setBestVote(telestation.getBestVote() + 1);
-            telestation.setWorstVote(telestation.getWorstVote() + 1);
-            telestationRepository.save(telestation);
+            System.out.println("d인덱스화긴화긴 " + telestationReq.getDataIndex());
+            System.out.println("d인덱스화긴화긴 " + telestationReq.getBestVote());
+            System.out.println("d인덱스화긴화긴 " + telestationReq.getWorstVote());
+
+            Integer bestVote = telestationRepository.findBestByDataIndexandDrawingOrder(telestationReq.getDataIndex(),  telestationReq.getBestVote());
+            Integer worstVote = telestationRepository.findWorstByDataIndexandDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
+            System.out.println("vote" + bestVote + "worst" + worstVote);
+
+//            Telestation telestation = telestationRepository.findbyDataIndexandDrawingOrder(telestationReq.getDataIndex(), telestationReq.getDrawingOrder());
+
+            Telestation bestTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getBestVote());
+            bestTele.setBestVote(bestVote + 1);
+            telestationRepository.save(bestTele);
+            Telestation worstTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
+            worstTele.setWorstVote(worstVote + 1);
+            telestationRepository.save(worstTele);
 
         }
 
         System.out.println("1. 데이타 뽑아가려고 여기에 도착했습니다!!!");
         Map<String, Object> returnData = new HashMap<String, Object>();
-
-        Integer dataIndex = telestationRepository.findDataIndexByGamesIdUserOrder(telestationReq.getGamesId(), telestationReq.getRound());
+        System.out.println("gamesId" + telestationReq.getGameId() + "getRound" + telestationReq.getRound());
+        Integer dataIndex = telestationRepository.findDataIndexByGamesIdUserOrder(telestationReq.getGameId(), telestationReq.getRound());
         System.out.println("DataIndex 확인 " + dataIndex);
 
-        List<Telestation> getAlbumList = getAlbumList(telestationReq, dataIndex);
+//        List<Telestation> getAlbumList = getAlbumList(telestationReq, dataIndex);
+        List<String> getAlbumList = new ArrayList<>();
+        Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
+        for(int i = 1; i <= personnel; i ++){
+           getAlbumList.add(getAlbumList(telestationReq, dataIndex, i));
+        }
+
         returnData.put("dataIndex",dataIndex);
-        returnData.put("data", getAlbumList );
+        returnData.put("dataList", getAlbumList );
         System.out.println("returnData가 어떻게 찍히는지 궁금하다 "+returnData);
 
         return returnData;
@@ -226,14 +241,9 @@ public class TelestationService {
 
 
 
-    private Telestation findVote(TelestationReq telestationReq){
-        Telestation telestation = telestationRepository.findVoteByDataIndexandDrawingOrder(telestationReq.getDataIndex(), telestationReq.getDrawingOrder());
-        return telestation;
-    }
-
-
-    private List<Telestation> getAlbumList(TelestationReq telestationReq, Integer dataIndex){
-        return telestationRepository.findDataByGamesIdUserOrder(telestationReq.getGamesId(), dataIndex);
+    private String getAlbumList(TelestationReq telestationReq, Integer dataIndex, Integer drawingOrder){
+        System.out.println("telestationReq로조회ㅣㅣㅣㅣ");
+        return telestationRepository.findDataByGamesIdUserOrder(telestationReq.getGameId(), dataIndex, drawingOrder);
     }
 
     //앨범 끝나고 투표 결과{
@@ -248,7 +258,7 @@ public class TelestationService {
 
     public Map<String, Object> voteResult(TelestationReq telestationReq){
 
-        Integer gameId = telestationReq.getGamesId();
+        Integer gameId = telestationReq.getGameId();
         Integer bestUsersId = telestationRepository.findSumBestVoteUsersIdByGamesId(gameId);
         Integer worstUserId = telestationRepository.findSumWorstVoteUsersIdByGamesId(gameId);
 
@@ -265,12 +275,12 @@ public class TelestationService {
         String preBestUserData = null;
 
         if(bestUser.getDrawingOrder() - 1 == 0){
-            Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGamesId());
-            Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGamesId(), bestUser.getDataIndex(), personnel);
+            Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
+            Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
             preBestUserDrawingOrder = preBestUser.getDrawingOrder();
             preBestUserData = preBestUser.getData();
         }else{
-            Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGamesId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
+            Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
             preBestUserDrawingOrder = preBestUser.getDrawingOrder();
             preBestUserData = preBestUser.getData();
         }
@@ -287,13 +297,13 @@ public class TelestationService {
         Integer preWorstUserDrawingOrder = 0;
         String preWorstUserData = null;
         if(worstUser.getDrawingOrder() - 1 == 0){
-            Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGamesId());
-            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGamesId(), bestUser.getDataIndex(), personnel);
+            Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
+            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
             preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
             preWorstUserData = preWorstUser.getData();
 
         }else{
-            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGamesId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
+            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
             preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
             preWorstUserData = preWorstUser.getData();
         }

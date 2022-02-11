@@ -1,5 +1,5 @@
 <template>
-  <div class="telestation-container">
+  <div class="telestation-container" style = "color : red;">
     <h1>텔레스테이션</h1>
     <div v-show="gameMode ==='text'" style="display:flex; flex-direction: column; align-items: center;"> <!-- 키워드 입력 -->
       <div>
@@ -44,8 +44,8 @@
             <button @click="worstPick(index)">싫어요</button>
         </div>
       </div>
-        <button v-show="isRoomMaker && round<personnel" @click="sendMessageToEveryBody('','nextAlbum')">다음앨범</button>
-        <button v-show="isRoomMaker && round===personnel" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
+        <button v-show="isRoomMaker && round<=personnel" @click="sendMessageToEveryBody('','nextAlbum')">다음앨범</button>
+        <button v-show="isRoomMaker && round===personnel+1" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
         <p>{{round}}</p>
     </div>
 
@@ -118,7 +118,7 @@ export default {
       recieveDraw:'', // 받은 그림
       recieveAlbum:null,
       round:0,
-      gameId: this.gameRes.gameId,
+      gameId: this.gameRes.playGameId,
       dataIndex: 0, // 앨범 번호
       worst:0,
       best:0,
@@ -281,7 +281,10 @@ export default {
     },
     startAlbumRound(){
       this.round ++;
-      if (this.round <= this.personnel) {
+      if (this.round <= this.personnel + 1) {
+        console.log("dataIndex" + this.dataIndex);
+        console.log("베슽흐" + this.best);
+        console.log("워스트" + this.worst);
         axios({
           method:'POST',
           url: '/api/telestations/showAlbum',
@@ -296,6 +299,8 @@ export default {
         .then((res)=> {
           this.dataIndex = res.data.dataIndex
           this.recieveAlbum = res.data.dataList
+          console.log("this.dataIndex"+this.dataIndex);
+          console.log("this.recieveAlbum"+this.recieveAlbum);
         })
         .catch((err)=> {
           console.log(err, '앨범에러')
