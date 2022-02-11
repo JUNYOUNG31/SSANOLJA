@@ -3,7 +3,7 @@
     <img src="../assets/logo.png" alt="logo">
     <section class="test">
     <div v-on:click="GoogleLoginBtn">
-      <button class="btn btn-lg btn-primary grey--text">
+      <button class="paper-btn btn-lg btn-primary grey--text">
           <img src="../assets/googlelogo.png" alt="googlelogo" width="40">
           Sign in with Google
         </button> 

@@ -1,11 +1,10 @@
 <template>
-<div v-if="streamManager" style="display: flex; align-items: center;" class="video_div">
+<div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
 	<div v-else ></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="!isAnswerPlayer && !isFirstQuestionPlayer">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="voteClick">투표하기</v-btn></div>
-	<div><i v-if="ready" class="fas fa-check-circle"></i></div>
-	<p></p>
+	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
 </div>
 </template>
 
@@ -171,9 +170,14 @@ export default {
 .video_div:hover .btn1 {
 	display: block;
 }
-
 .video_div:hover .btn2 {
 	display: block;
+}
+.video_div .btn3 {
+	position: absolute;
+	bottom: 0;
+	left: 35%;
+	padding: 7px;
 }
 
 </style>

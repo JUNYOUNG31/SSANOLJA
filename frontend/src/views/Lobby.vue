@@ -6,20 +6,20 @@
     <div id="join" v-if="!session">
 			<div id="join-dialog" class="vertical-center">
 				<h1>LOBBY</h1>
-				<div >
+				<div>
 					<p>
 						<label>닉네임</label>
-						<input v-model="userData.userNickname" class="form-control" type="text" required placeholder="닉네임을 입력하세요">
 					</p>
+					<input v-model="userData.userNickname" class="paper-input" style="width:200px" type="text" required placeholder="닉네임을 입력하세요">
 					<p>
 						<label>방 참여코드</label>
-						<input v-model="joinCode" class="form-control" type="text" required placeholder="참여코드를 입력하세요">
+					</p>
+					<input v-model="joinCode" class="paper-input" style="width:200px" type="text" required placeholder="참여코드를 입력하세요">
+					<p class="text-center">
+						<button class="paper-btn btn-lg btn-success" @click="checkRoom(joinCode)">입장하기</button>
 					</p>
 					<p class="text-center">
-						<button class="btn btn-lg btn-success" @click="checkRoom(joinCode)">입장하기</button>
-					</p>
-					<p class="text-center">
-						<button class="btn btn-lg btn-success" @click="makeRoom()">방 만들기</button>
+						<button class="paper-btn btn-lg btn-success" @click="makeRoom()">방 만들기</button>
 					</p>
 				</div>
 			</div>
@@ -174,5 +174,13 @@ export default {
   width: 300px;
   margin-top: 100px;
   margin-bottom: 100px;
+}
+
+.vertical-center {
+	text-align: center;
+}
+.vertical-center input{
+	margin: auto;
+	margin-bottom: 20px;
 }
 </style>

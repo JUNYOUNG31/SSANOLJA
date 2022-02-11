@@ -27,33 +27,31 @@
               <v-col class="col-10 row-cols-3 gameselect">
                   <v-row style="height:100%;">
                     <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</v-btn>
+                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
                     </v-col>
                     <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'Fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
+                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</button>
                     </v-col>
                     <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</v-btn>
+                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
                     </v-col>                 
                   </v-row> <!--게임 3개 선택하는 부분-->
               </v-col>
               <v-col class="col-2 ready">        
                 <v-col >
-                  <v-btn style="width:100%;">
-                    <span>
-                      <v-btn @click="copyJoinCode(mySessionId)">{{ mySessionId }}</v-btn>
-                    </span>
-                  </v-btn>
+                  <button class="paper-btn" style="width:100%;" @click="copyJoinCode(mySessionId)">
+                    {{ mySessionId }}
+                  </button>
                 </v-col>
                 <v-col v-if="!isRoomMaker">
-                  <v-btn style="width:100%;" @click="beReady(myUserName)" :disabled="isReadyToStart">
+                  <button class="paper-btn" style="width:100%;" @click="beReady(myUserName)" :disabled="isReadyToStart">
                     <span>레디</span>
-                  </v-btn>
+                  </button>
                 </v-col>
                 <v-col v-if="isRoomMaker">
-                  <v-btn style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart">
+                  <button class="paper-btn" style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart">
                     <span>시작</span>
-                  </v-btn>
+                  </button>
                 </v-col>
               </v-col>              
             </v-row>
@@ -175,6 +173,7 @@ export default {
         const firstquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
         this.$store.commit("SET_FIRSTQUESTIONPLAYER", firstquestionplayerdata)
       }
+      this.readyList = []
     })
 
     this.session.on('signal:backToLobby', ()=>{
@@ -308,7 +307,7 @@ export default {
   height: 100%;
 }
 .room div {
-  border: 1px solid white;  
+  /* border: 1px solid black;   */
 }
 .room{
     display: flex;
@@ -355,4 +354,6 @@ export default {
     height: 730px;
   }
 }
+
+
 </style>
