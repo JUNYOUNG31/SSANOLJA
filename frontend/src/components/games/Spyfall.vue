@@ -126,7 +126,7 @@
       </v-container>
     </div>
     <div v-if="isEnded">
-      <spyfallEnd :spyName="spyName" :place="place"></spyfallEnd>
+      <spyfallEnd :spy-player="spyPlayer" :place="place"></spyfallEnd>
     </div>
   </div>
 </template>
@@ -158,6 +158,7 @@ export default {
       isEnded: false,
       isSpy: false,
       spyName: null,
+      spyPlayer : null,
 		}
 	},
 
@@ -181,7 +182,8 @@ export default {
       "selectPlayer",        // 투표를 시작한 사람
       "votePlayer",          // 투표를 지목당한 사람
       "myUserName",
-			"mySessionId",	
+			"mySessionId",
+      "subscribers",	
       "publisher",
 		]),
 		clientData () {
@@ -198,8 +200,15 @@ export default {
 
 	methods: {
     spyfall(){
-      this.pause()      
+      this.pause()
+      this.spyName = this.myUserName
       this.sendMessageToEveryBody(this.myUserName,'spyfall')
+      for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+				if (this.spyName == nickName.clientData) {
+          this.spyPlayer = this.subscribers[index]
+				}
+			}
       this.isEnded = true
 
     },
@@ -228,7 +237,6 @@ export default {
       this.timerEnabled = false;
       this.votetimeCnt = 30;
       this.voteEnabled = true;
-      console.log(this.voteEnabled)
     },
     
     restart() {
@@ -243,7 +251,6 @@ export default {
     voteTrue() {
       this.voteList.isVoted = true
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')     
-      console.log('여기')    
       console.log(this.myUserName)
       console.log(JSON.parse(this.votePlayer.stream.connection.data).clientData)
     },
@@ -305,7 +312,6 @@ export default {
     this.play()    
 
     this.session.on('signal:gameStart', ()=> {
-      console.log('여기 실행됨')
     })
 
     this.session.on('signal:votePlayer', ()=> {
@@ -314,6 +320,12 @@ export default {
 
     this.session.on('signal:spyfall', (event)=>{
       this.spyName = event.data
+      for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+				if (this.spyName == nickName.clientData) {
+          this.spyPlayer = this.subscribers[index]
+				}
+			}
       this.isEnded=true
     })
 

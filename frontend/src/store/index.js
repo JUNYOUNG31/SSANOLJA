@@ -101,7 +101,20 @@ export default new Vuex.Store({
 
 		SPY_WIN: function(state) {
 			state.spyWin = true
-		},		    
+		},
+
+		INIT_SPYFALL: function(state) {
+			state.spyWin = false
+			state.citizenWin = false
+			state.firstQuestionPlayer = null
+			state.questionPlayer = null
+			state.answerPlayer = null
+			state.selectPlayer = null
+			state.votePlayer = null
+			state.dialog = false
+			state.voteClick = false
+
+		}
   },
 
   actions: {

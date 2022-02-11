@@ -58,13 +58,12 @@ export default {
 
   data() {
     return {
-      spyPlayer : null,
       
     }
   },
 
   props: {
-    spyName : String,
+    spyPlayer: Object,
     place: String,
   },
 
@@ -81,12 +80,7 @@ export default {
     ])
   },
   mounted() {
-    for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-				if (this.spyName == nickName.clientData) {
-          this.spyPlayer = this.subscribers[index]
-				}
-			}
+    
 
     this.session.on('signal:spyWin', ()=>{
       this.$store.commit("SPY_WIN")
