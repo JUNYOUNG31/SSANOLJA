@@ -1,11 +1,11 @@
 <template>
   <v-carousel v-model="model">
     <v-carousel-item
-      v-for="(color, i) in colors"
-      :key="color"
+      v-for="(num, i) in desc"
+      :key="num"
     >
       <v-sheet
-        :color="color"
+        :color="colors[i]"
         height="100%"
         tile
       >
@@ -15,7 +15,7 @@
           justify="center"
         >
           <div class="text-h2">
-            Slide {{ i + 1 }}
+            <img :src="require(`@/assets/description_image/spyfall/` + `spy_`+(i+1)+`.png`)" width="100%"/>
           </div>
         </v-row>
       </v-sheet>
@@ -29,13 +29,17 @@ export default {
   data () {
       return {
         colors: [
-          'primary',
-          'secondary',
-          'yellow darken-2',
-          'red',
-          'orange',
+          'white',
+          'white',
+          'white',
+          'white',
+          'white',
+          'white',
         ],
         model: 0,
+        desc: [
+          "p1","p2","p3"
+        ],
       }
     },
 
@@ -46,5 +50,8 @@ export default {
 </script>
 
 <style>
-
+.text-h2 {
+  /* text-align: center; */
+  padding:2cm
+}
 </style>

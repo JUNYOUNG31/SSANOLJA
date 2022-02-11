@@ -29,9 +29,9 @@
                     <v-col>
                       <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
                     </v-col>
-                    <v-col>
-                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</button>
-                    </v-col>
+                    <!-- <v-col>
+                      <v-btn v-bind:class="{'grey': gameSelected == 'Fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
+                    </v-col> -->
                     <v-col>
                       <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
                     </v-col>                 
@@ -169,11 +169,7 @@ export default {
       this.streamManagers = this.session.streamManagers
       this.gameSelected = event.data
       this.start = true
-      if (this.gameSelected == "Spyfall") {
-        const firstquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
-        this.$store.commit("SET_FIRSTQUESTIONPLAYER", firstquestionplayerdata)
-      }
-      this.readyList = []
+      this.readyList=[]
     })
 
     this.session.on('signal:backToLobby', ()=>{
@@ -190,11 +186,6 @@ export default {
       } else {
         this.readyList.push(person)
       }
-      // console.log(this.readyList)
-    }),
-
-    this.session.on('signal:initRoom', ()=>{
-      this.readyList = []
     })
   },
   methods : {
@@ -256,7 +247,7 @@ export default {
             this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
             this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
             // this.start = true
-            this.sendMessageToEveryBody('initRoom')
+            // this.sendMessageToEveryBody('initRoom')
           })
           .catch(error => console.log(error))
 
