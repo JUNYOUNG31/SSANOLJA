@@ -12,8 +12,8 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/postTest")
-    public String  inputKey3(@RequestBody User user) {
+    @PostMapping("/userLogin")
+    public String  userLogin(@RequestBody User user) {
 
         User inputUser = userRepository.findByUserEmail(user.getUserEmail());
         if(inputUser == null){

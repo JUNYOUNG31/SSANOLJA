@@ -18,5 +18,8 @@ public class TelestationReq implements GameRes {
     private String roomCode;
     private Integer drawingOrder;;
     private Integer personnel;
+    private Integer dataIndex;
+    private Integer round;
+    private Integer gamesId;
 
 }

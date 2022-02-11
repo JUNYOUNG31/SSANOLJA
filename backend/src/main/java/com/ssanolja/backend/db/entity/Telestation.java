@@ -53,11 +53,11 @@ public class Telestation {
     @Column(name = "drawing_order")
     private Integer drawingOrder;
 
-    @Column(name = "bestvote")
-    private String bestvote;
+    @Column(name = "best_vote")
+    private Integer bestVote;
 
-    @Column(name = "worstvote")
-    private String worstvote;
+    @Column(name = "worst_vote")
+    private Integer worstVote;
 
     @Column(name = "user_order")
     private Integer userOrder;

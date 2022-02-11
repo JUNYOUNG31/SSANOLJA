@@ -81,4 +81,7 @@ public class SpyfallService {
         List<SpyfallJob> jobs = spyfallJobRepository.findAllBySpyfallPlace(spyfallPlace);
         return jobs.subList(0,size);
     }
+
+
+
 }
