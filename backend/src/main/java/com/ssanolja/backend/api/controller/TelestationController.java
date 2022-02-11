@@ -42,14 +42,14 @@ public class TelestationController {
         return new ResponseEntity<>(res,  HttpStatus.ACCEPTED);
     }
 
-//    @GetMapping("/voteResult")
-//    public ResponseEntity<List<Telestation>> voteResult(@RequestBody TelestationReq telestationReq) throws Exception{
-//
-//        List<Telestation> res = telestationService.voteResult(telestationReq);
-//        System.out.println("res : " + res);
-//
-//        return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
-//    }
+    @GetMapping("/voteResult") // 투표 최종 결과 보내주는거
+    public ResponseEntity<Map<String, Object>> voteResult(@RequestBody TelestationReq telestationReq) throws Exception{
+
+        Map<String, Object> res = telestationService.voteResult(telestationReq);
+        System.out.println("res : " + res);
+
+        return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+    }
 
 
 
