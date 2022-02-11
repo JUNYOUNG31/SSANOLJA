@@ -130,7 +130,7 @@
         </v-container>
       </div>
       <div v-if="isEnded">
-        <spyfallEnd :spy-player="spyPlayer" :place="place"></spyfallEnd>
+        <spyfallEnd :spy-player="spyPlayer" :place="place" :id-spy="isSpy"></spyfallEnd>
       </div>
     </div>
   </div>
