@@ -9,9 +9,9 @@
         </v-card-title>
         <div class="d-flex">
           <video :srcObject.prop="videoSrc" autoplay></video>
-          <div class="d-flex flex-column justify-content-end p-3">
+          <div class="videocontrol">
             <div>
-              <v-select
+              <v-select 
                 @change="changeDevice"
                 append-icon="mdi-camera-outline"
                 v-model="publishInfo.videoSource"
@@ -19,7 +19,6 @@
                 item-text="label"
                 item-value="deviceId"
                 solo 
-                rounded
                 placehoder="video"></v-select>
             </div>
             <div>
@@ -31,28 +30,27 @@
                 item-text="label"
                 item-value="deviceId"
                 solo 
-                rounded></v-select>
+                ></v-select>
             </div>
             <div class="d-flex justify-content-around">
-              <v-btn fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
+              <button  class="paper-btn" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
                 <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
-              </v-btn>
-              <v-btn fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
+              </button>
+              <button class="paper-btn" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
                 <v-icon>{{ publishInfo.publishVideo ? 'mdi-camera-outline' : 'mdi-camera-off-outline' }}</v-icon>
-              </v-btn>
+              </button>
             </div>
           </div>
         </div>
 
         <v-divider></v-divider>
-        <v-card-actions class="mt-5 d-flex justify-content-center">
-          <v-btn
-            color="#1CFD9F"
-            rounded
+        <v-card-actions>
+          <button
+            class="paper-btn"      
             @click="enterRoom"
           >
             입장
-          </v-btn>
+          </button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -156,6 +154,20 @@ export default {
 
 <style scoped>
   video {
-    width: 500px;
+    width: 450px;
+    margin-left: 20px;
+    border-bottom-left-radius: 15px 255px;
+    border-bottom-right-radius: 225px 15px;
+    border-top-left-radius: 255px 15px;
+    border-top-right-radius: 15px 225px;
+    border-color: #41403e;
+    border-color: var(--primary);
+    border-style: solid;
+    border-width: 2px;
+  }
+  .videocontrol {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
   }
 </style>
