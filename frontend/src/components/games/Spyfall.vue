@@ -86,7 +86,7 @@
                         <img src="../../assets/places_image/투표용.jpg" alt="투표용" style="width:100px">   
                         <hr>
 
-                      <div id = vote_cnt> <!-- 투표 시간 추가중 --> 
+                      <div id =" vote_cnt">
                         투표 시간 : {{this.votetimeCnt}}
                         <br>
                         
@@ -201,7 +201,7 @@ export default {
       this.pause()      
       this.sendMessageToEveryBody(this.myUserName,'spyfall')
       this.isEnded = true
-
+      
     },
 
     getConnectionData () {
@@ -226,7 +226,6 @@ export default {
 
     pause() {
       this.timerEnabled = false;
-      this.votetimeCnt = 30;
       this.voteEnabled = true;
       console.log(this.voteEnabled)
     },
@@ -250,6 +249,11 @@ export default {
     voteFalse() {
       this.voteList.isVoted = true
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
+    },
+    voteclose() { // 투표창 끄는 method
+    this.timerEnabled = true;
+      this.votetimeCnt = 30;
+      this.voteEnabled = false;
     }
   },
 
@@ -287,6 +291,10 @@ export default {
             this.votetimeCnt--;
           }, 1000);
         }
+        if(this.votetimeCnt == 0) {
+          alert("끝")
+          this.voteclose();
+          }
       },
       immediate: false // 컴포넌트가 생성되자마자 즉시 실행
     }

@@ -29,9 +29,9 @@
                     <v-col>
                       <v-btn v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</v-btn>
                     </v-col>
-                    <v-col>
+                    <!-- <v-col>
                       <v-btn v-bind:class="{'grey': gameSelected == 'Fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
-                    </v-col>
+                    </v-col> -->
                     <v-col>
                       <v-btn v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</v-btn>
                     </v-col>                 
@@ -138,7 +138,7 @@ export default {
     // data에 userNicknames 배열이 생기면 활성화
     isReadyToStart() {
       // if (this.readyList.length == (this.userNicknames.length - 1)) {
-      if (this.readyList.length == 0) {
+      if (this.readyList.length == 2) {
         return true;
       }
       return false;
@@ -176,7 +176,8 @@ export default {
         console.log(this.session.streamManagers)
         this.$store.commit("SET_FIRSTQUESTIONPLAYER", this.session.streamManagers)
       }
-      this.beReady() // 게임 시작시 레디 해제
+      // this.beReady() // 게임 시작시 레디 해제
+      this.readyList = [];
     })
 
     this.session.on('signal:backToLobby', ()=>{
