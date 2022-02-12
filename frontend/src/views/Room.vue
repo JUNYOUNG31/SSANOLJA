@@ -2,80 +2,63 @@
   <div class="room"> <!--전체화면-->
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
-
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
-          <div class="playercamera">
-            <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+          <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
+            <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
-          <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
-            <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
-          </div>
-        </div>
-        
-
+        </div>     
         <v-col id="game"> <!--가운데 게임화면-->
           <span v-if="start">
             <span v-if="gameSelected == 'Spyfall'">
-              <spyfall :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></spyfall>
+              <spyfall :stream-manager="streamManagers" :gameRes="gameRes" :rules="rules"></spyfall>
             </span >
-            <span v-if="gameSelected == 'Fakeartist'">
-              <fakeartist :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></fakeartist>
-            </span>
             <span v-if="gameSelected == 'Telestation'">
-              <telestation :stream-manager="spyFallVideo" :gameRes="gameRes" :rules="rules"></telestation>
+              <telestation :stream-manager="streamManagers" :gameRes="gameRes" :rules="rules"></telestation>
             </span>
           </span>
           <div v-else><!--대기방 게임 초기화면(게임선택하는곳)-->
             <v-row class="control">
-
               <v-col class="col-10 row-cols-3 gameselect">
                   <v-row style="height:100%;">
                     <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</v-btn>
+                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
                     </v-col>
                     <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'Fakeartist'}" @click="gameSelect('Fakeartist')">가예누가</v-btn>
-                    </v-col>
-                    <v-col>
-                      <v-btn v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</v-btn>
+                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
                     </v-col>                 
                   </v-row> <!--게임 3개 선택하는 부분-->
               </v-col>
-
               <v-col class="col-2 ready">        
                 <v-col >
-                  <v-btn style="width:100%;">
-                    <span>
-                      <v-btn @click="copyJoinCode(mySessionId)">{{ mySessionId }}</v-btn>
-                    </span>
-                  </v-btn>
+                  <button class="paper-btn" style="width:100%;" @click="copyJoinCode(mySessionId)">
+                    {{ mySessionId }}
+                  </button>
                 </v-col>
-                <v-col >
-                  <v-btn style="width:100%;">
+                <v-col v-if="!isRoomMaker">
+                  <button class="paper-btn" style="width:100%;" @click="beReady(myUserName)" >
                     <span>레디</span>
-                    </v-btn>
+                  </button>
                 </v-col>
-                <v-col>
-                  <v-btn style="width:100%;" @click="gameStart(gameSelected)">
+                <v-col v-if="isRoomMaker">
+                  <button class="paper-btn" style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart">
                     <span>시작</span>
-                  </v-btn>
+                  </button>
                 </v-col>
-              </v-col>
-              
+              </v-col>              
             </v-row>
-
             <div class="gameInfo">게임설명 <!--게임설명-->
+            <span v-if="gameSelected == 'Spyfall'">
+              <spyfallDescription :gameSelected="gameSelected"></spyfallDescription>
+            </span>
+            <span v-if="gameSelected == 'Telestation'">
+              <telestationDescription :gameSelected="gameSelected"></telestationDescription>
+            </span>
             </div>
           </div>
-
-            <!-- <v-btn @click="socketTest()">소켓 테스트</v-btn>
-            <p>{{message}}</p> -->
         </v-col>
-
-
           <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
-            <div v-for="user in evenplayer" :key="user.stream.connection.connectionId" class="playercamera">
-              <user-video :stream-manager="user" @click.native="updateMainVideoStreamManager(user)"/>
+            <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
+              <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
             </div>
           </div>
       </v-row>
@@ -87,29 +70,31 @@
 <script>
 import UserVideo from '@/components/Video/UserVideo';
 import Spyfall from '@/components/games/Spyfall';
-import { mapState } from "vuex";
-import Fakeartist from '@/components/games/Fakeartist.vue';
 import Telestation from '@/components/games/Telestation.vue';
+import SpyfallDescription from '@/components/descriptions/SpyfallDescription';
+import TelestationDescription from '@/components/descriptions/TelestationDescription';
+import { mapState } from "vuex";
 import axios from "axios";
+
 export default {
   name: "Room", 
   data () {
 		return {
-      gameSelected: '',
-      message: null,
+      gameSelected: 'Spyfall',
       start : false,
-      spyFallVideo : null,
+      streamManagers : null,
       rules: null,
       gameRes: null,
-
+      readyList: [],
 		}
 	},
 
 	components: {
 		UserVideo,
     Spyfall,
-    Fakeartist,
     Telestation,
+    SpyfallDescription,
+    TelestationDescription,
 	},
 
   computed: {
@@ -120,34 +105,89 @@ export default {
 			"publisher",
 			"subscribers",
 			"mainStreamManager",
+      "isRoomMaker"
 		]),
     oddplayer: function () {
       return this.subscribers.filter((user, index) => {
         return index % 2 === 1
       })
-    }
-    ,
+    },
     evenplayer : function() {
       return this.subscribers.filter((user, index) => {
         return index % 2 === 0
       })
     },
+
+    isReadyToStart() {
+      // if (this.readyList.length == (this.subscribers.length - 1)) {
+      if (this.readyList.length == 2) {
+        return true;
+      }
+      return false;
+      // }
+    }
     
 	},
   mounted () {
-    this.session.on('signal:session-test', (event) => {
-    console.log(event.data, '이것은 데이터'); // Message
-    console.log(event.from, '이것은 메시지 보낸사람'); // Connection object of the sender
-    console.log(event.type, '이것은 메시지 타입'); // The type of message
-    this.message=event.data
-    
-});
+    // 방 입장시 준비된 사람들 리스트를 받아옴
+    this.sendMessageToEveryBody('getReadyList', 'getReadyList')
+
+    this.session.on('signal:getReadyList', ()=>{
+      let readyListToString = this.readyList.toString()
+      this.sendMessageToEveryBody(readyListToString,'sendReadyList')
+    })
+
+    this.session.on('signal:sendReadyList', (event)=>{
+      this.readyList = event.data.split(",")
+    })
+
+    this.session.on('signal:rules', (event) => {
+    this.rules = JSON.parse(event.data)
+    }),
+
+    this.session.on('signal:gameRes', (event)=>{
+      this.gameRes = JSON.parse(event.data)
+    })
+
+    this.session.on('signal:gameStart', (event)=>{
+      this.streamManagers = this.session.streamManagers
+      this.gameSelected = event.data
+      this.start = true
+      this.readyList=[]
+    })
+
+    this.session.on('signal:backToLobby', ()=>{
+      this.start = false
+      this.$store.commit('INIT_SPYFALL')
+    })
+
+    this.session.on('signal:ready', (event)=>{
+      const person = event.data
+      // console.log(person)
+      if (this.readyList.includes(person)) {
+        const idx = this.readyList.indexOf(person)
+        this.readyList.splice(idx, 1)
+      } else {
+        this.readyList.push(person)
+      }
+    })
   },
   methods : {
-    socketTest() {
-      this.$store.dispatch('socketTest') // 소켓 테스트
-    },
+    sendMessageToEveryBody(data, type) {
+			this.session.signal({
+				data: data,
+				to: [],
+				type: type
+			})
+			.then(() => {})
+			.catch(error => {
+				console.error(error);
+			})
+		},
 
+    beReady() {
+      this.sendMessageToEveryBody(this.myUserName,'ready')
+    },
 
     copyJoinCode(joinCode) {
       const joinCodeToCopy = document.createElement("textarea")
@@ -157,33 +197,32 @@ export default {
       document.execCommand("copy")
       alert('복사되었습니다')
     },
-
     leaveSession() {
 			this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
 		},
     gameSelect(game) {
       this.gameSelected = game
-      this.spyFallVideo = this.mainStreamManager
     },
     gameStart(game) {
-      
+      console.log(this.subscribers)
+      console.log(this.subscribers.length)      
       axios.post(
         '/api/games/rules',
-
         JSON.stringify({
-          personnel: 3, // userNicknames의 길이로 대체
+          personnel: this.subscribers.length, // userNicknames의 길이로 대체
           selectedGame: game
         })
       )
       .then(res => {
           this.rules=res.data
+          this.sendMessageToEveryBody(JSON.stringify(this.rules), 'rules')
           axios
           .post(
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : ["조성현","강광은","배소원"],
+              userNicknames : ["정성우", "박준영", "김범주"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),
@@ -191,9 +230,10 @@ export default {
           .then(resp =>{
             
             this.gameRes = resp.data
-            this.start = true
-            
-            console.log("gameRes 확인 " + this.gameRes)
+            this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
+            this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
+            // this.start = true
+            // this.sendMessageToEveryBody('initRoom')
           })
           .catch(error => console.log(error))
 
@@ -202,12 +242,7 @@ export default {
         console.log(err)
         alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다')
       })
-
-
-      
-  },
-  
-    
+    },
   }
 }
 
@@ -249,7 +284,7 @@ export default {
   height: 100%;
 }
 .room div {
-  border: 1px solid white;  
+  /* border: 1px solid black;   */
 }
 .room{
     display: flex;
@@ -296,4 +331,6 @@ export default {
     height: 730px;
   }
 }
+
+
 </style>
