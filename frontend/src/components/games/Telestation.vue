@@ -44,8 +44,8 @@
             <button @click="worstPick(index)">싫어요</button>
         </div>
       </div>
-        <button v-show="isRoomMaker && round<=personnel" @click="sendMessageToEveryBody('','nextAlbum')">다음앨범</button>
-        <button v-show="isRoomMaker && round===personnel+1" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
+        <button v-show="isRoomMaker && round<personnel" @click="sendMessageToEveryBody('','nextAlbum')">다음앨범</button>
+        <button v-show="isRoomMaker && round===personnel" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
         <p>{{round}}</p>
     </div>
 
@@ -281,64 +281,82 @@ export default {
     },
     startAlbumRound(){
       this.round ++;
-      if (this.round <= this.personnel + 1) {
-        console.log("dataIndex" + this.dataIndex);
-        console.log("베슽흐" + this.best);
-        console.log("워스트" + this.worst);
-        axios({
-          method:'POST',
-          url: '/api/telestations/showAlbum',
-          data: {
-            gameId: this.gameId,
-            round: this.round,
-            dataIndex: this.dataIndex,
-            worstVote: this.worst,
-            bestVote: this.best,
-          }
-        })
-        .then((res)=> {
+      console.log("dataIndex" + this.dataIndex);
+      console.log("베슽흐" + this.best);
+      console.log("워스트" + this.worst);
+      axios({
+        method:'POST',
+        url: '/api/telestations/showAlbum',
+        data: {
+          gameId: this.gameId,
+          round: this.round,
+          dataIndex: this.dataIndex,
+          worstVote: this.worst,
+          bestVote: this.best,
+        }
+      })
+      .then((res)=> {
+        if (this.round <= this.personnel) {
+          this.gameMode = 'album'     
           this.dataIndex = res.data.dataIndex
           this.recieveAlbum = res.data.dataList
           console.log("this.dataIndex"+this.dataIndex);
           console.log("this.recieveAlbum"+this.recieveAlbum);
-        })
-        .catch((err)=> {
-          console.log(err, '앨범에러')
-        })
-        this.gameMode = 'album'     
-      }else {
-        this.startResult()
-      }
+          this.worst = 0
+          this.best = 0
+        }else {
+          this.bestPlayer = res.data.best.nickName
+          this.worstPlayer = res.data.worst.nickName
+          this.worstPreData = res.data.worst.preData
+          this.worstData = res.data.worst.data
+          this.bestPreData = res.data.best.preData
+          this.bestData = res.data.best.data
+          if (res.data.best.preDrawingOrder%2 === 1) {
+            this.bestResultMode = 1
+          }else {
+            this.bestResultMode = 2
+          }
+          if (res.data.worst.preDrawingOrder%2 === 1) {
+            this.worstResultMode = 1
+          }else {
+            this.worstResultMode = 2
+          }
+          this.gameMode='best'
+        }
+      })
+      .catch((err)=> {
+        console.log(err, '앨범에러')
+      })
     },
-    startResult() {
-      axios({
-        method:'POST',
-        url: '/api/telestations/voteResult',
-        data: {
-          gameId: this.gameId
-        }
-      })
-      .then((res)=> {
-        this.bestPlayer = res.data.best.nickName
-        this.worstPlayer = res.data.worst.nickName
-        this.worstPreData = res.data.worst.preData
-        this.worstData = res.data.worst.data
-        this.bestPreData = res.data.best.preData
-        this.bestData = res.data.best.data
-        if (res.data.best.preDrawingOrder%2 === 1) {
-          this.bestResultMode = 1
-        }else {
-          this.bestResultMode = 2
-        }
-        if (res.data.worst.preDrawingOrder%2 === 1) {
-          this.worstResultMode = 1
-        }else {
-          this.worstResultMode = 2
-        }
-        this.gameMode='best'
-      })
+    // startResult() {
+    //   axios({
+    //     method:'POST',
+    //     url: '/api/telestations/voteResult',
+    //     data: {
+    //       gameId: this.gameId
+    //     }
+    //   })
+    //   .then((res)=> {
+    //     this.bestPlayer = res.data.best.nickName
+    //     this.worstPlayer = res.data.worst.nickName
+    //     this.worstPreData = res.data.worst.preData
+    //     this.worstData = res.data.worst.data
+    //     this.bestPreData = res.data.best.preData
+    //     this.bestData = res.data.best.data
+    //     if (res.data.best.preDrawingOrder%2 === 1) {
+    //       this.bestResultMode = 1
+    //     }else {
+    //       this.bestResultMode = 2
+    //     }
+    //     if (res.data.worst.preDrawingOrder%2 === 1) {
+    //       this.worstResultMode = 1
+    //     }else {
+    //       this.worstResultMode = 2
+    //     }
+    //     this.gameMode='best'
+    //   })
       
-    },
+    // },
 
 
 
