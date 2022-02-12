@@ -24,7 +24,7 @@ public class TelestationReq implements GameRes {
     private Integer gameId;
 
     private Integer bestVote;
-    private Integer worstVote;
+private Integer worstVote;
 
 
 }
