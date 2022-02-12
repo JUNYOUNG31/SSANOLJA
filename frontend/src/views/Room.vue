@@ -44,7 +44,7 @@
                   </button>
                 </v-col>
                 <v-col v-if="!isRoomMaker">
-                  <button class="paper-btn" style="width:100%;" @click="beReady(myUserName)" :disabled="isReadyToStart">
+                  <button class="paper-btn" style="width:100%;" @click="beReady(myUserName)">
                     <span>레디</span>
                   </button>
                 </v-col>
@@ -99,7 +99,7 @@ export default {
       streamManagers : null,
       rules: null,
       gameRes: null,
-      readyList: []
+      readyList: [],
 		}
 	},
 
@@ -136,7 +136,7 @@ export default {
 
     isReadyToStart() {
       // if (this.readyList.length == (this.subscribers.length - 1)) {
-      if (this.readyList.length == 0) {
+      if (this.readyList.length == 2) {
         return true;
       }
       return false;

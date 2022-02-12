@@ -6,6 +6,7 @@
       <div id="job_place_tag">
         <img :src="placeSrc" />
       </div>
+      <div id="job_place_tag" v-if="!isSpy"><h3><span>{{place}}</span></h3></div>
       <div id="job_place_tag"><h3><span>직업</span></h3></div>
       <div id="job_place_tag"><h3><span>{{job}}</span></h3></div>
     </div>
@@ -20,6 +21,7 @@ export default {
 
 
   props: {
+    isSpy : Boolean,
     job: String,
     placeSrc: String,
     place: String,
@@ -28,17 +30,21 @@ export default {
   computed: {
 		...mapState([
       "session",
-      
+      "isRoomMaker"
 		]),
 	},
 
   mounted() {
-    setTimeout(() => {
-        const firstquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
-        this.sendMessageToEveryBody(JSON.stringify(firstquestionplayerdata.stream.connection.data), 'setFirstQuestionPlayer')
-        this.$store.commit("SET_FIRSTQUESTIONPLAYER", firstquestionplayerdata)
+    if (this.isRoomMaker){
+      setTimeout(() => {
+        const randomquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
+        console.log(randomquestionplayerdata)
+        const firstquestionplayerdata = JSON.parse(randomquestionplayerdata.stream.connection.data)
+        console.log(firstquestionplayerdata)
+        this.sendMessageToEveryBody(JSON.stringify(firstquestionplayerdata), 'setFirstQuestionPlayer')
+        this.$store.commit("SET_FIRSTQUESTIONPLAYER", randomquestionplayerdata)
         }, 3000);
-    
+    }   
   
   },
 

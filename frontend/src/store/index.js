@@ -27,7 +27,7 @@ export default new Vuex.Store({
 		spyWin : false,							// 스파이 승리
     mySessionId: '',
     myUserName: '',
-		isRoomMaker: localStorage.getItem('isRoomMaker') ==='true',
+		isRoomMaker: localStorage.getItem('isRoomMaker') === 'true',
 
   },
 
@@ -247,5 +247,5 @@ export default new Vuex.Store({
 		}
   },
   modules: {
-  }
+  },
 })

@@ -76,7 +76,7 @@ export default {
 						url:`/api/rooms/${joinCode}`,
 					})
 					.then(()=>{
-							
+						localStorage.clear()
 						localStorage.setItem("isRoomMaker", false)
 						this.$refs.preview.dialog = true
 					
@@ -105,6 +105,7 @@ export default {
       })
         .then(res=>{
 					this.joinCode = res.data
+					localStorage.clear()
 					localStorage.setItem("isRoomMaker", true)
 					this.$refs.preview.dialog = true
         })
@@ -139,6 +140,7 @@ export default {
 		}
 	},
 	mounted() {
+		localStorage.clear()
 		this.getUserData()
 	}
 }

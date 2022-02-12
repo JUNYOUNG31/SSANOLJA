@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!isStarted">
-      <spyfall-start :job="job" :place-src="placeSrc" :place="place"></spyfall-start>
+      <spyfall-start :job="job" :place-src="placeSrc" :place="place" :is-spy="isSpy"></spyfall-start>
     </div>
     <div v-else>
       <div v-if="!isEnded">
@@ -73,6 +73,13 @@
               <!-- <img :src="`../../assets/place_image/${place}.jpg`"> -->
               <div>
                 <v-dialog v-model="dialog" persistent max-width="1000px">
+                  <input class="alert-state" id="alert-1" type="checkbox">
+                  <div id="voteCompleted" class="alert dismissible" style="display:none">
+                    투표가 완료되었습니다.
+                    <label class="btn-close" for="alert-1">X</label>
+                  </div>
+                  <!-- <div id="voteCompleted" class="alert" style="display:none">투표가 완료되었습니다.</div> -->
+
                   <v-card>
                     <v-card-title>
                       <span class="text-h5">누가 스파이일까요?</span>
@@ -91,7 +98,7 @@
                           <hr>
 
                         <div id =" vote_cnt">
-                        투표 시간 : {{this.votetimeCnt}}
+                        투표 시간 : {{votetimeCnt}}
                         
                         </div>                      
                         </v-col>
@@ -103,7 +110,7 @@
                         <v-col cols="12" style="height:80px"></v-col>
                         <v-col cols="4" id ="agree">
                           <v-btn x-large color="blue darken-1" @click="voteTrue" 
-                          :disabled="voteList.isVoted || myUserName == suspectPlayer">찬성</v-btn>
+                          :disabled="isVoted || myUserName == suspectPlayer">찬성</v-btn>
                         </v-col>    
                         <v-col cols="4" id="vote_cnt" v-if="voteList.voteCnt != streamManager.length-1">
                           <h2> 투표수 {{voteList.voteCnt}}</h2>                   
@@ -113,11 +120,8 @@
                         </v-col>
                         <v-col cols="4" id="disagree" >
                           <v-btn x-large color="red lighten-1" @click="voteFalse"
-                          :disabled="voteList.isVoted || myUserName == suspectPlayer">반대</v-btn>
+                          :disabled="isVoted || myUserName == suspectPlayer">반대</v-btn>
                         </v-col >          
-                        <v-col style="text-align:right">
-                          <v-btn x-large color="blue darken-1"  @click="restart()" >Close</v-btn>
-                        </v-col>
                       </v-row>
                     </v-container> 
                   </v-card>
@@ -192,10 +196,7 @@ export default {
       "subscribers",	
       "publisher",
 		]),
-		clientData () {
-			const { clientData } = this.getConnectionData();
-			return clientData;
-		},		
+		
     suspectPlayer () {
       if (this.votePlayer) {
         return JSON.parse(this.votePlayer.stream.connection.data).clientData      
@@ -256,15 +257,14 @@ export default {
     voteTrue() {
       this.isVoted = true
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')     
-      console.log(this.myUserName)
-      console.log(JSON.parse(this.votePlayer.stream.connection.data).clientData)
+      
     },
     voteFalse() {
       this.isVoted = true
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
     },
     voteclose() { // 투표창 끄는 method
-    this.timerEnabled = true;
+      this.timerEnabled = true;
       this.votetimeCnt = 30;
       this.voteEnabled = false;
     }
@@ -285,7 +285,11 @@ export default {
             this.timerCount--;
           }, 1000);
         }
-        if(this.timerCount == 0) alert("끝")
+        if(this.timerCount <= 0) {
+          if(this.isSpy) {
+            this.spyfall()
+          }
+        }
       },
       immediate: false // 컴포넌트가 생성되자마자 즉시 실행
     },
@@ -305,8 +309,7 @@ export default {
           }, 1000);
         }
         if(this.votetimeCnt == 0) {
-          alert("끝")
-          this.voteclose();
+          this.restart()
           }
       },
       immediate: false // 컴포넌트가 생성되자마자 즉시 실행
@@ -356,28 +359,30 @@ export default {
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
       this.voteList.agreeCnt += 1
-      if ( this.voteList.voteCnt >= this.streamManager.length -1) {
-        this.voteList.voteCnt = this.streamManager.length - 1        
-        // 투표가 끝나고 3초 보여주기     
-        setTimeout(() => {
+      if ( this.voteList.voteCnt == this.streamManager.length -1) {
+
+        // 투표가 끝나고 3초 보여주기
+        // setTimeout(() => {
           // 만약 만장일치일때
           if (this.voteList.agreeCnt == this.streamManager.length - 1) {
             // 스파이가 맞으면 시민 승리
-            if (this.spyName == JSON.parse(this.votePlayer.stream.connection.data).clientData) {            
+            if (this.gameRes.jobs[JSON.parse(this.votePlayer.stream.connection.data).clientData] == '스파이') {            
               this.$store.commit("CITIZEN_WIN")
               this.isEnded = true
+              console.log('시민승리')
             }          
             // 스파이가 아니라면 스파이 승리
             else {
               this.$store.commit("SPY_WIN")
               this.isEnded = true
+              console.log('스파이승리')
             }
           }
           // 만약 만장일치가 아닐때 다시 게임 진행
           else {
             this.restart()
           }
-        }, 3000);
+        // }, 3000);
       }      
     })
     
@@ -388,8 +393,10 @@ export default {
       this.voteList.disagreeCnt += 1
       if ( this.voteList.voteCnt >= this.streamManager.length-1) {
         this.voteList.voteCnt = this.streamManager.length-1
+        const div = document.getElementById('#voteCompleted')
+        div.style.display = "block"
         setTimeout(() => {
-          alert('투표가 완료 되었습니다.')
+          // alert('투표가 완료 되었습니다.')
           this.restart()
         }, 3000);
       }
@@ -403,6 +410,10 @@ export default {
       this.voteList.agreeCnt = 0
       this.voteList.disagreeCnt = 0
       this.isVoted = false
+      this.voteEnabled = false;
+      this.votetimeCnt = 30;
+      const div = document.getElementById('#voteCompleted')
+      div.style.display = "none"
     })
 
 

@@ -1,8 +1,8 @@
 <template>
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
-	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
+	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && questionPlayer != streamManager && firstQuestionPlayer != streamManager"/>
 	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="isMyself || (!isAnswerPlayer && !isFirstQuestionPlayer)">지목하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) ">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="isMyself || voteClick">투표하기</v-btn></div>
 	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
 	<p></p>
@@ -27,7 +27,8 @@ export default {
 			selectVideo: null,
 			isAnswerPlayer : false,
 			isFirstQuestionPlayer : false,
-			isMyself: false
+			isMyself: false,
+			isQuestionPlayer: false
 		}
 	},
 
@@ -67,25 +68,36 @@ export default {
 
 	watch: {
 		answerPlayer: function() {
-			console.log(this.myUserName)
-			console.log(JSON.parse(this.answerPlayer.stream.connection.data).clientData)
-			if (this.myUserName == JSON.parse(this.answerPlayer.stream.connection.data).clientData) {
-				this.isAnswerPlayer = true
+			if (this.answerPlayer) {
+				if (this.myUserName == JSON.parse(this.answerPlayer.stream.connection.data).clientData) {
+					this.isAnswerPlayer = true
+				}
 			}
 			else {
 				this.isAnswerPlayer = false
 			}
 		},
-		FirstQuestionPlayer: function() {
-			if (this.myUserName == JSON.parse(this.FirstQuestionPlayer.stream.connection.data).clientData) {
-				this.isFirstQuestionPlayer = true
+		firstQuestionPlayer: function() {
+			if (this.firstQuestionPlayer) {
+				if (this.myUserName == JSON.parse(this.firstQuestionPlayer.stream.connection.data).clientData) {
+					this.isFirstQuestionPlayer = true
+				}
 			}
 			else {
 				this.isFirstQuestionPlayer = false
 			}
-		}		
+		},
+		questionPlayer: function() {
+			if (this.firstQuestionPlayer || this.questionPlayer) {
+				if(this.myUserName == JSON.parse(this.questionPlayer.stream.connection.data).clientData) {
+					this.isQuestionPlayer == true
+				}
+			}
+			else {
+				this.isQuestionPlayer = false
+			}
+		}
 	},
-
 	methods: {
 		sendMessageToEveryBody(data, type) {
       this.session.signal({
@@ -146,6 +158,7 @@ export default {
 				this.questionVideo = this.subscribers[index]
 				}
 			}
+			this.$store.commit('SET_FIRSTQUESTIONPLAYER', null)
 			this.$store.commit('SET_QUESTIONPLAYER', this.questionVideo)
 			this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
     })		
