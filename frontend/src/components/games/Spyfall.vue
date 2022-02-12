@@ -492,6 +492,7 @@ video {
   background-position: center;
   position: absolute;
   top: 0;
+  left: 0;
 }
 .place1 {
   background-image: url(../../assets/places_image/경찰서.jpg);

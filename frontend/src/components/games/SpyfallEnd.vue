@@ -8,38 +8,38 @@
         스파이가 시민들이 있는 장소를 추리하는 중 입니다
       </p>
       </div>
-    <div v-if="spyPlayer">
+    <div v-if="spyPlayer" class="child-borders">
       <ov-video :stream-manager="spyPlayer"/>
     </div>
 
     <div v-if="(!spyWin && !citizenWin) && isSpy" class="place_check">
         <div>              
-          <button class="place1" @click="decide('경찰서')"><div id="x1" style="display:none"></div><p>경찰서</p></button>  
-          <button class="place2" @click="decide('자동차_정비소')"><div id="x2" style="display:none"></div><p>자동차 정비소</p></button>  
-          <button class="place3" @click="decide('학교')"><div id="x3" style="display:none"></div><p>학교</p></button>  
-          <button class="place4" @click="decide('레스토랑')"><div id="x4" style="display:none"></div><p>레스토랑</p></button>  
-          <button class="place5" @click="decide('영화_촬영소')"><div id="x5" style="display:none"></div><p>영화 촬영소</p></button> 
+          <button class="place1 paper-btn" @click="decide('경찰서')"><p>경찰서</p></button>  
+          <button class="place2 paper-btn" @click="decide('자동차_정비소')"><p>자동차 정비소</p></button>  
+          <button class="place3 paper-btn" @click="decide('학교')"><p>학교</p></button>  
+          <button class="place4 paper-btn" @click="decide('레스토랑')"><p>레스토랑</p></button>  
+          <button class="place5 paper-btn" @click="decide('영화_촬영소')"><p>영화 촬영소</p></button> 
         </div>
         <div>
-          <button class="place6" @click="decide('대사관')"><div id="x6" style="display:none"></div><p>대사관</p></button>  
-          <button class="place7" @click="decide('병원')"><div id="x7" style="display:none"></div><p>병원</p></button>  
-          <button class="place8" @click="decide('대형마트')"><div id="x8" style="display:none"></div><p>대형마트</p></button>  
-          <button class="place9" @click="decide('공연장')"><div id="x9" style="display:none"></div><p>공연장</p></button>  
-          <button class="place10" @click="decide('해변')"><div id="x10" style="display:none"></div><p>해변</p></button> 
+          <button class="place6 paper-btn" @click="decide('대사관')"><p>대사관</p></button>  
+          <button class="place7 paper-btn" @click="decide('병원')"><p>병원</p></button>  
+          <button class="place8 paper-btn" @click="decide('대형마트')"><p>대형마트</p></button>  
+          <button class="place9 paper-btn" @click="decide('공연장')"><p>공연장</p></button>  
+          <button class="place10 paper-btn" @click="decide('해변')"><p>해변</p></button> 
         </div>
         <div>
-          <button class="place11" @click="decide('우주_정거장')"><div id="x11" style="display:none"></div><p>우주 정거장</p></button>  
-          <button class="place12" @click="decide('잠수함')"><div id="x12" style="display:none"></div><p>잠수함</p></button>  
-          <button class="place13" @click="decide('놀이공원')"><div id="x13" style="display:none"></div><p>놀이공원</p></button>  
-          <button class="place14" @click="decide('공항')"><div id="x14" style="display:none"></div><p>공항</p></button>  
-          <button class="place15" @click="decide('대학_연구실')"><div id="x15" style="display:none"></div><p>대학 연구실</p></button> 
+          <button class="place11 paper-btn" @click="decide('우주_정거장')"><p>우주 정거장</p></button>  
+          <button class="place12 paper-btn" @click="decide('잠수함')"><p>잠수함</p></button>  
+          <button class="place13 paper-btn" @click="decide('놀이공원')"><p>놀이공원</p></button>  
+          <button class="place14 paper-btn" @click="decide('공항')"><p>공항</p></button>  
+          <button class="place15 paper-btn" @click="decide('대학_연구실')"><p>대학 연구실</p></button> 
         </div>
         <div>
-          <button class="place16" @click="decide('호텔')"><div id="x16" style="display:none"></div><p>호텔</p></button>  
-          <button class="place17" @click="decide('은행')"><div id="x17" style="display:none"></div><p>은행</p></button>  
-          <button class="place18" @click="decide('카지노')"><div id="x18" style="display:none"></div><p>카지노</p></button>  
-          <button class="place19" @click="decide('회사_송년회')"><div id="x19" style="display:none"></div><p>회사 송년회</p></button>  
-          <button class="place20" @click="decide('동물원')"><div id="x20" style="display:none"></div><p>동물원</p></button> 
+          <button class="place16 paper-btn" @click="decide('호텔')"><p>호텔</p></button>  
+          <button class="place17 paper-btn" @click="decide('은행')"><p>은행</p></button>  
+          <button class="place18 paper-btn" @click="decide('카지노')"><p>카지노</p></button>  
+          <button class="place19 paper-btn" @click="decide('회사_송년회')"><p>회사 송년회</p></button>  
+          <button class="place20 paper-btn" @click="decide('동물원')"><p>동물원</p></button> 
         </div>
       </div>
       <div v-if="spyWin">
