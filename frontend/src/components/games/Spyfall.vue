@@ -66,7 +66,7 @@
               <div class="badge"><h3><span>장소</span></h3></div>
               <div class="badge">
                 <img :src="placeSrc" />
-                <h3>{{place}}</h3>
+                <h3 v-if="job != '스파이'">{{place}}</h3>
               </div>
               <div class="badge"><h3><span>직업</span></h3></div>
               <div class="badge"><h3><span>{{job}}</span></h3></div>
@@ -361,7 +361,7 @@ export default {
       this.voteList.agreeCnt += 1
       if ( this.voteList.voteCnt == this.streamManager.length -1) {    
         // 투표가 끝나고 3초 보여주기     
-        // setTimeout(() => {
+        setTimeout(() => {
           // 만약 만장일치일때
           if (this.voteList.agreeCnt == this.streamManager.length - 1) {
             // 스파이가 맞으면 시민 승리
@@ -381,7 +381,7 @@ export default {
           else {
             this.restart()
           }
-        // }, 3000);
+        }, 3000);
       }      
     })
     
@@ -392,12 +392,6 @@ export default {
       this.voteList.disagreeCnt += 1
       if ( this.voteList.voteCnt >= this.streamManager.length-1) {
         this.voteList.voteCnt = this.streamManager.length-1
-        const div = document.getElementById('#voteCompleted')
-        div.style.display = "block"
-        setTimeout(() => {
-          // alert('투표가 완료 되었습니다.')
-          this.restart()
-        }, 3000);
       }
     })
 
@@ -411,7 +405,7 @@ export default {
       this.isVoted = false
       this.voteEnabled = false;
       this.votetimeCnt = 30;
-      const div = document.getElementById('#voteCompleted')
+      const div = document.getElementById('voteCompleted')
       div.style.display = "none"
     })
 

@@ -1,5 +1,5 @@
 <template>
-  <div style="display : flex">
+  <div>
     <div v-if="!spyWin && !citizenWin">
       <p>
         스파이가 나타났습니다!
@@ -11,7 +11,6 @@
     <div v-if="spyPlayer" class="child-borders">
       <ov-video :stream-manager="spyPlayer"/>
     </div>
-
     <div v-if="(!spyWin && !citizenWin) && isSpy" class="place_check">
         <div>              
           <button class="place1 paper-btn" @click="decide('경찰서')"><p>경찰서</p></button>  
@@ -132,6 +131,12 @@ export default {
 </script>
 
 <style scoped>
+
+
+video {
+  width: 350px;  
+}
+
 .place_check {
   display: flex;
   flex-direction: column;

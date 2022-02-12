@@ -59,9 +59,6 @@
             <span v-if="gameSelected == 'Spyfall'">
               <spyfallDescription :gameSelected="gameSelected"></spyfallDescription>
             </span>
-            <span v-if="gameSelected == 'Fakeartist'">
-              <fakeartistDescription :gameSelected="gameSelected"></fakeartistDescription>
-            </span>
             <span v-if="gameSelected == 'Telestation'">
               <telestationDescription :gameSelected="gameSelected"></telestationDescription>
             </span>
@@ -85,7 +82,6 @@ import Spyfall from '@/components/games/Spyfall';
 import Fakeartist from '@/components/games/Fakeartist.vue';
 import Telestation from '@/components/games/Telestation.vue';
 import SpyfallDescription from '@/components/descriptions/SpyfallDescription';
-import FakeartistDescription from '@/components/descriptions/FakeartistDescription';
 import TelestationDescription from '@/components/descriptions/TelestationDescription';
 import { mapState } from "vuex";
 import axios from "axios";
@@ -109,7 +105,6 @@ export default {
     Fakeartist,
     Telestation,
     SpyfallDescription,
-    FakeartistDescription,
     TelestationDescription,
 	},
 
@@ -136,7 +131,7 @@ export default {
 
     isReadyToStart() {
       // if (this.readyList.length == (this.subscribers.length - 1)) {
-      if (this.readyList.length == 2) {
+      if (this.readyList.length == 1) {
         return true;
       }
       return false;
@@ -212,6 +207,7 @@ export default {
       joinCodeToCopy.select()
       document.execCommand("copy")
       alert('복사되었습니다')
+      joinCodeToCopy.style.visibility = 'hidden'
     },
     leaveSession() {
 			this.$store.dispatch('leaveSession')

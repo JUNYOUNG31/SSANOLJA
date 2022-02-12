@@ -3,9 +3,12 @@
     <img src="../assets/logo.png" alt="logo">
     <section class="test">
     <div v-on:click="GoogleLoginBtn">
-      <button class="paper-btn btn-lg btn-primary grey--text">
+      <button class="paper-btn btn-lg btn-warning black--text d-flex" >
           <img src="../assets/googlelogo.png" alt="googlelogo" width="40">
+          <p 
+          style="margin: 8px 0 8px; font-family: Patrick Hand SC, sans-serif; font-weight: normal;" witdh="40">
           Sign in with Google
+          </p> 
         </button> 
     </div>
     <div id="my-signin2" style="display: none"></div>
