@@ -22,9 +22,9 @@ export default new Vuex.Store({
 		selectPlayer: null,					// 투표지목한 사람
 		votePlayer: null,						// 투표당하는 사람
 		dialog : false,							// 투표 화면
-		voteClick : false,					// 투표 횟수 1
 		citizenWin : false,					// 시민 승리
 		spyWin : false,							// 스파이 승리
+		voteClick : false,
     mySessionId: '',
     myUserName: '',
 		isRoomMaker: localStorage.getItem('isRoomMaker') ==='true',
@@ -81,7 +81,6 @@ export default new Vuex.Store({
 			if (state.votePlayer != null) {
 				state.dialog = true
 			}
-			state.voteClick = true;
 		},
 
 		SET_SELECTPLAYER: function(state, value) {
@@ -90,6 +89,9 @@ export default new Vuex.Store({
 
 		SET_QUESTIONPLAYER: function(state, value) {
 			state.questionPlayer = value;
+		},
+		SET_VOTECLICK: function (state) {
+			state.voteClick = true
 		},
 		
 		CITIZEN_WIN: function(state) {

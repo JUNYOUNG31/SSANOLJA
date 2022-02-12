@@ -2,7 +2,7 @@
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && votePlayer != streamManager"/>
 	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="(!isAnswerPlayer && !isFirstQuestionPlayer)">지목하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="isMyself || (!isAnswerPlayer && !isFirstQuestionPlayer)">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="isMyself || voteClick">투표하기</v-btn></div>
 	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
 </div>
@@ -26,7 +26,7 @@ export default {
 			selectVideo: null,
 			isAnswerPlayer : false,
 			isFirstQuestionPlayer : false,
-			isMyself: false
+			isMyself: false,
 		}
 	},
 
@@ -105,6 +105,7 @@ export default {
 		return JSON.parse(connection.data);
 		},
 		voteSelect () {
+			this.$store.commit('SET_VOTECLICK')
 			this.voteVideo = JSON.parse(this.streamManager.stream.connection.data)
 			this.sendMessageToEveryBody(JSON.stringify(this.voteVideo), 'votePlayer')
 		},
