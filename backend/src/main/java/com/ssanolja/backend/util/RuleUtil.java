@@ -5,7 +5,6 @@ import lombok.Getter;
 @Getter
 public enum RuleUtil {
     SPYFALL(1,480,0,0, 0,30,3,8),
-    FAKEARTIST(2,0,5,60, 20,20,3,8),
     TELESTATION(3,0,120,0,30, 30,1,8);
 
     private final int gameType;

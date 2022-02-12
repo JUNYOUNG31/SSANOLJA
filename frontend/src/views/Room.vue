@@ -86,6 +86,7 @@ export default {
       rules: null,
       gameRes: null,
       readyList: [],
+      playerList: [],
 		}
 	},
 
@@ -119,12 +120,10 @@ export default {
     },
 
     isReadyToStart() {
-      // if (this.readyList.length == (this.subscribers.length - 1)) {
-      if (this.readyList.length == 2) {
+      if (this.readyList.length == (this.subscribers.length - 1)) {
         return true;
       }
       return false;
-      // }
     }
     
 	},
@@ -204,13 +203,12 @@ export default {
     gameSelect(game) {
       this.gameSelected = game
     },
-    gameStart(game) {
-      console.log(this.subscribers)
-      console.log(this.subscribers.length)      
+    gameStart(game) {   
+      console.log(this.readyList) 
       axios.post(
         '/api/games/rules',
         JSON.stringify({
-          personnel: this.subscribers.length, // userNicknames의 길이로 대체
+          personnel: this.subscribers.length,
           selectedGame: game
         })
       )
@@ -222,7 +220,7 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : ["정성우", "박준영", "김범주"],
+              userNicknames : this.playerList,
               roomCode : this.mySessionId,
               selectedGame: game
             }),
@@ -243,6 +241,20 @@ export default {
         alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다')
       })
     },
+    makePlayerList () {
+      this.playerList=[]
+      for (let index = 0; index < this.subscribers.length; index++) {
+        let participant = JSON.parse(this.subscribers[index].stream.connection.data)
+        this.playerList.push(participant.clientData)
+      }
+    }
+  },
+  watch: {
+    subscribers: {
+      handler() {
+        this.makePlayerList()
+      }
+    }
   }
 }
 

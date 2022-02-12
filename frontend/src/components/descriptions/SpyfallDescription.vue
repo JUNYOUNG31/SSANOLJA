@@ -15,7 +15,7 @@
           justify="center"
         >
           <div class="text-h2">
-            <img :src="require(`@/assets/description_image/spyfall/` + `spy_`+(i+1)+`.png`)" width="100%"/>
+            <!-- <img :src="require(`@/assets/description_image/spyfall/` + `spy_`+(i+1)+`.png`)" width="100%"/> -->
           </div>
         </v-row>
       </v-sheet>
