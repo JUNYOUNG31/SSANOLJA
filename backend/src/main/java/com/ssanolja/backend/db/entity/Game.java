@@ -3,6 +3,7 @@ package com.ssanolja.backend.db.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "games")

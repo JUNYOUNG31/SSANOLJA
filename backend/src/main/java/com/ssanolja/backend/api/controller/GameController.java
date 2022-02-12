@@ -6,6 +6,8 @@ import com.ssanolja.backend.api.response.GameRes;
 import com.ssanolja.backend.api.response.RuleRes;
 import com.ssanolja.backend.api.service.GameService;
 import com.ssanolja.backend.api.service.SpyfallService;
+import com.ssanolja.backend.api.service.TelestationService;
+import com.ssanolja.backend.api.service.UserService;
 import com.ssanolja.backend.db.entity.Game;
 import com.ssanolja.backend.db.entity.User;
 import com.ssanolja.backend.util.RuleUtil;
@@ -19,16 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/games")
 public class GameController {
 
     private final GameService gameService;
     private final SpyfallService spyfallService;
+    private final UserService userService;
+    private final TelestationService telestationService;
 
 
-    public GameController(GameService gameService, SpyfallService spyfallService) {
+    public GameController(GameService gameService, SpyfallService spyfallService, UserService userService, TelestationService telestationService) {
         this.gameService = gameService;
         this.spyfallService = spyfallService;
+        this.userService = userService;
+        this.telestationService = telestationService;
+
     }
 
     @PostMapping("/start")
@@ -36,16 +43,13 @@ public class GameController {
         String roomCode = startGameReq.getRoomCode();
         Game game = gameService.makeGame(roomCode);
         List<String> userNicknames = startGameReq.getUserNicknames();
-        List<User> users = gameService.getUserList(userNicknames);
+        List<User> users = userService.getUserList(userNicknames);
         String selectedGame = startGameReq.getSelectedGame();
-        if (selectedGame.equals("spyfall")) {
-//            spyfallService
+        if (selectedGame.equals("Spyfall")) {
             return new ResponseEntity<>(spyfallService.makeSpyfall(users, game), HttpStatus.CREATED);
-//        }
-//        else if (selectedGame.equals("telestation")) {
-////            telestationService
-//            return "telestation";
-//        }
+        }
+        else if (selectedGame.equals("Telestation")) {
+            return new ResponseEntity<>(telestationService.usersInsert(users, game), HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

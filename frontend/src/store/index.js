@@ -10,20 +10,28 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 		OPENVIDU_SERVER_URL : "https://i6e106.p.ssafy.io:9002",
-    // OPENVIDU_SERVER_URL : "https://" + location.hostname + ":4443",
     OPENVIDU_SERVER_SECRET : "MY_SECRET",
     OV: undefined,
     session: undefined,
     mainStreamManager: undefined,
     publisher: undefined,
     subscribers: [],
-
-    mySessionId: 'SessionA',
-    myUserName: 'Participant' + Math.floor(Math.random() * 100),
+		firstQuestionPlayer: null,	// 처음 질문하는 사람
+		questionPlayer: null,				// 질문하는 사람
+		answerPlayer: null,					// 질문받는 사람
+		selectPlayer: null,					// 투표지목한 사람
+		votePlayer: null,						// 투표당하는 사람
+		dialog : false,							// 투표 화면
+		citizenWin : false,					// 시민 승리
+		spyWin : false,							// 스파이 승리
+		voteClick : false,
+    mySessionId: '',
+    myUserName: '',
+		isRoomMaker: localStorage.getItem('isRoomMaker') === 'true',
 
   },
-  mutations: {
 
+  mutations: {
 		CHANGE_JOININFO: function(state, data) {
 			state.mySessionId = data.sessionId
 			state.myUserName = data.userName
@@ -33,12 +41,9 @@ export default new Vuex.Store({
       state.OV = new OpenVidu();
     },
 
-    INIT_SESSION: function (state) {
-      
-      state.session = state.OV.initSession();
-      
+    INIT_SESSION: function (state) {      
+      state.session = state.OV.initSession();      
     },
-
     
     WARN_EXCEPTION: function (state) {
       state.session.on('exception', ({ exception }) => {
@@ -46,51 +51,86 @@ export default new Vuex.Store({
 			});
     },
 
-    // GET_TOKEN: function (state) {
-
-    // },
-
     LEAVE_SESSION: function (state) {
       // --- Leave the session by calling 'disconnect' method over the Session object ---
 			if (state.session) state.session.disconnect();
-
 			state.session = undefined;
 			state.mainStreamManager = undefined;
 			state.publisher = undefined;
 			state.subscribers = [];
 			state.OV = undefined;
-
     },
-
 
     UPDATE_MAINVIDEO_STREAMMANAGER: function (state, stream) {
       state.mainStreamManager = stream;
     },
 
-    
+		SET_FIRSTQUESTIONPLAYER: function(state, value) {
+			state.firstQuestionPlayer = value
+		},
+
+		SET_ANSWERPLAYER: function(state, value) {
+			state.answerPlayer = value;
+		},
+
+		SET_VOTEPLAYER: function(state, value) {
+			state.votePlayer = value;
+			if (state.votePlayer == null) {
+				state.dialog = false
+			}
+			if (state.votePlayer != null) {
+				state.dialog = true
+			}
+		},
+
+		SET_SELECTPLAYER: function(state, value) {
+			state.selectPlayer = value;
+		},
+
+		SET_QUESTIONPLAYER: function(state, value) {
+			state.questionPlayer = value;
+		},
+		SET_VOTECLICK: function (state) {
+			state.voteClick = true
+		},
+		
+		CITIZEN_WIN: function(state) {
+			state.citizenWin = true
+		},
+
+		SPY_WIN: function(state) {
+			state.spyWin = true
+		},
+
+		INIT_SPYFALL: function(state) {
+			state.spyWin = false
+			state.citizenWin = false
+			state.firstQuestionPlayer = null
+			state.questionPlayer = null
+			state.answerPlayer = null
+			state.selectPlayer = null
+			state.votePlayer = null
+			state.dialog = false
+			state.voteClick = false
+
+		}
   },
+
   actions: {
     joinSession: function ({ commit, dispatch, state}, data) {
 			// --- Get an OpenVidu object ---
 			commit("CHANGE_JOININFO", data)
-
-      commit("GET_OVOBJ")
-			
+      commit("GET_OVOBJ")			
 			// --- Init a session ---
-      commit("INIT_SESSION")
-			
-			console.log('조성현',data)
-      console.log(state.session)
-			// --- Specify the actions when events take place in the session ---
-      
+      commit("INIT_SESSION")			
+			// --- Specify the actions when events take place in the session ---      
 			// On every new Stream received...
       // commit("STREAM_CREATED")
       state.session.on('streamCreated', ({ stream }) => {
         const subscriber = state.session.subscribe(stream);
 				state.subscribers.push(subscriber);
 			});
-      
-      
+
 			// On every Stream destroyed...
 			// commit("STREAM_DESTROYED")
       state.session.on('streamDestroyed', ({ stream }) => {
@@ -105,24 +145,18 @@ export default new Vuex.Store({
       state.session.on('exception', ({ exception }) => {
 				console.warn(exception);
 			});
-
 			// --- Connect to the session with a valid user token ---
-
 			// 'getToken' method is simulating what your server-side should do.
 			// 'token' parameter should be retrieved and returned by your own backend
-
       
       dispatch('getToken', state.mySessionId).then(token =>{
           state.session.connect(token, { clientData: state.myUserName })
-            .then(() => {
-  
-              // --- Get your own camera stream with the desired properties ---
-              
-              let publisher = state.OV.initPublisher(undefined, data.publishInfo);
-  
+            .then(() => {  
+              // --- Get your own camera stream with the desired properties ---              
+              let publisher = state.OV.initPublisher(undefined, data.publishInfo);  
               state.mainStreamManager = publisher;
-              state.publisher = publisher;
-  
+							state.subscribers.push(publisher) // subscribers 에 publisher 추가
+              state.publisher = publisher;  
               // --- Publish your stream ---
               state.session.publish(state.publisher);
             })
@@ -130,7 +164,6 @@ export default new Vuex.Store({
               console.log('There was an error connecting to the session:', error.code, error.message);
             });
         });
-
 			
       // 임시로 주석처리함
 			window.addEventListener('beforeunload', this.leaveSession);
@@ -146,13 +179,11 @@ export default new Vuex.Store({
 			window.removeEventListener('beforeunload', this.leaveSession);
 		},
 
-		updateMainVideoStreamManager: function ({ commit, state }, stream) {
-      
-      console.log(this.publisher)
-      console.log(stream)
+		updateMainVideoStreamManager: function ({ commit, state }, stream) {      
+      // console.log(this.publisher)
+      // console.log(stream)
 			if (state.mainStreamManager === stream) return;
-      commit('UPDATE_MAINVIDEO_STREAMMANAGER')
-			
+      commit('UPDATE_MAINVIDEO_STREAMMANAGER')			
 		},
 
 		/**
@@ -167,7 +198,6 @@ export default new Vuex.Store({
 		 *   3) The Connection.token must be consumed in Session.connect() method
 		 */
 
-    // state.mySessionId라고 해야할수도 있음
 		getToken: function ({ dispatch }, data) {
       return dispatch('createSession', data).then(sessionId => dispatch('createToken', sessionId));
 			// return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
@@ -216,22 +246,8 @@ export default new Vuex.Store({
 					.then(data => resolve(data.token))
 					.catch(error => reject(error.response));
 			});
-		},
-
-		socketTest: function({state}) {
-			state.session.signal({
-				data: 'socketTest',
-				to: [],
-				type: 'socket-test'
-			})
-			.then(() => {
-				console.log('Message successfully sent');
-			})
-			.catch(error => {
-				console.error(error);
-			})
 		}
   },
   modules: {
-  }
+  },
 })

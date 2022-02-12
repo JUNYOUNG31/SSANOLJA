@@ -19,7 +19,6 @@
                 item-text="label"
                 item-value="deviceId"
                 solo 
-                rounded
                 placehoder="video"></v-select>
             </div>
             <div>
@@ -31,7 +30,7 @@
                 item-text="label"
                 item-value="deviceId"
                 solo 
-                rounded></v-select>
+                ></v-select>
             </div>
             <div class="d-flex justify-content-around">
               <v-btn fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
@@ -44,11 +43,11 @@
           </div>
         </div>
 
-        <v-divider></v-divider>
+        <v-divider color="white"></v-divider>
         <v-card-actions class="mt-5 d-flex justify-content-center">
           <v-btn
-            color="#1CFD9F"
-            rounded
+            color="white"
+            x-large
             @click="enterRoom"
           >
             입장
@@ -70,15 +69,15 @@ export default {
   data: function () {
     return {
         publishInfo: {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-        publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,			// The frame rate of your video
-        insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-        mirror: false       	// Whether to mirror your local video or not
-      },
+          audioSource: undefined, // The source of audio. If undefined default microphone
+          videoSource: undefined, // The source of video. If undefined default webcam
+          publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+          publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+          resolution: '640x480',  // The resolution of your video
+          frameRate: 30,			// The frame rate of your video
+          insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+          mirror: false       	// Whether to mirror your local video or not
+        },
       dialog: false,
       OV: undefined,
       videoDevices: [],
@@ -123,7 +122,7 @@ export default {
         userName: this.myUserName,
         publishInfo: this.publishInfo
       }
-      console.log(roomInfo)
+      console.log(roomInfo, 'roomInfo')
       this.joinSession(roomInfo)
       try {
         this.videoSrc.getTracks()[0].stop()
@@ -131,7 +130,7 @@ export default {
       catch {
         roomInfo
       }
-      this.$router.push({ name: 'Room', params: { roomId: this.joinCode}})
+      this.$router.push({ name: 'Room', params: { joinCode: this.joinCode}})
     }
   },
   computed: {
@@ -154,8 +153,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   video {
     width: 500px;
+  }
+  .v-card {
+    background-color: rgb(36, 33, 33);
+    color: white;
+  }
+
+  .v-btn {
+    margin:0 20px;
   }
 </style>

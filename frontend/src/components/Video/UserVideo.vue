@@ -1,8 +1,8 @@
 <template>
-<div v-if="streamManager">
-	<ov-video :stream-manager="streamManager"/>
+
+<div v-if="streamManager" class="camera">
+	<ov-video class="myvideo" :stream-manager="streamManager"/>
 	<div id="p-name"><p>{{ clientData }}</p></div>
-	
 </div>
 </template>
 
@@ -37,3 +37,24 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+.camera {
+	display: flex;
+	align-items: center;
+	position: relative;
+	overflow: hidden;
+}
+#p-name {
+	position: absolute;
+	top:150%;
+	left:100px;
+	z-index: 2;
+	color:white;
+	background-color: black;
+	transition: all .35s;
+}
+.camera:hover #p-name {
+	top: 85%;
+}
+</style>

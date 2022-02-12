@@ -6,26 +6,26 @@
     <div id="join" v-if="!session">
 			<div id="join-dialog" class="vertical-center">
 				<h1>LOBBY</h1>
-				<div >
+				<div>
 					<p>
 						<label>닉네임</label>
-						<input v-model="userData.userName" class="form-control" type="text" required placeholder="닉네임을 입력하세요">
 					</p>
+					<input v-model="userData.userNickname" class="paper-input" style="width:200px" type="text" required placeholder="닉네임을 입력하세요">
 					<p>
 						<label>방 참여코드</label>
-						<input v-model="joinCode" class="form-control" type="text" required placeholder="참여코드를 입력하세요">
+					</p>
+					<input v-model="joinCode" class="paper-input" style="width:200px" type="text" required placeholder="참여코드를 입력하세요">
+					<p class="text-center">
+						<button class="paper-btn btn-lg btn-success" @click="checkRoom(joinCode)">입장하기</button>
 					</p>
 					<p class="text-center">
-						<button class="btn btn-lg btn-success" @click="$refs.preview.dialog = true">입장하기</button>
-					</p>
-					<p class="text-center">
-						<button class="btn btn-lg btn-success" @click="makeSession(userData.userName, joinCode)">방 만들기</button>
+						<button class="paper-btn btn-lg btn-success" @click="makeRoom()">방 만들기</button>
 					</p>
 				</div>
 			</div>
 		</div>
 		</div>
-		<preview ref="preview" :joinCode="joinCode" :myUserName="userData.userName">
+		<preview ref="preview" :joinCode="joinCode" :myUserName="userData.userNickname">
 		</preview>
   </div>
 </template>
@@ -47,6 +47,7 @@ export default {
 			},
 			joinCode: '',
 			myUserName: '',
+			sendUserEmail: '',
 		}
 	},
 	components: {
@@ -61,47 +62,60 @@ export default {
 		])
 	},    
 	methods: {
-		joinSession(myUserName, joinCode) {
-			const payload = {
-				"myUserName": myUserName,
-				"joinCode": joinCode
-			}
-			this.$store.dispatch('joinSession', payload)
-			this.$router.push('room')			
-			//axios({
-      //  method: 'get',
-      //  url:`local 8080/api/rooms/${joinCode}`,
-				// data: joinCode
-      //})
-			//	.then(res=>{
-			//		console.log(res)
-			//		this.$store.dispatch('joinSession', payload)
-			//		this.$router.push('room')					
-			//	})//
+		checkRoom(joinCode) {
+			axios({
+				method: 'post',
+				url: '/api/users/update',
+				data: {
+					userEmail: this.userData.userEmail,
+					updatedUserNickname: this.userData.userNickname
+				}
+			}).then(() =>{
+				axios({
+					method: 'get',
+						url:`/api/rooms/${joinCode}`,
+					})
+					.then(()=>{
+						localStorage.clear()
+						localStorage.setItem("isRoomMaker", false)
+						this.$refs.preview.dialog = true
+
+						// console.log(res.status)
+							
+					})
+					.catch(() => {
+						alert('일치하는 방이 존재하지 않습니다.')
+					})
+			})
 		},
-		makeSession: function () {
-      axios({
+
+		makeRoom() {
+			axios({
+				method: 'post',
+				url: '/api/users/update',
+				data: {
+					userEmail: this.userData.userEmail,
+					updatedUserNickname: this.userData.userNickname
+				}
+			})
+			.then(() => {
+				axios({
         method: 'post',
-        url:'local 8080/api/rooms',
+        url:'/api/rooms',
       })
         .then(res=>{
-          console.log(res)
-          // localStorage.setItem('jwt', res.data.token)
-          // this.$emit('login')
-					const payload = {
-						"myUserName": this.userData.userName,
-						"joinCode": this.joinCode
-					}
-					this.$store.dispatch('joinSession', payload)
-          this.$router.push({
-					name: 'Room',
-					params: { joinCode: this.joinCode }
-					})
+					this.joinCode = res.data
+					localStorage.clear()
+					localStorage.setItem("isRoomMaker", true)
+					this.$refs.preview.dialog = true
         })
         .catch(err=> {
           console.log(err)
         })
-
+			})
+			.catch(()=>{
+				alert('이미 존재하는 닉네임입니다. 다른 닉네임을 입력해주세요')
+			})
     },
 		leaveSession() {
 				this.$store.dispatch('leaveSession')
@@ -109,22 +123,26 @@ export default {
 		updateMainVideoStreamManager(data) {
 				this.$store.dispatch('updateMainVideoStreamManager',data)
 		},
-		getUserDate() {
+		getUserData() {
+			this.sendUserEmail = this.$route.params.sendUserEmail
 			axios({
-					method:'GET',
-					url: '/sendUser'
+					method:'POST',
+					url: '/api/login/sendUser',
+					data: this.sendUserEmail
 			})
 			.then(res => {
-					this.userData.userName = res.data.userName
+					this.userData.userName = res.data.userNickname
 					this.userData.userNickname = res.data.userNickname
 					this.userData.userEmail = res.data.userEmail
-					console.log(this.userData)
+					// console.log(this.userData)
 			})
 			.catch(err => console.log(err))
 		}
 	},
-	created() {
-		this.getUserDate()
+	mounted() {
+		localStorage.clear()
+		this.getUserData()
+		localStorage.clear()
 	}
 }
 </script>
@@ -159,5 +177,13 @@ export default {
   width: 300px;
   margin-top: 100px;
   margin-bottom: 100px;
+}
+
+.vertical-center {
+	text-align: center;
+}
+.vertical-center input{
+	margin: auto;
+	margin-bottom: 20px;
 }
 </style>
