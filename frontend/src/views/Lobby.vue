@@ -31,12 +31,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 import { mapState } from "vuex";
-import Preview from '@/components/Preview.vue';
+import Preview from "@/components/Preview.vue";
 
 export default {
-	name: 'Lobby',
+  name: "Lobby",
 
 	data () {
 		return {
@@ -152,10 +152,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   border: hidden;
 }
-.lobby div input{
+.lobby div input {
   color: black;
 }
 .lobby .myface {
@@ -167,9 +167,9 @@ export default {
 .go-or-make {
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 }
-.go-or-make button{
+.go-or-make button {
   margin: 10px;
   width: 100px;
 }
