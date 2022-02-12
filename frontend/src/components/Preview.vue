@@ -4,53 +4,38 @@
       max-width="900"
     >
       <v-card>
-        <v-card-title class="text-h5">
-          대기화면
-        </v-card-title>
+        <div>
+          <h5>대기화면</h5>
+        </div>
         <div class="d-flex">
           <video :srcObject.prop="videoSrc" autoplay></video>
-          <div class="videocontrol">
+          <div class="videoselect">
             <div>
-              <v-select 
-                @change="changeDevice"
-                append-icon="mdi-camera-outline"
-                v-model="publishInfo.videoSource"
-                :items="videoDevices"
-                item-text="label"
-                item-value="deviceId"
-                solo 
-                placehoder="video"></v-select>
+              <label> 비디오 선택</label>
+              <select @change="changeDevice" v-model="publishInfo.videoSource" placehoder="video" style="border-style: solid; width: 350px">
+                <option v-for="(item,index) in videoDevices" :key="index" :value="item.deviceId">{{item.label}}</option>
+              </select>
+              <label> 오디오 선택</label>
+              <select @click="changeDevice" v-model="publishInfo.audioSource" style="border-style: solid">
+                  <option v-for="(item, index) in audioDevices" :key="index" :value="item.deviceId">{{item.label}}</option>
+                </select>
             </div>
-            <div>
-              <v-select
-                @click="changeDevice"
-                append-icon="mdi-volume-high"
-                v-model="publishInfo.audioSource" 
-                :items="audioDevices"
-                item-text="label"
-                item-value="deviceId"
-                solo 
-                ></v-select>
-            </div>
-            <div class="d-flex justify-content-around">
-              <button  class="paper-btn" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
-                <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
-              </button>
-              <button class="paper-btn" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
-                <v-icon>{{ publishInfo.publishVideo ? 'mdi-camera-outline' : 'mdi-camera-off-outline' }}</v-icon>
-              </button>
+            <div class="videocontrol">
+              <div>
+                <button class="paper-btn" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
+                  <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
+                </button>
+                <button class="paper-btn" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
+                  <v-icon>{{ publishInfo.publishVideo ? 'mdi-camera-outline' : 'mdi-camera-off-outline' }}</v-icon>
+                </button>
+              </div>
+              <button class="paper-btn enter btn-success" @click="enterRoom">입장</button>
             </div>
           </div>
         </div>
 
         <v-divider></v-divider>
-        <v-card-actions>
-          <button
-            class="paper-btn"      
-            @click="enterRoom"
-          >
-            입장
-          </button>
+        <v-card-actions>          
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -165,9 +150,25 @@ export default {
     border-style: solid;
     border-width: 2px;
   }
-  .videocontrol {
+  .videoselect {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     margin-left: 20px;
+  }
+  .videoselect div div select{
+    margin-bottom: 20px;
+  }
+
+  .videocontrol  {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .videocontrol button {
+    margin-right: 20px;
+  }
+  .videocontrol .enter {
+    margin: 0;
   }
 </style>

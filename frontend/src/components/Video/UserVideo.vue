@@ -5,7 +5,6 @@
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) ">지목하기</v-btn></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="isMyself || voteClick">투표하기</v-btn></div>
 	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
-	<p></p>
 </div>
 </template>
 
@@ -28,7 +27,6 @@ export default {
 			isAnswerPlayer : false,
 			isFirstQuestionPlayer : false,
 			isMyself: false,
-			isQuestionPlayer: false
 		}
 	},
 
@@ -85,18 +83,8 @@ export default {
 			}
 			else {
 				this.isFirstQuestionPlayer = false
-			}
-		},
-		questionPlayer: function() {
-			if (this.firstQuestionPlayer || this.questionPlayer) {
-				if(this.myUserName == JSON.parse(this.questionPlayer.stream.connection.data).clientData) {
-					this.isQuestionPlayer == true
-				}
-			}
-			else {
-				this.isQuestionPlayer = false
-			}
-		}
+			}			
+		}		
 	},
 	methods: {
 		sendMessageToEveryBody(data, type) {
@@ -116,6 +104,7 @@ export default {
 		return JSON.parse(connection.data);
 		},
 		voteSelect () {
+			this.$store.commit('SET_VOTECLICK')
 			this.voteVideo = JSON.parse(this.streamManager.stream.connection.data)
 			this.sendMessageToEveryBody(JSON.stringify(this.voteVideo), 'votePlayer')
 		},

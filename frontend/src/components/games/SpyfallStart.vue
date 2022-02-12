@@ -18,7 +18,7 @@ import {mapState} from 'vuex';
 
 export default {
   name: "SpyfallStart",
-
+  
 
   props: {
     isSpy : Boolean,
@@ -35,17 +35,14 @@ export default {
 	},
 
   mounted() {
-    if (this.isRoomMaker){
-      setTimeout(() => {
-        const randomquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
-        console.log(randomquestionplayerdata)
-        const firstquestionplayerdata = JSON.parse(randomquestionplayerdata.stream.connection.data)
-        console.log(firstquestionplayerdata)
+    if(this.isRoomMaker) {
+    setTimeout(() => {
+        const ramdomquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
+        const firstquestionplayerdata = JSON.parse(ramdomquestionplayerdata.stream.connection.data)
         this.sendMessageToEveryBody(JSON.stringify(firstquestionplayerdata), 'setFirstQuestionPlayer')
-        this.$store.commit("SET_FIRSTQUESTIONPLAYER", randomquestionplayerdata)
+        this.$store.commit("SET_FIRSTQUESTIONPLAYER", ramdomquestionplayerdata)
         }, 3000);
-    }   
-  
+    }  
   },
 
   methods: {

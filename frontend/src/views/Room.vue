@@ -44,7 +44,7 @@
                   </button>
                 </v-col>
                 <v-col v-if="!isRoomMaker">
-                  <button class="paper-btn" style="width:100%;" @click="beReady(myUserName)">
+                  <button class="paper-btn" style="width:100%;" @click="beReady(myUserName)" >
                     <span>레디</span>
                   </button>
                 </v-col>

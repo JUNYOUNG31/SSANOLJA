@@ -79,7 +79,7 @@ export default {
 						localStorage.clear()
 						localStorage.setItem("isRoomMaker", false)
 						this.$refs.preview.dialog = true
-					
+
 						// console.log(res.status)
 							
 					})
@@ -142,6 +142,7 @@ export default {
 	mounted() {
 		localStorage.clear()
 		this.getUserData()
+		localStorage.clear()
 	}
 }
 </script>
