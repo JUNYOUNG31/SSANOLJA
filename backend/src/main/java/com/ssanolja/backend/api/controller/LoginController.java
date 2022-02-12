@@ -22,7 +22,7 @@ public class LoginController {
                     .userNickname(user.getUserNickname())
                     .build();
             userRepository.save(user);
-            System.out.println("포스트 테스트 저장됨");
+
         }else {
             System.out.println("이미 회원가입 되어 있습니다.");
         }
