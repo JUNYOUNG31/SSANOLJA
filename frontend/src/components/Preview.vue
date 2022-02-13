@@ -1,57 +1,42 @@
 <template>
-  <v-dialog
+  <v-dialog 
       v-model="dialog"
       max-width="900"
     >
       <v-card>
-        <v-card-title class="text-h5">
-          대기화면
-        </v-card-title>
+        <div>
+          <v-card-title>
+          <h3 style="font-family: 'GowunDodum-Regular'">대기화면</h3>
+          </v-card-title>
+        </div>
         <div class="d-flex">
           <video :srcObject.prop="videoSrc" autoplay></video>
-          <div class="d-flex flex-column justify-content-end p-3">
+          <div class="videoselect">
             <div>
-              <v-select
-                @change="changeDevice"
-                append-icon="mdi-camera-outline"
-                v-model="publishInfo.videoSource"
-                :items="videoDevices"
-                item-text="label"
-                item-value="deviceId"
-                solo 
-                placehoder="video"></v-select>
+              <label> 비디오 선택</label>
+              <select @change="changeDevice" v-model="publishInfo.videoSource" placehoder="video" style="border-style: solid; width: 350px">
+                <option v-for="(item,index) in videoDevices" :key="index" :value="item.deviceId">{{item.label}}</option>
+              </select>
+              <label> 오디오 선택</label>
+              <select @click="changeDevice" v-model="publishInfo.audioSource" style="border-style: solid">
+                  <option v-for="(item, index) in audioDevices" :key="index" :value="item.deviceId">{{item.label}}</option>
+                </select>
             </div>
-            <div>
-              <v-select
-                @click="changeDevice"
-                append-icon="mdi-volume-high"
-                v-model="publishInfo.audioSource" 
-                :items="audioDevices"
-                item-text="label"
-                item-value="deviceId"
-                solo 
-                ></v-select>
-            </div>
-            <div class="d-flex justify-content-around">
-              <v-btn fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
-                <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
-              </v-btn>
-              <v-btn fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
-                <v-icon>{{ publishInfo.publishVideo ? 'mdi-camera-outline' : 'mdi-camera-off-outline' }}</v-icon>
-              </v-btn>
+            <div class="videocontrol">
+              <div>
+                <button class="paper-btn btn-secondary" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
+                  <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
+                </button>
+                <button class="paper-btn btn-secondary" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
+                  <v-icon>{{ publishInfo.publishVideo ? 'mdi-camera-outline' : 'mdi-camera-off-outline' }}</v-icon>
+                </button>
+              </div>
+              <button class="paper-btn enter btn-success" @click="enterRoom">입장</button>
             </div>
           </div>
         </div>
-
-        <v-divider color="white"></v-divider>
-        <v-card-actions class="mt-5 d-flex justify-content-center">
-          <v-btn
-            color="white"
-            x-large
-            @click="enterRoom"
-          >
-            입장
-          </v-btn>
+        <v-divider></v-divider>
+        <v-card-actions>          
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -155,7 +140,37 @@ export default {
 
 <style scoped>
   video {
-    width: 500px;
+    width: 450px;
+    margin-left: 20px;
+    border-bottom-left-radius: 15px 255px;
+    border-bottom-right-radius: 225px 15px;
+    border-top-left-radius: 255px 15px;
+    border-top-right-radius: 15px 225px;
+    border-color: #41403e;
+    border-color: var(--primary);
+    border-style: solid;
+    border-width: 2px;
+  }
+  .videoselect {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 20px;
+  }
+  .videoselect div select{
+    margin-bottom: 20px;
+  }
+
+  .videocontrol  {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .videocontrol button {
+    margin-right: 20px;
+  }
+  .videocontrol .enter {
+    margin: 0;
   }
   .v-card {
     background-color: rgb(36, 33, 33);

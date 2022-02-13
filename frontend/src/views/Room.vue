@@ -142,7 +142,7 @@ export default {
 
     this.session.on('signal:rules', (event) => {
     this.rules = JSON.parse(event.data)
-    }),
+    })
 
     this.session.on('signal:gameRes', (event)=>{
       this.gameRes = JSON.parse(event.data)
@@ -155,14 +155,16 @@ export default {
       this.readyList=[]
     })
 
-    this.session.on('signal:backToLobby', ()=>{
-      this.start = false
-      this.$store.commit('INIT_SPYFALL')
-    })
+    if(this.session.ee._events["signal:initSpyfall"] == undefined) {
+      this.session.on('signal:initSpyfall', ()=>{
+        this.start = false
+        this.$store.commit('INIT_SPYFALL')
+      })
+    }
+
 
     this.session.on('signal:ready', (event)=>{
       const person = event.data
-      // console.log(person)
       if (this.readyList.includes(person)) {
         const idx = this.readyList.indexOf(person)
         this.readyList.splice(idx, 1)
@@ -171,6 +173,7 @@ export default {
       }
     })
   },
+
   methods : {
     sendMessageToEveryBody(data, type) {
 			this.session.signal({
@@ -195,6 +198,7 @@ export default {
       joinCodeToCopy.select()
       document.execCommand("copy")
       alert('복사되었습니다')
+      joinCodeToCopy.style.display = 'none'
     },
     leaveSession() {
 			this.$store.dispatch('leaveSession')
@@ -204,7 +208,6 @@ export default {
       this.gameSelected = game
     },
     gameStart(game) {   
-      console.log(this.readyList) 
       axios.post(
         '/api/games/rules',
         JSON.stringify({
@@ -230,8 +233,6 @@ export default {
             this.gameRes = resp.data
             this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
             this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
-            // this.start = true
-            // this.sendMessageToEveryBody('initRoom')
           })
           .catch(error => console.log(error))
 

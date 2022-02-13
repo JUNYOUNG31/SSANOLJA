@@ -1,153 +1,151 @@
 <template>
-  <div class="spyfall-container">
-    <v-container>
-      <v-row>
-        <v-col cols="9">
-          <div>질문화면
-            <v-row>
-              <v-col cols="6">Question</v-col>
-              <v-col cols="6">Answer</v-col>
-            </v-row>
-            <v-row>
-              <v-col class="Question_video" cols="6">
-                <div v-if="streamManager" >
-                  <ov-video :stream-manager="streamManager"/>
-                  <div id="p-name"><p>{{ clientData }}</p></div>
-                </div>
-              </v-col>
-              <v-col class="Answer_video" cols="6">
-                <div v-if="streamManager" >
-                  <ov-video :stream-manager="streamManager"/>
-                  <div id="p-name"><p>{{ clientData }}</p></div>
-                </div>
-              </v-col>              
-            </v-row>
-          </div>
-          <div class="place_check">
-            <div>              
-              <button class="place1" @click="toggle(1)"><div id="x1" style="display:none"></div><h3>경찰서</h3></button>  
-              <button class="place2" @click="toggle(2)"><div id="x2" style="display:none"></div><h3>자동차 정비소</h3></button>  
-              <button class="place3" @click="toggle(3)"><div id="x3" style="display:none"></div><h3>학교</h3></button>  
-              <button class="place4" @click="toggle(4)"><div id="x4" style="display:none"></div><h3>레스토랑</h3></button>  
-              <button class="place5" @click="toggle(5)"><div id="x5" style="display:none"></div><h3>영화 촬영소</h3></button> 
-            </div>
-            <div>
-              <button class="place6" @click="toggle(6)"><div id="x6" style="display:none"></div><h3>대사관</h3></button>  
-              <button class="place7" @click="toggle(7)"><div id="x7" style="display:none"></div><h3>병원</h3></button>  
-              <button class="place8" @click="toggle(8)"><div id="x8" style="display:none"></div><h3>대형마트</h3></button>  
-              <button class="place9" @click="toggle(9)"><div id="x9" style="display:none"></div><h3>공연장</h3></button>  
-              <button class="place10" @click="toggle(10)"><div id="x10" style="display:none"></div><h3>해변</h3></button> 
-            </div>
-            <div>
-              <button class="place11 dis" @click="toggle(11)"><div id="x11" style="display:none"></div><h3>우주 정거장</h3></button>  
-              <button class="place12" @click="toggle(12)"><div id="x12" style="display:none"></div><h3>잠수함</h3></button>  
-              <button class="place13" @click="toggle(13)"><div id="x13" style="display:none"></div><h3>놀이공원</h3></button>  
-              <button class="place14" @click="toggle(14)"><div id="x14" style="display:none"></div><h3>공항</h3></button>  
-              <button class="place15" @click="toggle(15)"><div id="x15" style="display:none"></div><h3>대학 연구실</h3></button> 
-            </div>
-            <div>
-              <button class="place16" @click="toggle(16)"><div id="x16" style="display:none"></div><h3>호텔</h3></button>  
-              <button class="place17" @click="toggle(17)"><div id="x17" style="display:none"></div><h3>은행</h3></button>  
-              <button class="place18" @click="toggle(18)"><div id="x18" style="display:none"></div><h3>카지노</h3></button>  
-              <button class="place19" @click="toggle(19)"><div id="x19" style="display:none"></div><h3>회사 송년회</h3></button>  
-              <button class="place20" @click="toggle(20)"><div id="x20" style="display:none"></div><h3>동물원</h3></button> 
-            </div>
-          </div>
-        </v-col>
-        <v-col cols="3" class="right_menu">
-          <div>{{timerCount}}</div>
-          <div>
-            <div>장소</div>
-            <div> {{place}} </div>
-            <div>직업</div>
-            <div> {{job}} </div>
-          </div>
-          <div>
-            <v-dialog
-              v-model="dialog"
-              persistent
-              max-width="1000px"              
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="primary"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  투표
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="text-h5">누가 스파이일까요?</span>
-                </v-card-title>
-              
-                  <v-container class="vote">
-                    <v-row>
-                      <v-col cols="12">
-                        <v-text-field
-                          타이머
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="5" class="prosecutor">
-                      <div v-if="streamManager" >
-                        <ov-video :stream-manager="streamManager"/>
-                        <div id="p-name"><p>{{ clientData }}</p></div>
-                      </div>
-                      </v-col>
-                      <v-col cols="2">
-                        <img src="../../assets/places_image/투표용.jpg" alt="투표용" style="width:100px">
-                      </v-col>
-                      <v-col cols="5" class="suspect">                        
-                        <div v-if="streamManager" >
-                          <ov-video :stream-manager="streamManager"/>
-                          <div id="p-name"><p>{{ clientData }}</p></div>
-                        </div>
-                      </v-col>        
-                      <v-card-actions>              
-                      <v-col cols="5">
-                        <v-btn
-                          color="blue darken-1"
-                          @click="vote_true"
-                        >
-                          찬성
-                        </v-btn>
-                      </v-col>    
-                      <v-col cols="2">
-                        ddd
-                      </v-col>
-                      <v-col cols="5">
-                        <v-btn
-                          color="red lighten-1"
-                          @click="vote_false"
-                        >
-                          반대
-                        </v-btn>
-                      </v-col>          
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="dialog = false"
-                  >
-                    Close
-                  </v-btn>
-                </v-card-actions>
+  <div>
+    <div v-if="!isStarted">
+      <spyfall-start :job="job" :place-src="placeSrc" :place="place" :is-spy="isSpy"></spyfall-start>
+    </div>
+    <div v-else>
+      <div v-if="!isEnded">
+        <v-container>
+          <v-row class="game_row">
+            <v-col cols="10">
+              <div>
+                <v-row class="child-borders">              
+                  <v-col cols="6"><h2><span class="badge">Question</span></h2></v-col>
+                  <v-col cols="6"><h2><span class="badge">Answer</span></h2></v-col>
                 </v-row>
-                </v-container>
-              </v-card>
-            </v-dialog>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+                <v-row>
+                  <v-col class="Question_video" cols="6">
+                    <div v-if="questionPlayer" class="child-borders">
+                      <ov-video :stream-manager="questionPlayer"/>
+                    </div>
+                    <div v-else-if="firstQuestionPlayer" class="child-borders">
+                      <ov-video :stream-manager="firstQuestionPlayer"/>
+                    </div>
+                  </v-col>
+                  <v-col class="Answer_video" cols="6">
+                    <div v-if="answerPlayer" class="child-borders">
+                      <ov-video :stream-manager="answerPlayer"/>
+                    </div>
+                  </v-col>              
+                </v-row>
+              </div>
+              <div class="place_check">
+                <div>              
+                  <button class="place1 paper-btn" @click="toggle(1)"><div id="x1" style="display:none"></div><p>경찰서</p></button>  
+                  <button class="place2 paper-btn" @click="toggle(2)"><div id="x2" style="display:none"></div><p>자동차 정비소</p></button>  
+                  <button class="place3 paper-btn" @click="toggle(3)"><div id="x3" style="display:none"></div><p>학교</p></button>  
+                  <button class="place4 paper-btn" @click="toggle(4)"><div id="x4" style="display:none"></div><p>레스토랑</p></button>  
+                  <button class="place5 paper-btn" @click="toggle(5)"><div id="x5" style="display:none"></div><p>영화 촬영소</p></button> 
+                </div>
+                <div>
+                  <button class="place6 paper-btn" @click="toggle(6)"><div id="x6" style="display:none"></div><p>대사관</p></button>  
+                  <button class="place7 paper-btn" @click="toggle(7)"><div id="x7" style="display:none"></div><p>병원</p></button>  
+                  <button class="place8 paper-btn" @click="toggle(8)"><div id="x8" style="display:none"></div><p>대형마트</p></button>  
+                  <button class="place9 paper-btn" @click="toggle(9)"><div id="x9" style="display:none"></div><p>공연장</p></button>  
+                  <button class="place10 paper-btn" @click="toggle(10)"><div id="x10" style="display:none"></div><p>해변</p></button> 
+                </div>
+                <div>
+                  <button class="place11 paper-btn" @click="toggle(11)"><div id="x11" style="display:none"></div><p>우주 정거장</p></button>  
+                  <button class="place12 paper-btn" @click="toggle(12)"><div id="x12" style="display:none"></div><p>잠수함</p></button>  
+                  <button class="place13 paper-btn" @click="toggle(13)"><div id="x13" style="display:none"></div><p>놀이공원</p></button>  
+                  <button class="place14 paper-btn" @click="toggle(14)"><div id="x14" style="display:none"></div><p>공항</p></button>  
+                  <button class="place15 paper-btn" @click="toggle(15)"><div id="x15" style="display:none"></div><p>대학 연구실</p></button> 
+                </div>
+                <div>
+                  <button class="place16 paper-btn" @click="toggle(16)"><div id="x16" style="display:none"></div><p>호텔</p></button>  
+                  <button class="place17 paper-btn" @click="toggle(17)"><div id="x17" style="display:none"></div><p>은행</p></button>  
+                  <button class="place18 paper-btn" @click="toggle(18)"><div id="x18" style="display:none"></div><p>카지노</p></button>  
+                  <button class="place19 paper-btn" @click="toggle(19)"><div id="x19" style="display:none"></div><p>회사 송년회</p></button>  
+                  <button class="place20 paper-btn" @click="toggle(20)"><div id="x20" style="display:none"></div><p>동물원</p></button> 
+                </div>
+              </div>
+            </v-col>
+            <v-col cols="2" class="right_menu">
+              <div class="badge"><h2>{{timerCount}}</h2></div>
 
-    
+              <div class="badge"><h3><span>장소</span></h3></div>
+              <div class="badge">
+                <img :src="placeSrc" />
+                <h3 v-if="!isSpy">{{place}}</h3>
+              </div>
+              <div class="badge"><h3><span>직업</span></h3></div>
+              <div class="badge"><h3><span>{{job}}</span></h3></div>
+
+              <!-- <img :src="`../../assets/place_image/${place}.jpg`"> -->
+              <div>
+                
+                <v-dialog v-model="dialog" persistent max-width="1000px">
+                  <!-- <div id="voteCompleted" class="alert" style="display:none">투표가 완료되었습니다.</div> -->
+                  <div class="row flex-spaces">
+                    <input class="alert-state" id="alert-1" type="checkbox">
+                    <div id="voteCompleted" class="alert" style="display:none">
+                      투표가 완료되었습니다.
+                      <label class="btn-close" for="alert-1">X</label>
+                    </div>
+                  </div>
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">누가 스파이일까요?</span>
+                    </v-card-title>              
+                      <v-container class="vote">
+                        <v-row class="vote_row">
+                          <v-col cols="12">
+                          </v-col>
+                          <v-col cols="5" class="prosecutor">
+                          <div v-if="selectPlayer" class="child-borders">
+                            <ov-video :stream-manager="selectPlayer"/>
+                          </div>
+                        </v-col>
+                        <v-col cols="2">
+                          <img src="../../assets/places_image/투표용.jpg" alt="투표용" style="width:100px">   
+                          <hr>
+
+                        <div id =" vote_cnt">
+                        투표 시간 : {{votetimeCnt}}
+                        
+                        </div>                      
+                        </v-col>
+                        <v-col cols="5" class="suspect">                        
+                          <div v-if="votePlayer" class="child-borders">
+                            <ov-video :stream-manager="votePlayer"/>
+                          </div>
+                        </v-col>        
+                        <v-col cols="12" style="height:80px"></v-col>
+                        <v-col cols="4" id ="agree">
+                          <v-btn x-large color="blue darken-1" @click="voteTrue" 
+                          :disabled="isVoted || myUserName == suspectPlayer">찬성</v-btn>
+                        </v-col>    
+                        <v-col cols="4" id="vote_cnt" v-if="voteList.voteCnt != streamManager.length-1">
+                          <h2> 투표수 {{voteList.voteCnt}}</h2>                   
+                        </v-col>
+                        <v-col cols="4" id="vote_cnt" v-else>
+                          <h3>찬성:{{voteList.agreeCnt}}  반대:{{voteList.disagreeCnt}}</h3>
+                        </v-col>
+                        <v-col cols="4" id="disagree" >
+                          <v-btn x-large color="red lighten-1" @click="voteFalse"
+                          :disabled="isVoted || myUserName == suspectPlayer">반대</v-btn>
+                        </v-col >         
+                      </v-row>
+                    </v-container> 
+                  </v-card>
+                </v-dialog>
+              </div>
+              <v-btn x-large color="primary" dark @click="spyfall" v-if="isSpy">스파이폴</v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+      <div v-if="isEnded">
+        <spyfallEnd :spy-player="spyPlayer" :place="place" :is-spy="isSpy"></spyfallEnd>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import OvVideo from '../Video/OvVideo.vue';
+import SpyfallEnd from './SpyfallEnd.vue';
+import SpyfallStart from './SpyfallStart.vue'
 import {mapState} from 'vuex';
 
 export default {
@@ -155,104 +153,312 @@ export default {
 
   data () {
 		return {
-      job: this.gameRes.jobs[this.myUserName],
-      place: this.gameRes.place,
+      job: null,
+      place: null,
+      placeSrc: null,
       timerEnabled: true,
       timerCount: 30,
-      dialog: false,
+      votetimeCnt: 30,
+      voteEnabled: false,
+      isVoted : false,
+      voteList : {
+        voteCnt : 0, 
+        agreeCnt: 0,
+        disagreeCnt: 0,
+      },      
+      isEnded: false,
+      isStarted: false,
+      isSpy: false,
+      spyName: null,
+      spyPlayer : null,
 		}
 	},
 
   props: {
-  streamManager: Object,
+  streamManager: Array,
   rules: Object,
   gameRes: Object
 	},
 
   components: {
 		OvVideo,
+    SpyfallEnd,
+    SpyfallStart
 	},
-  
 	computed: {
 		...mapState([
-			
-			"myUserName",
+      "session",
+      "dialog",              // 투표 지목시 투표창 활성
+      "firstQuestionPlayer", // 처음 질문하는 사람
+      "questionPlayer",      // 질문하는 사람
+      "answerPlayer",        // 질문받는 사람
+      "selectPlayer",        // 투표를 시작한 사람
+      "votePlayer",          // 투표를 지목당한 사람
+      "myUserName",
 			"mySessionId",
-			
+      "subscribers",	
+      "publisher",
 		]),
-		clientData () {
-			const { clientData } = this.getConnectionData();
-			return clientData;
-		},
-
-		
+    
+    suspectPlayer () {
+      if (this.votePlayer) {
+        return JSON.parse(this.votePlayer.stream.connection.data).clientData      
+      }
+      return null
+    },
 	},
 
 	methods: {
+    spyfall(){
+      this.pause()
+      this.spyName = this.myUserName
+      this.sendMessageToEveryBody(this.myUserName,'spyfall')
+      for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+				if (this.spyName == nickName.clientData) {
+          this.spyPlayer = this.subscribers[index]
+				}
+			}
+      this.isEnded = true
+      
+    },
+
     getConnectionData () {
-    const { connection } = this.streamManager.stream;
+    const { connection } = this.questionVideo.stream;
     return JSON.parse(connection.data);
 		},
+    sendMessageToEveryBody(data, type) {
+      this.session.signal({
+        data: data,
+        to: [],
+        type: type
+      })
+      .then(() => {})
+      .catch(error => {
+        console.error(error);
+      })
+		}, 
 
     play() {
-      this.timerEnabled = true;
+      this.timerEnabled = true;      
     },
 
     pause() {
       this.timerEnabled = false;
+      this.voteEnabled = true;
+    },
+    
+    restart() {
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'restart')
     },
     
     toggle(num) {
       var select = `x${num}`
       var con = document.getElementById(select)
       con.style.display = (con.style.display!= 'none') ? "none":"block"
-    }
-	},
-
-  watch: {
-
-    timerEnabled(value) {
-        if (value) {
-            setTimeout(() => {
-                this.timerCount--;
-            }, 1000);
-        }
     },
-
-    timerCount: {
-        handler(value) {
-
-            if (value > 0 && this.timerEnabled) {
-                setTimeout(() => {
-                    this.timerCount--;
-                }, 1000);
-            }
-
-        },
-        immediate: false // This ensures the watcher is triggered upon creation
+    voteTrue() {
+      this.isVoted = true
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')     
+      
+    },
+    voteFalse() {
+      this.isVoted = true
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
+    },
+    voteclose() { // 투표창 끄는 method
+      this.timerEnabled = true;
+      this.votetimeCnt = 30;
+      this.voteEnabled = false;
     }
-
   },
 
+  watch: {
+    timerEnabled(value) {
+      if (value) {
+        setTimeout(() => {
+            this.timerCount--;
+        }, 1000);
+      }
+    },
+    timerCount: {
+      handler(value) {
+        if (value > 0 && this.timerEnabled) {
+          setTimeout(() => {
+            this.timerCount--;
+          }, 1000);
+        }
+        if(this.timerCount <= 0) {
+          if(this.isSpy) {
+            this.spyfall()
+          }
+        }
+      },
+      immediate: false // 컴포넌트가 생성되자마자 즉시 실행
+    },
+
+    voteEnabled(value) {
+      if (value) {
+        setTimeout(() => {
+            this.votetimeCnt--;
+        }, 1000);
+      }
+    },
+    votetimeCnt: {
+      handler(value) {
+        if(value > 0 && this.voteEnabled) {
+          setTimeout(() => {
+            this.votetimeCnt--;
+          }, 1000);
+        }
+        if(this.votetimeCnt == 0) {
+          this.restart()
+          }
+      },
+      immediate: false // 컴포넌트가 생성되자마자 즉시 실행
+    }
+  },
 
   mounted() {
+    this.isStarted=false
+    //초기화
+    this.isStarted = false
+    this.place = this.gameRes.place.split(' ').join('_')
+    this.placeSrc = require("../../assets/places_image/"+this.place+".jpg")
     this.job = this.gameRes.jobs[this.myUserName]
+    if(this.job === '스파이') {
+      this.placeSrc = require("../../assets/places_image/x.png")
+      this.isSpy = true
+    }
 		this.timerCount = this.rules.playTime
+    this.play()   
 
-    this.play()
+    this.session.once('signal:setFirstQuestionPlayer', (event)=> {
+      const firstQuestionPlayerName = JSON.parse(event.data).clientData
+      for (let index = 0; index < this.subscribers.length; index++) {        
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+        if (firstQuestionPlayerName == nickName.clientData) {
+          this.$store.commit("SET_FIRSTQUESTIONPLAYER", this.subscribers[index])
+        }
+      }
+      this.isStarted=true
+    })
+
+    this.session.on('signal:votePlayer', ()=> {
+      this.pause()
+    })
+
+    this.session.on('signal:spyfall', (event)=>{
+      this.spyName = event.data
+      for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+        if (this.spyName == nickName.clientData) {
+          this.spyPlayer = this.subscribers[index]
+        }
+      }
+      this.isEnded=true
+    })
+
+    this.session.on('signal:voteTrue', (event)=>{
+      this.voteList = JSON.parse(event.data)
+      this.voteList.voteCnt += 1
+      this.voteList.agreeCnt += 1
+      if ( this.voteList.voteCnt == this.streamManager.length -1) {    
+        // 투표가 끝나고 3초 보여주기  
+        const div = document.getElementById('voteCompleted')
+        div.style.display = "block"
+          
+        setTimeout(() => {
+          // 만약 만장일치일때
+          if (this.voteList.agreeCnt == this.streamManager.length - 1) {
+            // 스파이가 맞으면 시민 승리
+            if (this.gameRes.jobs[this.suspectPlayer] == '스파이') {            
+              this.$store.commit("CITIZEN_WIN")
+              this.isEnded = true
+            }          
+            // 스파이가 아니라면 스파이 승리
+            else {
+              this.$store.commit("SPY_WIN")
+              this.isEnded = true
+            }
+          }
+          // 만약 만장일치가 아닐때 다시 게임 진행
+          else {
+            this.restart()
+          }
+        }, 3000);
+      }      
+    })
+    
+    this.session.on('signal:voteFalse', (event)=>{
+      this.voteList = JSON.parse(event.data)
+      this.voteList.voteCnt += 1
+      this.voteList.disagreeCnt += 1
+      if ( this.voteList.voteCnt >= this.streamManager.length-1) {
+        this.voteList.voteCnt = this.streamManager.length-1
+        const div = document.getElementById('voteCompleted')
+        console.log(div)
+        div.style.display = "block"
+        setTimeout(() => {
+          // alert('투표가 완료 되었습니다.')
+          this.restart()
+        }, 3000);
+      }
+    })
+
+      this.session.on('signal:restart', (event)=>{
+        this.voteList = JSON.parse(event.data)
+        this.timerEnabled = true;
+        this.$store.commit('SET_VOTEPLAYER', null)
+        this.voteList.voteCnt = 0
+        this.voteList.agreeCnt = 0
+        this.voteList.disagreeCnt = 0
+        this.isVoted = false
+        this.voteEnabled = false;
+        this.votetimeCnt = 30;
+        const div = document.getElementById('voteCompleted')
+        div.style.display = "none"
+      })
+
+
   }
-  
 }
 </script>
 
 <style scoped>
-.spyfall-container {
-  height: 640px;
-}
-.spyfall-container .container{
+.container{
   padding: 0;
 }
-
+#game {
+  padding: 0;
+}
+h2 {
+  text-align: center;
+  margin : 0;
+}
+h3 {
+  text-align: center;
+  margin : 0;
+}
+#questiont_tag {
+  border-radius: 5px;
+  padding: 0 1em;
+  background: #48484d;
+}
+#timer_tag {
+  border-radius: 5px;
+  padding: 0 1em;
+  background: #48484d;
+  margin-bottom: 20px;
+}
+#job_place_tag {
+  border-radius: 5px;
+  padding: 30px 1em;
+  background: #48484d;
+}
+#job_place_tag > div{
+  margin-top: 20px;
+}
 .Question_video {
   position: relative;
 }
@@ -269,14 +475,16 @@ export default {
   margin: 0;
 }
 video {
-  width: 400px;
+  width: 350px;  
 }
-
 .right_menu {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: column;   
 }
+.right_menu div {
+  margin-bottom: 20px;
+}
+
 .place_check {
   display: flex;
   flex-direction: column;
@@ -284,27 +492,25 @@ video {
   align-items: center;
 }
 .place_check button {
-  height: 120px;
-  width: 150px;
-  border-radius: 10px;
+  height: 90px;
+  width: 120px;
   position: relative;
 }
-.place_check button > h3 {
+.place_check button > p {
   font-weight: bold;
   margin: 0;
   background-color: rgba(68, 68, 68, 0.3);
 }
-
 .place_check button > div {
-  height: 120px;
-  width: 150px;
+  height: 90px;
+  width: 120px;
   background-image: url(../../assets/places_image/x.png);
   background-size: cover;
   background-position: center;
   position: absolute;
   top: 0;
+  left: 0;
 }
-
 .place1 {
   background-image: url(../../assets/places_image/경찰서.jpg);
   background-size: cover;
@@ -405,10 +611,8 @@ video {
   background-size: cover;
   background-position: center;
 }
-
 .v-dialog > * {
-  height: 700px;
-  
+  height: 700px;  
 }
 .prosecutor {
   position: relative;
@@ -424,12 +628,34 @@ video {
 }
 .vote v-row v-col {
   padding: 0;
+  align-self: center;
 }
-
 .v-dialog .v-card {
   background-image: url(../../assets/places_image/투표배경.jpg);
-  background-size: cover;
-  
+  background-size: cover;  
   background-position: center;
+}
+#agree {
+  text-align: center;
+  background-color:rgb(138, 138, 138);
+}
+#vote_cnt {
+  text-align: center;
+  background-color:rgb(138, 138, 138);
+}
+#disagree {
+  text-align: center;
+  background-color:rgb(138, 138, 138);
+}
+.game_row {
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 6px;
+  border-top-right-radius: 15px 225px;
+  transition: opacity 235ms ease-in-out 0s;
+  border-color: #41403e;
+  border-color: var(--primary);
+  border-style: solid;
+  border-width: 2px;  
 }
 </style>
