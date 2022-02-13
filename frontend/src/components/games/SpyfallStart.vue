@@ -42,7 +42,8 @@ export default {
         this.sendMessageToEveryBody(JSON.stringify(firstquestionplayerdata), 'setFirstQuestionPlayer')
         this.$store.commit("SET_FIRSTQUESTIONPLAYER", ramdomquestionplayerdata)
         }, 3000);
-    }  
+    }
+    
   },
 
   methods: {

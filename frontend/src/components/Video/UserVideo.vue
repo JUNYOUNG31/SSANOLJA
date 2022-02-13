@@ -2,8 +2,8 @@
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && questionPlayer != streamManager && firstQuestionPlayer != streamManager"/>
 	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><v-btn @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) ">지목하기</v-btn></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><v-btn @click="voteSelect" :disabled="isMyself || voteClick">투표하기</v-btn></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) ">지목하기</button></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><button class="paper-btn" @click="voteSelect" :disabled="isMyself || voteClick">투표하기</button></div>
 	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
 </div>
 </template>
@@ -117,29 +117,26 @@ export default {
 		this.isMyself = (this.myUserName === this.clientData)
 
 
-		if(this.session.ee._events["signal:votePlayer"] == undefined) {
+		// if(this.session.ee._events["signal:votePlayer"] == undefined) {
 		this.session.on('signal:votePlayer', (event)=>{
 			const votedata = JSON.parse(event.data) 
 			const selectdata = JSON.parse(event.from.data)
 			for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+				let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
 				if (votedata.clientData == nickName.clientData) {
 					this.voteVideo = this.subscribers[index]
 				}
 				if (selectdata.clientData == nickName.clientData) {
 					this.selectVideo = this.subscribers[index]
 				}
-			}
-			
+			}			
 			this.$store.commit('SET_SELECTPLAYER', this.selectVideo)
-			// this.$store.commit('SET_ANSWERPLAYER', null)
-			// this.$store.commit('SET_QUESTIONPLAYER', null)
 			this.$store.commit('SET_VOTEPLAYER', this.voteVideo)	
     })
-		}
+		// }
 
 
-		if(this.session.ee._events["signal:answerPlayer"] == undefined) {
+		// if(this.session.ee._events["signal:answerPlayer"] == undefined) {
 
 			this.session.on('signal:answerPlayer', (event)=>{
 				const questiondata = JSON.parse(event.from.data)
@@ -157,11 +154,11 @@ export default {
 				this.$store.commit('SET_QUESTIONPLAYER', this.questionVideo)
 				this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
 			})		
-		}
+		// }
 	}
 };
-</script>
 
+</script>
 
 <style scoped>
 .video_div {

@@ -1,11 +1,13 @@
 <template>
-  <v-dialog
+  <v-dialog 
       v-model="dialog"
       max-width="900"
     >
       <v-card>
         <div>
-          <h5>대기화면</h5>
+          <v-card-title>
+          <h3 style="font-family: 'GowunDodum-Regular'">대기화면</h3>
+          </v-card-title>
         </div>
         <div class="d-flex">
           <video :srcObject.prop="videoSrc" autoplay></video>
@@ -22,10 +24,10 @@
             </div>
             <div class="videocontrol">
               <div>
-                <button class="paper-btn" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
+                <button class="paper-btn btn-secondary" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
                   <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
                 </button>
-                <button class="paper-btn" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
+                <button class="paper-btn btn-secondary" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
                   <v-icon>{{ publishInfo.publishVideo ? 'mdi-camera-outline' : 'mdi-camera-off-outline' }}</v-icon>
                 </button>
               </div>
@@ -33,7 +35,6 @@
             </div>
           </div>
         </div>
-
         <v-divider></v-divider>
         <v-card-actions>          
         </v-card-actions>
@@ -156,7 +157,7 @@ export default {
     justify-content: space-between;
     margin-left: 20px;
   }
-  .videoselect div div select{
+  .videoselect div select{
     margin-bottom: 20px;
   }
 
