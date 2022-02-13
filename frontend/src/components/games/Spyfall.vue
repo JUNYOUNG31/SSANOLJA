@@ -66,7 +66,7 @@
               <div class="badge"><h3><span>장소</span></h3></div>
               <div class="badge">
                 <img :src="placeSrc" />
-                <h3 v-if="job != '스파이'">{{place}}</h3>
+                <h3 v-if="!isSpy">{{place}}</h3>
               </div>
               <div class="badge"><h3><span>직업</span></h3></div>
               <div class="badge"><h3><span>{{job}}</span></h3></div>
@@ -319,6 +319,7 @@ export default {
 
   mounted() {
     //초기화
+    this.isStarted = false
     this.place = this.gameRes.place.split(' ').join('_')
     this.placeSrc = require("../../assets/places_image/"+this.place+".jpg")
     this.job = this.gameRes.jobs[this.myUserName]
@@ -327,16 +328,16 @@ export default {
       this.isSpy = true
     }
 		this.timerCount = this.rules.playTime
-    this.play()    
+    this.play()   
 
-    this.session.on('signal:setFirstQuestionPlayer', (event)=> {
+    this.session.once('signal:setFirstQuestionPlayer', (event)=> {
       const firstQuestionPlayerName = JSON.parse(event.data).clientData
       for (let index = 0; index < this.subscribers.length; index++) {        
         let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-				if (firstQuestionPlayerName == nickName.clientData) {
+        if (firstQuestionPlayerName == nickName.clientData) {
           this.$store.commit("SET_FIRSTQUESTIONPLAYER", this.subscribers[index])
-				}
-			}
+        }
+      }
       this.isStarted=true
     })
 
@@ -348,10 +349,10 @@ export default {
       this.spyName = event.data
       for (let index = 0; index < this.subscribers.length; index++) {
         let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-				if (this.spyName == nickName.clientData) {
+        if (this.spyName == nickName.clientData) {
           this.spyPlayer = this.subscribers[index]
-				}
-			}
+        }
+      }
       this.isEnded=true
     })
 
@@ -365,16 +366,14 @@ export default {
           // 만약 만장일치일때
           if (this.voteList.agreeCnt == this.streamManager.length - 1) {
             // 스파이가 맞으면 시민 승리
-            if (this.gameRes.jobs[JSON.parse(this.votePlayer.stream.connection.data).clientData] == '스파이') {            
+            if (this.gameRes.jobs[this.suspectPlayer] == '스파이') {            
               this.$store.commit("CITIZEN_WIN")
               this.isEnded = true
-              console.log('시민승리')
             }          
             // 스파이가 아니라면 스파이 승리
             else {
               this.$store.commit("SPY_WIN")
               this.isEnded = true
-              console.log('스파이승리')
             }
           }
           // 만약 만장일치가 아닐때 다시 게임 진행
@@ -385,7 +384,6 @@ export default {
       }      
     })
     
-
     this.session.on('signal:voteFalse', (event)=>{
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
@@ -407,11 +405,6 @@ export default {
       this.votetimeCnt = 30;
       const div = document.getElementById('voteCompleted')
       div.style.display = "none"
-    })
-
-
-    this.session.on('signal:backToLobby', ()=>{
-      this.isStarted = false
     })
   }
 }
@@ -640,7 +633,7 @@ video {
   background-color:rgb(138, 138, 138);
 }
 .game_row {
-    border-bottom-left-radius: 15px 255px;
+  border-bottom-left-radius: 15px 255px;
   border-bottom-right-radius: 225px 15px;
   border-top-left-radius: 255px 6px;
   border-top-right-radius: 15px 225px;
@@ -648,6 +641,6 @@ video {
   border-color: #41403e;
   border-color: var(--primary);
   border-style: solid;
-  border-width: 2px;
+  border-width: 2px;  
 }
 </style>

@@ -24,7 +24,7 @@
             </div>
             <div class="videocontrol">
               <div>
-                <button class="paper-btn" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
+                <button class="paper-btn btn-secondary" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
                   <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
                 </button>
                 <button class="paper-btn btn-secondary" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">

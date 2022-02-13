@@ -120,28 +120,25 @@ export default {
 			const votedata = JSON.parse(event.data) 
 			const selectdata = JSON.parse(event.from.data)
 			for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+				let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
 				if (votedata.clientData == nickName.clientData) {
 					this.voteVideo = this.subscribers[index]
 				}
 				if (selectdata.clientData == nickName.clientData) {
 					this.selectVideo = this.subscribers[index]
 				}
-			}
-			
+			}			
 			this.$store.commit('SET_SELECTPLAYER', this.selectVideo)
-			// this.$store.commit('SET_ANSWERPLAYER', null)
-			// this.$store.commit('SET_QUESTIONPLAYER', null)
 			this.$store.commit('SET_VOTEPLAYER', this.voteVideo)	
-    })
+		})
 
 		this.session.on('signal:answerPlayer', (event)=>{
 			const questiondata = JSON.parse(event.from.data)
 			const answerdata = JSON.parse(event.data)
 			for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+				let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
 				if (answerdata.clientData == nickName.clientData) {
-					this.answerVideo = this.subscribers[index]
+						this.answerVideo = this.subscribers[index]
 				}
 				if (questiondata.clientData == nickName.clientData) {
 				this.questionVideo = this.subscribers[index]
@@ -150,11 +147,11 @@ export default {
 			this.$store.commit('SET_FIRSTQUESTIONPLAYER', null)
 			this.$store.commit('SET_QUESTIONPLAYER', this.questionVideo)
 			this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
-    })		
+		})        
 	}
 };
-</script>
 
+</script>
 
 <style scoped>
 .video_div {

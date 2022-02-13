@@ -112,7 +112,11 @@ export default new Vuex.Store({
 			state.votePlayer = null
 			state.dialog = false
 			state.voteClick = false
-
+			state.session.off('signal:voteTrue')
+			state.session.off('signal:voteFalse')
+			state.session.off('signal:spyfall')
+			state.session.off('signal:restart')
+			
 		}
   },
 

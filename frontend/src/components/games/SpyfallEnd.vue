@@ -48,8 +48,8 @@
         <p>시민 승리</p>
       </div>
       <div v-if="isRoomMaker & (spyWin || citizenWin)">
-        <v-btn style="width:100%;" @click="backToLobby()">
-            <span>로비로 돌아가기</span>
+        <v-btn style="width:100%;" @click="backToRoom()">
+            <span>게임 선택하기</span>
         </v-btn>
       </div>
   </div>
@@ -88,21 +88,23 @@ export default {
     ])
   },
   mounted() {
-    
+    if(this.session.ee._events["signal:spyWin"] == undefined) {
+      this.session.on('signal:spyWin', ()=>{
+        this.$store.commit("SPY_WIN")
+      })
+    }
 
-    this.session.on('signal:spyWin', ()=>{
-      this.$store.commit("SPY_WIN")
-    })
-
-    this.session.on('signal:citizenWin', () =>{
-      this.$store.commit("CITIZEN_WIN")
-    })
-
+    if(this.session.ee._events["signal:citizenWin"] == undefined) {
+      this.session.on('signal:citizenWin', () =>{
+        this.$store.commit("CITIZEN_WIN")
+      })
+    }
   },
 
   methods: {
-    backToLobby() {
-      this.sendMessageToEveryBody('','backToLobby')
+    backToRoom() {
+      this.sendMessageToEveryBody('', 'backToRoom')
+      this.sendMessageToEveryBody('', 'initSpyfall')
     },
 
     sendMessageToEveryBody(data, type) {
