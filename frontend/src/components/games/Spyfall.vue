@@ -66,21 +66,23 @@
               <div class="badge"><h3><span>장소</span></h3></div>
               <div class="badge">
                 <img :src="placeSrc" />
-                <h3>{{place}}</h3>
+                <h3 v-if="!isSpy">{{place}}</h3>
               </div>
               <div class="badge"><h3><span>직업</span></h3></div>
               <div class="badge"><h3><span>{{job}}</span></h3></div>
 
               <!-- <img :src="`../../assets/place_image/${place}.jpg`"> -->
               <div>
+                
                 <v-dialog v-model="dialog" persistent max-width="1000px">
-                  <input class="alert-state" id="alert-1" type="checkbox">
-                  <div id="voteCompleted" class="alert dismissible" style="display:none">
-                    투표가 완료되었습니다.
-                    <label class="btn-close" for="alert-1">X</label>
-                  </div>
                   <!-- <div id="voteCompleted" class="alert" style="display:none">투표가 완료되었습니다.</div> -->
-
+                  <div class="row flex-spaces">
+                    <input class="alert-state" id="alert-1" type="checkbox">
+                    <div id="voteCompleted" class="alert" style="display:none">
+                      투표가 완료되었습니다.
+                      <label class="btn-close" for="alert-1">X</label>
+                    </div>
+                  </div>
                   <v-card>
                     <v-card-title>
                       <span class="text-h5">누가 스파이일까요?</span>
@@ -151,7 +153,7 @@ export default {
 
   data () {
 		return {
-      job: this.gameRes.jobs[this.myUserName],
+      job: null,
       place: null,
       placeSrc: null,
       timerEnabled: true,
@@ -318,6 +320,7 @@ export default {
   },
 
   mounted() {
+    this.isStarted=false
     //초기화
     this.place = this.gameRes.place.split(' ').join('_')
     this.placeSrc = require("../../assets/places_image/"+this.place+".jpg")
@@ -329,7 +332,7 @@ export default {
 		this.timerCount = this.rules.playTime
     this.play()    
 
-    this.session.on('signal:setFirstQuestionPlayer', (event)=> {
+    this.session.once('signal:setFirstQuestionPlayer', (event)=> {
       const firstQuestionPlayerName = JSON.parse(event.data).clientData
       for (let index = 0; index < this.subscribers.length; index++) {        
         let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
@@ -340,32 +343,36 @@ export default {
       this.isStarted=true
     })
 
-    this.session.on('signal:votePlayer', ()=> {
-      this.pause()
-    })
+      this.session.on('signal:votePlayer', ()=> {
+        this.pause()
+      })
 
-    this.session.on('signal:spyfall', (event)=>{
-      this.spyName = event.data
-      for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-				if (this.spyName == nickName.clientData) {
-          this.spyPlayer = this.subscribers[index]
-				}
-			}
-      this.isEnded=true
-    })
+      this.session.on('signal:spyfall', (event)=>{
+        this.spyName = event.data
+        for (let index = 0; index < this.subscribers.length; index++) {
+          let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+          if (this.spyName == nickName.clientData) {
+            this.spyPlayer = this.subscribers[index]
+          }
+        }
+        this.isEnded=true
+      })
 
     this.session.on('signal:voteTrue', (event)=>{
       this.voteList = JSON.parse(event.data)
       this.voteList.voteCnt += 1
       this.voteList.agreeCnt += 1
       if ( this.voteList.voteCnt == this.streamManager.length -1) {    
-        // 투표가 끝나고 3초 보여주기     
-        // setTimeout(() => {
+        // 투표가 끝나고 3초 보여주기  
+        const div = document.getElementById('voteCompleted')
+        div.style.display = "block"
+          
+        setTimeout(() => {
           // 만약 만장일치일때
           if (this.voteList.agreeCnt == this.streamManager.length - 1) {
             // 스파이가 맞으면 시민 승리
-            if (this.gameRes.jobs[JSON.parse(this.votePlayer.stream.connection.data).clientData] == '스파이') {            
+            
+            if (this.gameRes.jobs[this.suspectPlayer] == '스파이') {            
               this.$store.commit("CITIZEN_WIN")
               this.isEnded = true
               console.log('시민승리')
@@ -381,10 +388,10 @@ export default {
           else {
             this.restart()
           }
-        // }, 3000);
+        }, 3000);
       }      
     })
-    
+
 
     this.session.on('signal:voteFalse', (event)=>{
       this.voteList = JSON.parse(event.data)
@@ -392,7 +399,8 @@ export default {
       this.voteList.disagreeCnt += 1
       if ( this.voteList.voteCnt >= this.streamManager.length-1) {
         this.voteList.voteCnt = this.streamManager.length-1
-        const div = document.getElementById('#voteCompleted')
+        const div = document.getElementById('voteCompleted')
+        console.log(div)
         div.style.display = "block"
         setTimeout(() => {
           // alert('투표가 완료 되었습니다.')
@@ -401,24 +409,21 @@ export default {
       }
     })
 
-    this.session.on('signal:restart', (event)=>{
-      this.voteList = JSON.parse(event.data)
-      this.timerEnabled = true;
-      this.$store.commit('SET_VOTEPLAYER', null)
-      this.voteList.voteCnt = 0
-      this.voteList.agreeCnt = 0
-      this.voteList.disagreeCnt = 0
-      this.isVoted = false
-      this.voteEnabled = false;
-      this.votetimeCnt = 30;
-      const div = document.getElementById('#voteCompleted')
-      div.style.display = "none"
-    })
+      this.session.on('signal:restart', (event)=>{
+        this.voteList = JSON.parse(event.data)
+        this.timerEnabled = true;
+        this.$store.commit('SET_VOTEPLAYER', null)
+        this.voteList.voteCnt = 0
+        this.voteList.agreeCnt = 0
+        this.voteList.disagreeCnt = 0
+        this.isVoted = false
+        this.voteEnabled = false;
+        this.votetimeCnt = 30;
+        const div = document.getElementById('voteCompleted')
+        div.style.display = "none"
+      })
 
 
-    this.session.on('signal:backToLobby', ()=>{
-      this.isStarted = false
-    })
   }
 }
 </script>
