@@ -14,13 +14,13 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
 
     Telestation findByUser(User users);
 
-    @Query(value = "SELECT * from Telestations where Telestations.users_id = ? and Telestations.games_id = ?", nativeQuery = true)
+    @Query(value = "SELECT * from telestations where telestations.users_id = ? and telestations.games_id = ?", nativeQuery = true)
     Telestation findByUsersIdGamesId(Integer usersId, Integer gamesId);
 
     @Query(value = "select telestations_id from telestations where games_id = ? and users_id = ?", nativeQuery = true)
     Integer findTeleIdByGamesIdUsersId(Integer gamesId, Integer usersId);
 
-    @Query(value = "SELECT * from Telestations where Telestations.users_id = ? and Telestations.games_id = ? and Telestations.drawing_order = ?", nativeQuery = true)
+    @Query(value = "SELECT * from telestations where telestations.users_id = ? and telestations.games_id = ? and telestations.drawing_order = ?", nativeQuery = true)
     Telestation FindByUsersIdGamesIdDrawingOrder(Integer usersId, Integer gamesId, Integer drawingOrder);
 
 
@@ -32,7 +32,7 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
 
 
 
-    @Query(value = "SELECT user_order from Telestations where Telestations.users_id = ? and Telestations.games_id = ? and Telestations.drawing_order = ? ", nativeQuery = true)
+    @Query(value = "SELECT user_order from telestations where telestations.users_id = ? and telestations.games_id = ? and telestations.drawing_order = ? ", nativeQuery = true)
     Integer findUserOrderByUsersIdGamesIdDrawingOrder(Integer userId, Integer gamesId, Integer drawingOrder);
 
 
@@ -74,10 +74,10 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
 
     //----------VOTE RESULT--------------------
     // 베스트, 워스트 유저 id 찾기 ( user_nickname 찾기 ) 
-    @Query(value = "select users_id from telestations where games_id = ? group by users_id order by SUM(best_vote) limit 1" , nativeQuery = true)
+    @Query(value = "select users_id from telestations where games_id = ? group by users_id order by SUM(best_vote) desc limit 1" , nativeQuery = true)
     Integer findSumBestVoteUsersIdByGamesId(Integer gamesId);
 
-    @Query(value = "select users_id from telestations where games_id = ? group by users_id order by SUM(worst_vote)limit 1" , nativeQuery = true)
+    @Query(value = "select users_id from telestations where games_id = ? group by users_id order by SUM(worst_vote) desc limit 1" , nativeQuery = true)
     Integer findSumWorstVoteUsersIdByGamesId(Integer gamesId);
 
     // 베스트, 워스트 유저 최다 득표 컬럼 찾기 ( data, drawing_order 찾기 위해 )

@@ -64,7 +64,7 @@ public class TelestationService {
         Optional<Room> room = roomRepository.findByRoomCode(telestationReq.getRoomCode());
 
         // room_id >> game_id
-        Optional<Game> game = gameRepository.findByRoom(room);
+        Optional<Game> game = gameRepository.findByRoomId(room);
 
 //         user_nickname >> find user_id
         User user = userRepository.findByUserNickname(telestationReq.getUserNickname());
