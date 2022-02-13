@@ -131,7 +131,7 @@ export default {
 
     isReadyToStart() {
       // if (this.readyList.length == (this.subscribers.length - 1)) {
-      if (this.readyList.length == 1) {
+      if (this.readyList.length == 2) {
         return true;
       }
       return false;
@@ -235,7 +235,7 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : ["정성우", "박준영"],
+              userNicknames : ["정성우", "박준영", "김범주"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),

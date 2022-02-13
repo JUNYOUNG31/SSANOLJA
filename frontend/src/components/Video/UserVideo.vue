@@ -2,7 +2,7 @@
 <div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
 	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && questionPlayer != streamManager && firstQuestionPlayer != streamManager"/>
 	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) ">지목하기</button></div>
+	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) || isQuestionPlayer">지목하기</button></div>
 	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><button class="paper-btn" @click="voteSelect" :disabled="isMyself || voteClick">투표하기</button></div>
 	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
 </div>
@@ -27,6 +27,7 @@ export default {
 			isAnswerPlayer : false,
 			isFirstQuestionPlayer : false,
 			isMyself: false,
+			isQuestionPlayer: false
 		}
 	},
 
@@ -70,21 +71,42 @@ export default {
 				if (this.myUserName == JSON.parse(this.answerPlayer.stream.connection.data).clientData) {
 					this.isAnswerPlayer = true
 				}
+				else {
+				this.isAnswerPlayer = false
+				}
 			}
 			else {
 				this.isAnswerPlayer = false
 			}
 		},
+
 		firstQuestionPlayer: function() {
 			if (this.firstQuestionPlayer) {
 				if (this.myUserName == JSON.parse(this.firstQuestionPlayer.stream.connection.data).clientData) {
 					this.isFirstQuestionPlayer = true
 				}
+				else {
+				this.isFirstQuestionPlayer = false
+				}
 			}
 			else {
 				this.isFirstQuestionPlayer = false
 			}			
-		}		
+		},
+
+		questionPlayer: function () {
+			if (this.questionPlayer) {
+				if (this.clientData == JSON.parse(this.questionPlayer.stream.connection.data).clientData) {
+					this.isQuestionPlayer = true
+				}
+				else {
+				this.isQuestionPlayer = false
+				}
+			}
+			else {
+				this.isQuestionPlayer = false
+			}
+		}
 	},
 	methods: {
 		sendMessageToEveryBody(data, type) {
@@ -136,7 +158,7 @@ export default {
 		// }
 
 
-		// if(this.session.ee._events["signal:answerPlayer"] == undefined) {
+		if(this.session.ee._events["signal:answerPlayer"] == undefined) {
 
 			this.session.on('signal:answerPlayer', (event)=>{
 				const questiondata = JSON.parse(event.from.data)
@@ -154,7 +176,7 @@ export default {
 				this.$store.commit('SET_QUESTIONPLAYER', this.questionVideo)
 				this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
 			})		
-		// }
+		}
 	}
 };
 
