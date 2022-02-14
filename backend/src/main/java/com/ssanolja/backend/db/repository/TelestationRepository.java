@@ -4,6 +4,7 @@ import com.ssanolja.backend.db.entity.Game;
 import com.ssanolja.backend.db.entity.Telestation;
 import com.ssanolja.backend.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -57,10 +58,12 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
 
 
     //----------VOTE--------------------
-    @Query(value = "select best_vote  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
+    @Modifying
+    @Query(value = "update telestations set best_vote = 1+ best_vote where data_index = ? and drawing_order = ?", nativeQuery = true)
     Integer findBestByDataIndexandDrawingOrder(Integer dataIndex, Integer bestVote);
 
-    @Query(value = "select worst_vote  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
+    @Modifying
+    @Query(value = "update telestations set worst_vote = worst_vote + 1 where data_index = ? and drawing_order = ? ", nativeQuery = true)
     Integer findWorstByDataIndexandDrawingOrder(Integer dataIndex, Integer worstVote);
 
     @Query(value = "select *  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)

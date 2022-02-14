@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -149,7 +150,7 @@ public class TelestationService {
        return tel;
    }
 
-
+    @Transactional
     public   Map<String,Object> showAlbum(TelestationReq telestationReq){
 
         Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
@@ -161,18 +162,12 @@ public class TelestationService {
 
             if(telestationReq.getBestVote() != 0){
                 Integer bestVote = telestationRepository.findBestByDataIndexandDrawingOrder(telestationReq.getDataIndex(),  telestationReq.getBestVote());
-                Telestation bestTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getBestVote());
                 System.out.println("    userNickname" + telestationReq.getUserNickname() + " / bestVote = " + bestVote);
-                bestTele.setBestVote(bestVote + 1);
-                telestationRepository.save(bestTele);
 
             }
             if(telestationReq.getWorstVote() != 0){
                 Integer worstVote = telestationRepository.findWorstByDataIndexandDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
-                Telestation worstTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
                 System.out.println("    userNickname" + telestationReq.getUserNickname() + " / worstVote = " + worstVote);
-                worstTele.setWorstVote(worstVote + 1);
-                telestationRepository.save(worstTele);
             }
 
 
