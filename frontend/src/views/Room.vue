@@ -133,12 +133,13 @@ export default {
     this.sendMessageToEveryBody('getReadyList', 'getReadyList')
 
     this.session.on('signal:getReadyList', ()=>{
-      let readyListToString = this.readyList.toString()
-      this.sendMessageToEveryBody(readyListToString,'sendReadyList')
+      // let readyListToString = this.readyList.toString()
+      this.sendMessageToEveryBody(this.readyList,'sendReadyList')
     })
 
     this.session.on('signal:sendReadyList', (event)=>{
-      this.readyList = event.data.split(",")
+      // this.readyList = event.data.split(",")
+      this.readyList = event.data
     })
 
     this.session.on('signal:rules', (event) => {
@@ -299,7 +300,7 @@ export default {
 .playercamera > div{
   height: 100%;
 }
-.room{
+.room {
     display: flex;
     height: 100vh;
 }

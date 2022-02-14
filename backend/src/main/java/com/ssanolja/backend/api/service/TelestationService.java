@@ -64,7 +64,7 @@ public class TelestationService {
         Optional<Room> room = roomRepository.findByRoomCode(telestationReq.getRoomCode());
 
         // room_id >> game_id
-        Optional<Game> game = gameRepository.findByRoom(room);
+        Optional<Game> game = gameRepository.findByRoomId(room);
 
 //         user_nickname >> find user_id
         User user = userRepository.findByUserNickname(telestationReq.getUserNickname());
@@ -95,7 +95,7 @@ public class TelestationService {
 
             sendData.put("userNickname", byUserNicknameFromUsersId);
             sendData.put("data", telestationReq.getData());
-            System.out.println("4. sendData.put 찾기 ");
+
         }else{
 
             Integer byUsersId = telestationRepository.findUsersIdByUserOrderGamesId(1, game.get().getPlayGameId());

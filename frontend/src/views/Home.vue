@@ -66,7 +66,7 @@ export default {
       const googleEmail = googleUser.getBasicProfile().getEmail();
       if (googleEmail !== "undefined") {
         this.userData.userEmail = googleUser.getBasicProfile().getEmail();
-        this.userData.userName = googleUser.getBasicProfile().getName();
+        this.userData.userNickname = googleUser.getBasicProfile().getName();
       }
       this.insertUser();
     },

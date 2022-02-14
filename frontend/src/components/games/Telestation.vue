@@ -1,5 +1,5 @@
 <template>
-  <div class="telestation-container" style = "color : red;">
+  <div class="telestation-container" style = "color : black;">
     <h1>텔레스테이션</h1>
     <div v-show="gameMode ==='text'" style="display:flex; flex-direction: column; align-items: center;"> <!-- 키워드 입력 -->
       <div>
@@ -17,7 +17,7 @@
         <br>
       </div>
       <p class="text-center">
-      <button class="btn btn-lg btn-success" @click="sendMessageToEveryBody('','completed')">입력 완료</button>
+      <button class="btn btn-lg btn-success" @click="[sendMessageToEveryBody('','completed'), changeCompleted()]" :disabled="myCompleted">입력 완료</button>
       </p>    
     </div>
     
@@ -33,15 +33,27 @@
 
     <div v-show="gameMode ==='album'" style="display:flex; flex-direction: column; align-items: center;">
       <div v-for="(data,index) in recieveAlbum" :key="index">
-        <div v-if="index%2 === 0">
+        <div style="display:flex;" v-if="index%2 === 0">
             <p>{{data}}</p>
-            <button @click="bestPick(index)">좋아요</button>
-            <button @click="worstPick(index)">싫어요</button>
+            <div v-if="index !==0">
+              <button @click="bestPick(index)">
+                <v-icon color="blue">{{ index === best-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
+              </button>
+              <button @click="worstPick(index)">
+                <v-icon color="red">{{ index === worst-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
+              </button>             
+            </div>
         </div>
         <div v-else>
           <img :src="data" alt="">
-            <button @click="bestPick(index)">좋아요</button>
-            <button @click="worstPick(index)">싫어요</button>
+            <div>
+              <button @click="bestPick(index)">
+                <v-icon color="blue">{{ index === best-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
+              </button>
+              <button @click="worstPick(index)">
+                <v-icon color="red">{{ index === worst-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
+              </button>
+            </div>
         </div>
       </div>
         <button v-show="isRoomMaker && round<personnel" @click="sendMessageToEveryBody('','nextAlbum')">다음앨범</button>
@@ -50,7 +62,11 @@
     </div>
 
     <div v-show="gameMode ==='best'" style="display:flex; flex-direction: column; align-items: center;">
-      <div>bestPlayer</div>
+      <h1>bestPlayer</h1>
+      <div v-if="bestVideo">
+        <user-video :best-video="bestVideo"/>
+      </div>
+      <p>베스트 플레이어는 {{bestPlayer}} 입니다.</p>
       <div v-show="bestResultMode === 1">
         <p>{{bestPreData}}</p>
         <img :src="bestData" alt="">
@@ -63,7 +79,11 @@
     </div>
     
     <div v-show="gameMode ==='worst'" style="display:flex; flex-direction: column; align-items: center;">
-      <div>worstPlayer</div>
+      <h1>worstPlayer</h1>
+      <div v-if="worstVideo">
+        <user-video :worst-video="worstVideo"/>
+      </div>
+      <p>워스트 플레이어는 {{worstPlayer}} 입니다.</p>
       <div v-show="worstResultMode === 1">
         <p>{{worstPreData}}</p>
         <img :src="worstData" alt="">
@@ -83,6 +103,7 @@
 import axios from 'axios';
 import {mapState} from 'vuex';
 import CanvasApi from '@/components/CanvasApi';
+import UserVideo from '@/components/Video/UserVideo';
 
 export default {
   name: 'Telestation',
@@ -92,7 +113,8 @@ export default {
     gameRes: Object,
   },
   components:{
-    CanvasApi
+    CanvasApi,
+    UserVideo
   },
   data () {
 		return {
@@ -110,27 +132,29 @@ export default {
       
       drawingOrder:1, /* 라운드 */
       completedPlayers:0, /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */
+      myCompleted: false,
       readyPlayers:0, /* 전 라운드에서 키워드나 그림정보를 웹소켓으로 받은 플레이어 수*/
-      personnel:3, //인원수
+      personnel:this.subscribers.length, //인원수
       participant: new Map(), // 참가자들
       targetUser: '', // 웹소켓 받는 사람
       receiveKeyword:'', // 받은 키워드
       recieveDraw:'', // 받은 그림
-      recieveAlbum:null,
+      recieveAlbum: null,
       round:0,
       gameId: this.gameRes.playGameId,
       dataIndex: 0, // 앨범 번호
       worst:0,
       best:0,
       worstPlayer:'',
+      worstVideo:null,
       bestPlayer:'',
+      bestVideo:null,
       worstResultMode: 0, //1 이면 키워드 사진 2이면 사진 키워드
       bestResultMode:0,
       worstPreData:'',
       worstData:'',
       bestPreData:'',
       bestData:'',
-      isRoomMaker:localStorage.getItem('isRoomMaker')
 		}
 	},
   methods: {
@@ -180,9 +204,14 @@ export default {
     },
     worstPick(index) {
       this.worst = index +1
+      console.log(this.worst)
     },
     bestPick(index) {
       this.best = index +1
+      console.log(this.best)
+    },
+    changeCompleted() {
+      this.myCompleted = true
     },
     // startAlbum(){
     //   this.votingEnabled = true;
@@ -260,7 +289,7 @@ export default {
       })
     },
     startTextRound() {
-      // this.sendMessageToEveryBody('', "drawingOrder")
+      this.myCompleted = false
       this.drawingOrder++;
       if (this.drawingOrder === this.personnel +1) {
         this.startAlbumRound()
@@ -271,6 +300,7 @@ export default {
     },
     startDrawRound() {
       // this.sendMessageToEveryBody('', "drawingOrder")
+      this.$refs.canvasApi.drawingCompleted()
       this.drawingOrder++
       if (this.drawingOrder === this.personnel +1) {
         this.startAlbumRound()
@@ -461,7 +491,29 @@ export default {
           this.startTextRound()
         }
       }
-    }
+    },
+    bestPlayer: {
+      handler() {
+        for (let index = 0; index < this.subscribers.length; index++) {
+          let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+          if (this.bestPlayer == nickName.clientData) {
+            this.bestVideo = this.subscribers[index]
+            console.log(nickName,this.bestVideo)
+          }
+        }
+      }
+    },
+    worstPlayer: {
+      handler() {
+        for (let index = 0; index < this.subscribers.length; index++) {
+          let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+          if (this.worstPlayer == nickName.clientData) {
+            this.worstVideo = this.subscribers[index]
+            console.log(nickName,this.bestVideo)
+          }
+        }
+      }
+    },
   },
   mounted() {
     this.startTexting()
@@ -494,9 +546,11 @@ export default {
     })
     this.session.on('signal:worst', (event) => { // 그린 그림 백에 보내기 
       console.log(event.data)
+      this.bestVideo = null
       this.gameMode = 'worst'
     })
     this.session.on('signal:result', (event) => { // 그린 그림 백에 보내기 
+    this.worstVideo = null
       this.$router.push({ name: 'Room', params: { joinCode: this.joinCode}})
     })
   
@@ -511,8 +565,12 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .telestation-container {
   height: 100%;
+}
+.completed {
+  background: black;
+  cursor: not-allowed;
 }
 </style>

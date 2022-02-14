@@ -32,6 +32,14 @@ export default new Vuex.Store({
   },
 
   mutations: {
+		SET_ROOMMAKER: function(state) {
+			state.isRoomMaker = true
+		},
+
+		SET_GUEST: function(state) {
+			state.isRoomMaker = false
+		},
+
 		CHANGE_JOININFO: function(state, data) {
 			state.mySessionId = data.sessionId
 			state.myUserName = data.userName
@@ -241,16 +249,33 @@ export default new Vuex.Store({
 		createToken: function ({ state }, sessionId ) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(`${state.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
+					.post(`${state.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+					JSON.stringify({
+						"type": "WEBRTC",
+						"role": "PUBLISHER",
+						"kurentoOptions": {
+								"allowedFilters": ["GStreamerFilter", "FaceOverlayFilter"]
+						}
+					}),
+					{
 						auth: {
 							username: 'OPENVIDUAPP',
 							password: state.OPENVIDU_SERVER_SECRET,
 						},
-					})
+					}
+					)
 					.then(response => response.data)
 					.then(data => resolve(data.token))
 					.catch(error => reject(error.response));
 			});
+		},
+
+		setRoomMaker: function({ commit }, flag) {
+			if (flag) {
+				commit("SET_ROOMMAKER")
+			}else {
+				commit("SET_GUEST")
+			}
 		}
   },
   modules: {
