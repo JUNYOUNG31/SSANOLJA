@@ -84,7 +84,7 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     Integer findSumWorstVoteUsersIdByGamesId(Integer gamesId);
 
     // 베스트, 워스트 유저 최다 득표 컬럼 찾기 ( data, drawing_order 찾기 위해 )
-   @Query(value = "select * from telestations where games_id = ? and users_id = ? order by best_vote desc limit 1", nativeQuery = true)
+    @Query(value = "select * from telestations where games_id = ? and users_id = ? order by best_vote desc limit 1", nativeQuery = true)
     Telestation findBestUserByGamesIdUsersId(Integer gamesId, Integer usersId);
 
     @Query(value = "select * from telestations where games_id = ? and users_id = ? order by worst_vote desc limit 1", nativeQuery = true)

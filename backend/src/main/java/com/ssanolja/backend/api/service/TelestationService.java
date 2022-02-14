@@ -242,12 +242,12 @@ public class TelestationService {
         String preWorstUserData = null;
         if(worstUser.getDrawingOrder() - 1 == 0){
             Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
-            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
+            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), personnel);
             preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
             preWorstUserData = preWorstUser.getData();
 
         }else{
-            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
+            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), worstUser.getDrawingOrder() - 1);
             preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
             preWorstUserData = preWorstUser.getData();
         }
