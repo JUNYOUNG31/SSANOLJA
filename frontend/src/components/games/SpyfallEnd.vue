@@ -88,7 +88,6 @@ export default {
     ])
   },
   mounted() {
-    
     if(this.session.ee._events["signal:spyWin"] == undefined) {
       this.session.on('signal:spyWin', ()=>{
         this.$store.commit("SPY_WIN")
@@ -100,12 +99,43 @@ export default {
         this.$store.commit("CITIZEN_WIN")
       })
     }
+    
+  },
+
+  updated() {
+
+    if(this.citizenWin) {
+      this.spyPlayer.stream.applyFilter("GStreamerFilter", {command: 'noir textoverlay text="LOSE" valignment=top halignment=center font-desc="Cantarell 25"'})
+      .then(()=>{
+        console.log("필터 적용됨")
+      })
+      .catch(error =>{
+        console.error(error)
+      })
+    }
+
+    if(this.spyWin) {
+      this.spyPlayer.stream.applyFilter("GStreamerFilter", {command: 'textoverlay text="WIN" valignment=top halignment=center font-desc="Cantarell 25"'})
+      .then(()=>{
+        console.log("필터 적용됨")
+      })
+      .catch(error =>{
+        console.error(error)
+      })
+    }
   },
 
   methods: {
     backToRoom() {
       this.sendMessageToEveryBody('', 'backToRoom')
       this.sendMessageToEveryBody('', 'initSpyfall')
+      this.spyPlayer.stream.removeFilter()
+      .then(()=>{
+        console.log("필터 제거됨");
+      })
+      .catch(error => {
+        console.error(error);
+      })
     },
 
     sendMessageToEveryBody(data, type) {

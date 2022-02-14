@@ -249,12 +249,21 @@ export default new Vuex.Store({
 		createToken: function ({ state }, sessionId ) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(`${state.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
+					.post(`${state.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+					JSON.stringify({
+						"type": "WEBRTC",
+						"role": "PUBLISHER",
+						"kurentoOptions": {
+								"allowedFilters": ["GStreamerFilter", "FaceOverlayFilter"]
+						}
+					}),
+					{
 						auth: {
 							username: 'OPENVIDUAPP',
 							password: state.OPENVIDU_SERVER_SECRET,
 						},
-					})
+					}
+					)
 					.then(response => response.data)
 					.then(data => resolve(data.token))
 					.catch(error => reject(error.response));
