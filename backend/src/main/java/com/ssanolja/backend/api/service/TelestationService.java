@@ -95,7 +95,7 @@ public class TelestationService {
 
             sendData.put("userNickname", byUserNicknameFromUsersId);
             sendData.put("data", telestationReq.getData());
-            System.out.println("4. sendData.put 찾기 ");
+
         }else{
 
             Integer byUsersId = telestationRepository.findUsersIdByUserOrderGamesId(1, game.get().getPlayGameId());

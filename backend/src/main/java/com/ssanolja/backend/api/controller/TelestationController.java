@@ -23,9 +23,7 @@ public class TelestationController {
 
     @PostMapping("/saveData")
     public ResponseEntity<Map<String , Object>> saveData(@RequestBody TelestationReq telestationReq) throws Exception {
-        System.out.println("1. saveData 들어옴.");
         Map<String, Object> res = telestationService.saveData(telestationReq);
-        System.out.println("res : "+ res);
 
         return new ResponseEntity<>(res,  HttpStatus.ACCEPTED);
     }
