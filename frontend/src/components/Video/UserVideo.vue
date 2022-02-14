@@ -1,10 +1,18 @@
 <template>
-<div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
-	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && questionPlayer != streamManager && firstQuestionPlayer != streamManager"/>
-	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) || isQuestionPlayer">지목하기</button></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><button class="paper-btn" @click="voteSelect" :disabled="isMyself || voteClick">투표하기</button></div>
-	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
+<div>
+	<div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
+		<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && questionPlayer != streamManager && firstQuestionPlayer != streamManager"/>
+		<div v-else ></div>
+		<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) || isQuestionPlayer">지목하기</button></div>
+		<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><button class="paper-btn" @click="voteSelect" :disabled="isMyself || voteClick">투표하기</button></div>
+		<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
+	</div>
+	<div v-if="bestVideo">
+		<ov-video :stream-manager="bestVideo"></ov-video>
+	</div>
+	<div v-if="worstVideo">
+		<ov-video :stream-manager="worstVideo"></ov-video>
+	</div>
 </div>
 </template>
 
@@ -32,6 +40,8 @@ export default {
 	},
 
 	props: {
+		bestVideo:Object,
+		worstVideo:Object,
 		streamManager: Object,
 		gameSelected : String,
 		start : Boolean,
