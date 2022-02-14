@@ -73,6 +73,7 @@ export default {
     spyPlayer: Object,
     place: String,
     isSpy: Boolean,
+    gameRes: Object,
   },
 
   components: {
@@ -80,11 +81,13 @@ export default {
   },
   computed: {
     ...mapState([
+      "publisher",
       "session",
       "subscribers",
       "spyWin",
       "citizenWin",
-      "isRoomMaker"
+      "isRoomMaker",
+      "myUserName"
     ])
   },
   mounted() {
@@ -103,25 +106,36 @@ export default {
   },
 
   updated() {
+    if(this.gameRes.jobs[this.myUserName]=="스파이") {
 
-    if(this.citizenWin) {
-      this.spyPlayer.stream.applyFilter("GStreamerFilter", {command: 'noir textoverlay text="LOSE" valignment=top halignment=center font-desc="Cantarell 25"'})
-      .then(()=>{
-        console.log("필터 적용됨")
-      })
-      .catch(error =>{
-        console.error(error)
-      })
-    }
+      if(this.citizenWin) {
+        this.publisher.stream.applyFilter("GStreamerFilter", {command: 'noirtv textoverlay text="LOSE" valignment=top halignment=center font-desc="Cantarell 25"'})
+        .then(()=>{
+          console.log("필터 적용됨")
+        })
+        .catch(error =>{
+          console.error(error)
+        })
+      }
 
-    if(this.spyWin) {
-      this.spyPlayer.stream.applyFilter("GStreamerFilter", {command: 'textoverlay text="WIN" valignment=top halignment=center font-desc="Cantarell 25"'})
-      .then(()=>{
-        console.log("필터 적용됨")
-      })
-      .catch(error =>{
-        console.error(error)
-      })
+      if(this.spyWin) {
+        this.publisher.stream.applyFilter("FaceOverlayFilter")
+        .then(filter => {
+          filter.execMethod(
+            "setOverlayedImage",
+            {
+              "uri": "https://cdn.pixabay.com/photo/2013/07/12/14/14/derby-148046_960_720.png",
+              "offsetXPercent":"-0.2F",
+              "offsetYPercent":"-0.8F",
+              "widthPercent":"1.3F",
+              "heightPercent":"1.0F"
+            }
+          )
+        })
+        .catch(error =>{
+          console.error(error)
+        })
+      }
     }
   },
 
@@ -129,13 +143,17 @@ export default {
     backToRoom() {
       this.sendMessageToEveryBody('', 'backToRoom')
       this.sendMessageToEveryBody('', 'initSpyfall')
-      this.spyPlayer.stream.removeFilter()
-      .then(()=>{
-        console.log("필터 제거됨");
-      })
-      .catch(error => {
-        console.error(error);
-      })
+
+
+      if(this.gameRes.jobs[this.myUserName]=="스파이") {
+        this.publisher.stream.removeFilter()
+        .then(()=>{
+          console.log("필터 제거됨");
+        })
+        .catch(error => {
+          console.error(error);
+        })
+      }
     },
 
     sendMessageToEveryBody(data, type) {

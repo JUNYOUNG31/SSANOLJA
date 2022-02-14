@@ -136,7 +136,7 @@
         </v-container>
       </div>
       <div v-if="isEnded">
-        <spyfallEnd :spy-player="spyPlayer" :place="place" :is-spy="isSpy"></spyfallEnd>
+        <spyfallEnd :spy-player="spyPlayer" :place="place" :is-spy="isSpy" :gameRes="gameRes"></spyfallEnd>
       </div>
     </div>
   </div>
@@ -169,7 +169,7 @@ export default {
       isEnded: false,
       isStarted: false,
       isSpy: false,
-      spyName: null,
+      // spyName: null,
       spyPlayer : null,
 		}
 	},
@@ -211,14 +211,14 @@ export default {
 	methods: {
     spyfall(){
       this.pause()
-      this.spyName = this.myUserName
-      this.sendMessageToEveryBody(this.myUserName,'spyfall')
-      for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-				if (this.spyName == nickName.clientData) {
-          this.spyPlayer = this.subscribers[index]
-				}
-			}
+      // this.spyName = this.myUserName
+      this.sendMessageToEveryBody('','spyfall')
+      // for (let index = 0; index < this.subscribers.length; index++) {
+      //   let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+			// 	if (this.spyName == nickName.clientData) {
+      //     this.spyPlayer = this.subscribers[index]
+			// 	}
+			// }
       this.isEnded = true
       
     },
@@ -320,18 +320,29 @@ export default {
   },
 
   mounted() {
-    this.isStarted=false
     //초기화
     this.isStarted = false
-    this.place = this.gameRes.place.split(' ').join('_')
-    this.placeSrc = require("../../assets/places_image/"+this.place+".jpg")
+    this.place = this.gameRes.place
+    const placeImg = this.gameRes.place.split(' ').join('_')
+    this.placeSrc = require("../../assets/places_image/"+placeImg+".jpg")
     this.job = this.gameRes.jobs[this.myUserName]
+    this.timerCount = this.rules.playTime
+
+
     if(this.job === '스파이') {
       this.placeSrc = require("../../assets/places_image/x.png")
       this.isSpy = true
     }
-		this.timerCount = this.rules.playTime
-    this.play()   
+
+    for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+        if (this.gameRes.jobs[nickName.clientData] == '스파이') {
+          // this.spyName = nickName.clientData
+          this.spyPlayer = this.subscribers[index]
+        }
+      }
+
+    this.play()
 
     this.session.once('signal:setFirstQuestionPlayer', (event)=> {
       const firstQuestionPlayerName = JSON.parse(event.data).clientData
@@ -348,14 +359,13 @@ export default {
       this.pause()
     })
 
-    this.session.on('signal:spyfall', (event)=>{
-      this.spyName = event.data
-      for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-        if (this.spyName == nickName.clientData) {
-          this.spyPlayer = this.subscribers[index]
-        }
-      }
+    this.session.on('signal:spyfall', ()=>{
+      // for (let index = 0; index < this.subscribers.length; index++) {
+      //   let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+      //   if (this.spyName == nickName.clientData) {
+      //     this.spyPlayer = this.subscribers[index]
+      //   }
+      // }
       this.isEnded=true
     })
 
