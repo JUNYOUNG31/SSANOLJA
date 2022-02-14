@@ -160,6 +160,7 @@ public class TelestationService {
             if(telestationReq.getBestVote() != 0){
                 Integer bestVote = telestationRepository.findBestByDataIndexandDrawingOrder(telestationReq.getDataIndex(),  telestationReq.getBestVote());
                 Telestation bestTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getBestVote());
+                System.out.println("bestVote = " + bestVote);
                 bestTele.setBestVote(bestVote + 1);
                 telestationRepository.save(bestTele);
 
@@ -167,6 +168,7 @@ public class TelestationService {
             if(telestationReq.getWorstVote() != 0){
                 Integer worstVote = telestationRepository.findWorstByDataIndexandDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
                 Telestation worstTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
+                System.out.println("worstVote = " + worstVote);
                 worstTele.setWorstVote(worstVote + 1);
                 telestationRepository.save(worstTele);
             }
@@ -260,17 +262,17 @@ public class TelestationService {
         res.put("worst", worst);
         res.put("best", best);
 
-        worst.put("Nickname", worstUserNickname);
+        worst.put("nickname", worstUserNickname);
         worst.put("preDrawingOrder", preWorstUserDrawingOrder);
         worst.put("preData", preWorstUserData);
-        worst.put("DrawingOrder", worstUserDrawingOrder);
-        worst.put("Data", worstUserData);
+        worst.put("drawingOrder", worstUserDrawingOrder);
+        worst.put("data", worstUserData);
 
-        best.put("Nickname", bestUserNickname);
+        best.put("nickname", bestUserNickname);
         best.put("preDrawingOrder", preBestUserDrawingOrder);
         best.put("preData", preBestUserData);
-        best.put("DrawingOrder", bestUserDrawingOrder);
-        best.put("Data", bestUserData);
+        best.put("drawingOrder", bestUserDrawingOrder);
+        best.put("data", bestUserData);
 
         return res;
     }

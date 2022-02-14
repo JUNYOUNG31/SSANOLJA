@@ -34,8 +34,6 @@ public class TelestationController {
 
         Map<String,Object> res = telestationService.showAlbum(telestationReq);
 
-        System.out.println("res : " + res);
-
         if(res == null){
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
