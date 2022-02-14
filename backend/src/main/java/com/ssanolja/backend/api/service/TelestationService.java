@@ -157,10 +157,12 @@ public class TelestationService {
         Map<String, Object> returnData = new HashMap<String, Object>();
         if(telestationReq.getRound() != 1){
 
+            System.out.println("=================  " + telestationReq.getRound() + "  =================");
+
             if(telestationReq.getBestVote() != 0){
                 Integer bestVote = telestationRepository.findBestByDataIndexandDrawingOrder(telestationReq.getDataIndex(),  telestationReq.getBestVote());
                 Telestation bestTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getBestVote());
-                System.out.println("bestVote = " + bestVote);
+                System.out.println("    userNickname" + telestationReq.getUserNickname() + " / bestVote = " + bestVote);
                 bestTele.setBestVote(bestVote + 1);
                 telestationRepository.save(bestTele);
 
@@ -168,7 +170,7 @@ public class TelestationService {
             if(telestationReq.getWorstVote() != 0){
                 Integer worstVote = telestationRepository.findWorstByDataIndexandDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
                 Telestation worstTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
-                System.out.println("worstVote = " + worstVote);
+                System.out.println("    userNickname" + telestationReq.getUserNickname() + " / worstVote = " + worstVote);
                 worstTele.setWorstVote(worstVote + 1);
                 telestationRepository.save(worstTele);
             }
@@ -273,6 +275,8 @@ public class TelestationService {
         best.put("preData", preBestUserData);
         best.put("drawingOrder", bestUserDrawingOrder);
         best.put("data", bestUserData);
+
+        System.out.println("voteResult >> res = " + res);
 
         return res;
     }
