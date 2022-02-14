@@ -173,8 +173,8 @@ export default {
     margin: 0;
   }
   .v-card {
-    background-color: rgb(36, 33, 33);
-    color: white;
+    background-color: rgb(255, 255, 255);
+    color: black;
   }
 
   .v-btn {

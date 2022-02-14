@@ -1,57 +1,65 @@
 <template>
-  <div>
-    <div v-if="!spyWin && !citizenWin">
-      <p>
+  <div class="spyfallend">
+    <div v-if="(!spyWin && !citizenWin) && !isSpy">
+      <h4 style="font-family: 'GowunDodum-Regular'">
         스파이가 나타났습니다!
-      </p>
-      <p>
+      </h4>
+      <h4 style="font-family: 'GowunDodum-Regular'">
         스파이가 시민들이 있는 장소를 추리하는 중 입니다
-      </p>
+      </h4>
+      <div v-if="spyPlayer" class="child-borders">
+        <ov-video :stream-manager="spyPlayer"/>
       </div>
-    <div v-if="spyPlayer" class="child-borders">
-      <ov-video :stream-manager="spyPlayer"/>
     </div>
     <div v-if="(!spyWin && !citizenWin) && isSpy" class="place_check">
-        <div>              
-          <button class="place1 paper-btn" @click="decide('경찰서')"><p>경찰서</p></button>  
-          <button class="place2 paper-btn" @click="decide('자동차_정비소')"><p>자동차 정비소</p></button>  
-          <button class="place3 paper-btn" @click="decide('학교')"><p>학교</p></button>  
-          <button class="place4 paper-btn" @click="decide('레스토랑')"><p>레스토랑</p></button>  
-          <button class="place5 paper-btn" @click="decide('영화_촬영소')"><p>영화 촬영소</p></button> 
-        </div>
-        <div>
-          <button class="place6 paper-btn" @click="decide('대사관')"><p>대사관</p></button>  
-          <button class="place7 paper-btn" @click="decide('병원')"><p>병원</p></button>  
-          <button class="place8 paper-btn" @click="decide('대형마트')"><p>대형마트</p></button>  
-          <button class="place9 paper-btn" @click="decide('공연장')"><p>공연장</p></button>  
-          <button class="place10 paper-btn" @click="decide('해변')"><p>해변</p></button> 
-        </div>
-        <div>
-          <button class="place11 paper-btn" @click="decide('우주_정거장')"><p>우주 정거장</p></button>  
-          <button class="place12 paper-btn" @click="decide('잠수함')"><p>잠수함</p></button>  
-          <button class="place13 paper-btn" @click="decide('놀이공원')"><p>놀이공원</p></button>  
-          <button class="place14 paper-btn" @click="decide('공항')"><p>공항</p></button>  
-          <button class="place15 paper-btn" @click="decide('대학_연구실')"><p>대학 연구실</p></button> 
-        </div>
-        <div>
-          <button class="place16 paper-btn" @click="decide('호텔')"><p>호텔</p></button>  
-          <button class="place17 paper-btn" @click="decide('은행')"><p>은행</p></button>  
-          <button class="place18 paper-btn" @click="decide('카지노')"><p>카지노</p></button>  
-          <button class="place19 paper-btn" @click="decide('회사_송년회')"><p>회사 송년회</p></button>  
-          <button class="place20 paper-btn" @click="decide('동물원')"><p>동물원</p></button> 
-        </div>
+      <div class="place_check_h">
+        <h4 style="font-family: 'GowunDodum-Regular'">
+          당신은 스파이 입니다!
+        </h4>
+        <h4 style="font-family: 'GowunDodum-Regular'">
+          시민들이 있는 장소를 추리해서 승리하세요!
+        </h4>
       </div>
-      <div v-if="spyWin">
-        <p>스파이 승리</p>
+      <div>              
+        <button class="place1 paper-btn" @click="decide('경찰서')"><h5>경찰서</h5></button>  
+        <button class="place2 paper-btn" @click="decide('자동차_정비소')"><h5>자동차 정비소</h5></button>  
+        <button class="place3 paper-btn" @click="decide('학교')"><h5>학교</h5></button>  
+        <button class="place4 paper-btn" @click="decide('레스토랑')"><h5>레스토랑</h5></button>  
+        <button class="place5 paper-btn" @click="decide('영화_촬영소')"><h5>영화 촬영소</h5></button> 
       </div>
-      <div v-if="citizenWin">
-        <p>시민 승리</p>
+      <div>
+        <button class="place6 paper-btn" @click="decide('대사관')"><h5>대사관</h5></button>  
+        <button class="place7 paper-btn" @click="decide('병원')"><h5>병원</h5></button>  
+        <button class="place8 paper-btn" @click="decide('대형마트')"><h5>대형마트</h5></button>  
+        <button class="place9 paper-btn" @click="decide('공연장')"><h5>공연장</h5></button>  
+        <button class="place10 paper-btn" @click="decide('해변')"><h5>해변</h5></button> 
       </div>
-      <div v-if="isRoomMaker & (spyWin || citizenWin)">
-        <v-btn style="width:100%;" @click="backToRoom()">
-            <span>게임 선택하기</span>
-        </v-btn>
+      <div>
+        <button class="place11 paper-btn" @click="decide('우주_정거장')"><h5>우주 정거장</h5></button>  
+        <button class="place12 paper-btn" @click="decide('잠수함')"><h5>잠수함</h5></button>  
+        <button class="place13 paper-btn" @click="decide('놀이공원')"><h5>놀이공원</h5></button>  
+        <button class="place14 paper-btn" @click="decide('공항')"><h5>공항</h5></button>  
+        <button class="place15 paper-btn" @click="decide('대학_연구실')"><h5>대학 연구실</h5></button> 
       </div>
+      <div>
+        <button class="place16 paper-btn" @click="decide('호텔')"><h5>호텔</h5></button>  
+        <button class="place17 paper-btn" @click="decide('은행')"><h5>은행</h5></button>  
+        <button class="place18 paper-btn" @click="decide('카지노')"><h5>카지노</h5></button>  
+        <button class="place19 paper-btn" @click="decide('회사_송년회')"><h5>회사 송년회</h5></button>  
+        <button class="place20 paper-btn" @click="decide('동물원')"><h5>동물원</h5></button> 
+      </div>
+    </div>
+    <div v-if="spyWin">
+      <p>스파이 승리</p>
+    </div>
+    <div v-if="citizenWin">
+      <p>시민 승리</p>
+    </div>
+    <div v-if="isRoomMaker & (spyWin || citizenWin)">
+      <button class="paper-btn" style="width:100%;" @click="backToRoom()">
+        <span>게임 선택하기</span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -134,7 +142,16 @@ export default {
 </script>
 
 <style scoped>
+.spyfallend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
 
+.spyfallend h4 {
+  font-family: 'GowunDodum-Regular'
+}
 
 video {
   width: 350px;  
@@ -146,21 +163,27 @@ video {
   justify-content: center;
   align-items: center;
 }
+
+.place_check_h {
+  margin-bottom: 20px;
+}
 .place_check button {
-  height: 90px;
-  width: 120px;
-  border-radius: 10px;
+  height: 120px;
+  width: 150px;
   position: relative;
 }
-.place_check button > p {
+.place_check button > h5 {
   font-weight: bold;
+  color: white;
   margin: 0;
-  background-color: rgba(68, 68, 68, 0.3);
+  background-color: rgb(116 116 116 / 83%);
+  padding: 4px;
+  font-family: 'GowunDodum-Regular';
 }
 
 .place_check button > div {
-  height: 90px;
-  width: 120px;
+  height: 120px;
+  width: 150px;
   background-image: url(../../assets/places_image/x.png);
   background-size: cover;
   background-position: center;

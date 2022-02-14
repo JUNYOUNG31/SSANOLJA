@@ -2534,7 +2534,6 @@ fieldset.form-group {
 [popover-right],
 [popover-bottom],
 [popover-left] {
-  margin: 24px;
   position: relative;
 }
 [popover-top]:hover::after,
@@ -2562,7 +2561,7 @@ fieldset.form-group {
   color: white;
   font-size: 0.7em;
   left: 50%;
-  min-width: 80px;
+  min-width: 100px;
   opacity: 0;
   padding: 4px 2px;
   position: absolute;

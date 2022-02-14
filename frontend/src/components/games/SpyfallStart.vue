@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>
-      <p>직업을 확인해주세요. 3초 뒤 게임이 시작됩니다</p>
+    <div class="spyfallstart">
+      <p>직업을 확인해주세요. 5초 뒤 게임이 시작됩니다</p>
       <div id="job_place_tag"><h3><span>장소</span></h3></div>
       <div id="job_place_tag">
         <img :src="placeSrc" />
@@ -41,7 +41,7 @@ export default {
         const firstquestionplayerdata = JSON.parse(ramdomquestionplayerdata.stream.connection.data)
         this.sendMessageToEveryBody(JSON.stringify(firstquestionplayerdata), 'setFirstQuestionPlayer')
         this.$store.commit("SET_FIRSTQUESTIONPLAYER", ramdomquestionplayerdata)
-        }, 3000);
+        }, 5000);
     }
     
   },
@@ -63,5 +63,10 @@ export default {
 </script>
 
 <style>
-
+.spyfallstart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
 </style>

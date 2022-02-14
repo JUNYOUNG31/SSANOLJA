@@ -1,10 +1,12 @@
 <template>
-<div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
-	<ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && questionPlayer != streamManager && firstQuestionPlayer != streamManager"/>
-	<div v-else ></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) || isQuestionPlayer">지목하기</button></div>
-	<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><button class="paper-btn" @click="voteSelect" :disabled="isMyself || voteClick">투표하기</button></div>
-	<div v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
+<div>
+	<div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders"  >
+		<!-- <ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && questionPlayer != streamManager && firstQuestionPlayer != streamManager"/> -->
+		<ov-video :stream-manager="streamManager"/>
+		<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) || isQuestionPlayer" popover-top="질문할 사람을 선택하세요">지목하기</button></div>
+		<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><button class="paper-btn" @click="voteSelect" :disabled="isMyself || voteClick" popover-bottom="스파이로 의심되는 사람을 선택하세요">투표하기</button></div>
+		<div style="border:0" v-if="ready"><button class="btn3 paper-btn btn-success">READY!</button></div>
+	</div>
 </div>
 </template>
 
@@ -201,15 +203,18 @@ export default {
 }
 .video_div:hover .btn1 {
 	display: block;
+	border: 0;
 }
 .video_div:hover .btn2 {
 	display: block;
+	border: 0;
 }
 .video_div .btn3 {
 	position: absolute;
 	bottom: 0;
 	left: 35%;
 	padding: 7px;
+	font-family: "Patrick Hand SC", sans-serif;
 }
 
 </style>

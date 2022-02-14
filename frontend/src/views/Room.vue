@@ -21,10 +21,10 @@
               <v-col class="col-10 row-cols-3 gameselect">
                   <v-row style="height:100%;">
                     <v-col>
-                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
+                      <button class="paper-btn" v-bind:class="{'btn-primary': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
                     </v-col>
                     <v-col>
-                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
+                      <button class="paper-btn" v-bind:class="{'btn-primary': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
                     </v-col>                 
                   </v-row> <!--게임 3개 선택하는 부분-->
               </v-col>
@@ -121,6 +121,7 @@ export default {
 
     isReadyToStart() {
       if (this.readyList.length == (this.subscribers.length - 1)) {
+      // if (this.readyList.length == 1) {
         return true;
       }
       return false;
@@ -212,6 +213,7 @@ export default {
         '/api/games/rules',
         JSON.stringify({
           personnel: this.subscribers.length,
+          // personnel: 3,
           selectedGame: game
         })
       )
@@ -224,6 +226,7 @@ export default {
             
             JSON.stringify({
               userNicknames : this.playerList,
+              // userNicknames : ["박준영", "정성우", "김범주"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),
@@ -296,9 +299,6 @@ export default {
 .playercamera > div{
   height: 100%;
 }
-.room div {
-  /* border: 1px solid black;   */
-}
 .room{
     display: flex;
     height: 100vh;
@@ -332,6 +332,14 @@ export default {
 }
 #game {
   padding: 10px;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  border-color: #41403e;
+  border-color: var(--primary);
+  border-style: solid;
+  border-width: 2px;
 }
 
 @media (max-width: 1455px) {
