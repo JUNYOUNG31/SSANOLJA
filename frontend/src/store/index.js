@@ -32,6 +32,14 @@ export default new Vuex.Store({
   },
 
   mutations: {
+		SET_ROOMMAKER: function(state) {
+			state.isRoomMaker = true
+		},
+
+		SET_GUEST: function(state) {
+			state.isRoomMaker = false
+		},
+
 		CHANGE_JOININFO: function(state, data) {
 			state.mySessionId = data.sessionId
 			state.myUserName = data.userName
@@ -251,6 +259,14 @@ export default new Vuex.Store({
 					.then(data => resolve(data.token))
 					.catch(error => reject(error.response));
 			});
+		},
+
+		setRoomMaker: function({ commit }, flag) {
+			if (flag) {
+				commit("SET_ROOMMAKER")
+			}else {
+				commit("SET_GUEST")
+			}
 		}
   },
   modules: {

@@ -63,6 +63,9 @@ export default {
 	},    
 	methods: {
 		checkRoom(joinCode) {
+			localStorage.clear()
+			localStorage.setItem("isRoomMaker", false)
+			this.$store.dispatch('setRoomMaker', false)
 			axios({
 				method: 'post',
 				url: '/api/users/update',
@@ -76,8 +79,8 @@ export default {
 						url:`/api/rooms/${joinCode}`,
 					})
 					.then(()=>{
-						localStorage.clear()
-						localStorage.setItem("isRoomMaker", false)
+						// localStorage.clear()
+						// localStorage.setItem("isRoomMaker", false)
 						this.$refs.preview.dialog = true
 
 						// console.log(res.status)
@@ -90,6 +93,9 @@ export default {
 		},
 
 		makeRoom() {
+			localStorage.clear()
+			localStorage.setItem("isRoomMaker", true)
+			this.$store.dispatch("setRoomMaker", true)
 			axios({
 				method: 'post',
 				url: '/api/users/update',
@@ -105,8 +111,8 @@ export default {
       })
         .then(res=>{
 					this.joinCode = res.data
-					localStorage.clear()
-					localStorage.setItem("isRoomMaker", true)
+					// localStorage.clear()
+					// localStorage.setItem("isRoomMaker", true)
 					this.$refs.preview.dialog = true
         })
         .catch(err=> {
