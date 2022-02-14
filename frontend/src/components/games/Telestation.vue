@@ -268,6 +268,9 @@ export default {
     endDrawRound() { // Drawing 라운드 끝
       this.pauseDrawing()
       this.drawingTime = this.rules.drawingTime
+      console.log('-------------------------------------------------------------------------------')
+      console.log(this.drawingTime, this.rules.drawingTime)
+      console.log('-------------------------------------------------------------------------------')
       this.$refs.canvasApi.saveClick()
       console.log(this.drawingOrder)
       console.log(this.myUserName,this.mySessionId,this.drawingOrder,this.personnel,this.draw)
@@ -285,7 +288,7 @@ export default {
       })
       .then((res)=> {
         this.targetUser = res.data.userNickname
-        this.draw = ''
+        this.$refs.canvasApi.resetAll()
         this.sendMessageToTargetUser(JSON.stringify(res.data), "draw", this.participant.get(this.targetUser))
       })
     },
@@ -301,7 +304,6 @@ export default {
     },
     startDrawRound() {
       // this.sendMessageToEveryBody('', "drawingOrder")
-      this.$refs.canvasApi.drawingCompleted()
       this.drawingOrder++
       if (this.drawingOrder === this.personnel +1) {
         this.startAlbumRound()

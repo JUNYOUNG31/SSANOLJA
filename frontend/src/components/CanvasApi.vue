@@ -42,7 +42,7 @@
                         <path d="M32.3021 10.814C32.6676 10.4729 33.4732 10.1715 34.5939 9.9565C35.7145 9.74152 37.0876 9.625 38.5001 9.625C39.9126 9.625 41.2857 9.74152 42.4063 9.9565C43.5269 10.1715 44.3325 10.4729 44.6981 10.814" stroke="black" stroke-width="3" stroke-linecap="round"/>
                         </svg>  
                       </button>
-                      <button @click="canvasComplete()" :disabled="myComplete" >완료</button>
+                      <button @click="canvasComplete()" >완료</button>
                     </div>
                 </div>
 
@@ -79,7 +79,6 @@ data:function(){
     lineWidth :   2.5,
     strokeStyle : '#000000',
     colors : document.getElementsByClassName("color"),
-    myComplete: false
   }
 },
   methods:{
