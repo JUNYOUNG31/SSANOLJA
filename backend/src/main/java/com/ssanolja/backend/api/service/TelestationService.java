@@ -19,6 +19,7 @@ import java.util.*;
 
 @Service
 @Slf4j
+@Transactional
 public class TelestationService {
 
     @Autowired
@@ -150,7 +151,6 @@ public class TelestationService {
        return tel;
    }
 
-    @Transactional
     public   Map<String,Object> showAlbum(TelestationReq telestationReq){
 
         Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());

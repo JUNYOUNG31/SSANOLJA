@@ -58,11 +58,11 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
 
 
     //----------VOTE--------------------
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(value = "update telestations set best_vote = 1+ best_vote where data_index = ? and drawing_order = ?", nativeQuery = true)
     Integer findBestByDataIndexandDrawingOrder(Integer dataIndex, Integer bestVote);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(value = "update telestations set worst_vote = worst_vote + 1 where data_index = ? and drawing_order = ? ", nativeQuery = true)
     Integer findWorstByDataIndexandDrawingOrder(Integer dataIndex, Integer worstVote);
 
