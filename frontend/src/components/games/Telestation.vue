@@ -134,7 +134,7 @@ export default {
       completedPlayers:0, /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */
       myCompleted: false,
       readyPlayers:0, /* 전 라운드에서 키워드나 그림정보를 웹소켓으로 받은 플레이어 수*/
-      personnel:this.subscribers.length, //인원수
+      personnel:0, //인원수
       participant: new Map(), // 참가자들
       targetUser: '', // 웹소켓 받는 사람
       receiveKeyword:'', // 받은 키워드
@@ -267,7 +267,7 @@ export default {
     },
     endDrawRound() { // Drawing 라운드 끝
       this.pauseDrawing()
-      this.DrawingTime = this.rules.DrawingTime
+      this.drawingTime = this.rules.drawingTime
       this.$refs.canvasApi.saveClick()
       console.log(this.drawingOrder)
       console.log(this.myUserName,this.mySessionId,this.drawingOrder,this.personnel,this.draw)
@@ -285,6 +285,7 @@ export default {
       })
       .then((res)=> {
         this.targetUser = res.data.userNickname
+        this.draw = ''
         this.sendMessageToTargetUser(JSON.stringify(res.data), "draw", this.participant.get(this.targetUser))
       })
     },
@@ -559,6 +560,9 @@ export default {
     //   console.log(event.data)
     //   this.gameRes = JSON.parse(event.data)
     // })
+  },
+  created() {
+    this.personnel = this.subscribers.length
   }
 }
 
