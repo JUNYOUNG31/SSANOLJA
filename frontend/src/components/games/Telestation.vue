@@ -321,6 +321,7 @@ export default {
         method:'POST',
         url: '/api/telestations/showAlbum',
         data: {
+          userNickname: this.myUserName,
           gameId: this.gameId,
           round: this.round,
           dataIndex: this.dataIndex,
@@ -338,8 +339,8 @@ export default {
           this.worst = 0
           this.best = 0
         }else {
-          this.bestPlayer = res.data.best.nickName
-          this.worstPlayer = res.data.worst.nickName
+          this.bestPlayer = res.data.best.nickname
+          this.worstPlayer = res.data.worst.nickname
           this.worstPreData = res.data.worst.preData
           this.worstData = res.data.worst.data
           this.bestPreData = res.data.best.preData
