@@ -1,5 +1,5 @@
 <template>
-  <div class="room"> <!--전체화면-->
+  <div class="room" style=""> <!--전체화면-->
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
@@ -7,7 +7,7 @@
             <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
         </div>     
-        <v-col id="game"> <!--가운데 게임화면-->
+        <v-col id="game" style="height:100%"> <!--가운데 게임화면-->
           <span v-if="start">
             <span v-if="gameSelected == 'Spyfall'">
               <spyfall :stream-manager="streamManagers" :gameRes="gameRes" :rules="rules"></spyfall>
@@ -21,10 +21,10 @@
               <v-col class="col-10 row-cols-3 gameselect">
                   <v-row style="height:100%;">
                     <v-col>
-                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
+                      <button class="paper-btn" v-bind:class="{'btn-primary': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
                     </v-col>
                     <v-col>
-                      <button class="paper-btn" v-bind:class="{'grey': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
+                      <button class="paper-btn" v-bind:class="{'btn-primary': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
                     </v-col>                 
                   </v-row> <!--게임 3개 선택하는 부분-->
               </v-col>
@@ -46,7 +46,7 @@
                 </v-col>
               </v-col>              
             </v-row>
-            <div class="gameInfo">게임설명 <!--게임설명-->
+            <div class="gameInfo border"> <!--게임설명-->
             <span v-if="gameSelected == 'Spyfall'">
               <spyfallDescription :gameSelected="gameSelected"></spyfallDescription>
             </span>
@@ -120,28 +120,34 @@ export default {
     },
 
     isReadyToStart() {
-      if (this.readyList.length == (this.subscribers.length - 1)) {
+      // if (this.readyList.length == (this.subscribers.length - 1)) {
+      if (this.readyList.length == 1) {
         return true;
       }
       return false;
     }
     
 	},
+  
   mounted () {
-    // 방 입장시 준비된 사람들 리스트를 받아옴
-    this.sendMessageToEveryBody('getReadyList', 'getReadyList')
-
-    this.session.on('signal:getReadyList', ()=>{
-      let readyListToString = this.readyList.toString()
-      this.sendMessageToEveryBody(readyListToString,'sendReadyList')
+    
+    this.session.on('signal:getReadyList', (event)=>{
+      if (this.myUserName != JSON.parse(event.from.data).clientData){
+        // let readyListToString = this.readyList.toString()
+        this.sendMessageToEveryBody(JSON.stringify(this.readyList),'sendReadyList')
+        console.log(this.readyList, '송신')
+      }
     })
 
     this.session.on('signal:sendReadyList', (event)=>{
-      this.readyList = event.data.split(",")
+        // this.readyList = event.data.split(",")
+        console.log(typeof event.data, '이게 스트링?')
+        this.readyList = JSON.parse(event.data)
+        console.log(this.readyList, '수신')
     })
 
     this.session.on('signal:rules', (event) => {
-    this.rules = JSON.parse(event.data)
+      this.rules = JSON.parse(event.data)
     })
 
     this.session.on('signal:gameRes', (event)=>{
@@ -161,6 +167,11 @@ export default {
         this.$store.commit('INIT_SPYFALL')
       })
     }
+    if(this.session.ee._events["signal:initTelestation"] == undefined) {
+      this.session.on('signal:initTelestation', ()=>{
+        this.start = false
+      })
+    }
 
 
     this.session.on('signal:ready', (event)=>{
@@ -172,6 +183,14 @@ export default {
         this.readyList.push(person)
       }
     })
+    
+    console.log(this.readyList)
+    
+    // 방 입장시 준비된 사람들 리스트를 받아옴
+    setTimeout(()=>{
+      this.sendMessageToEveryBody('', 'getReadyList')
+    }, 500)
+
   },
 
   methods : {
@@ -201,7 +220,7 @@ export default {
       joinCodeToCopy.style.display = 'none'
     },
     leaveSession() {
-			this.$store.dispatch('leaveSession')
+      this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
 		},
     gameSelect(game) {
@@ -211,7 +230,8 @@ export default {
       axios.post(
         '/api/games/rules',
         JSON.stringify({
-          personnel: this.subscribers.length,
+          // personnel: this.subscribers.length,
+          personnel: 1,
           selectedGame: game
         })
       )
@@ -223,7 +243,8 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : this.playerList,
+              // userNicknames : this.playerList,
+              userNicknames : ["조성현"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),
@@ -271,8 +292,13 @@ export default {
   flex-direction: column;
 }
 
-.gameInfo{
-  height: 560px;
+.gameInfo {
+  margin-top: 10px;
+  height: 570px;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 21px 12px;
+  border-top-right-radius: 15px 225px;
 }
 
 
@@ -296,10 +322,7 @@ export default {
 .playercamera > div{
   height: 100%;
 }
-.room div {
-  /* border: 1px solid black;   */
-}
-.room{
+.room {
     display: flex;
     height: 100vh;
 }
@@ -332,6 +355,14 @@ export default {
 }
 #game {
   padding: 10px;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  border-color: #41403e;
+  border-color: var(--primary);
+  border-style: solid;
+  border-width: 2px;
 }
 
 @media (max-width: 1455px) {

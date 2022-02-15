@@ -10,8 +10,8 @@
             <v-col cols="10">
               <div>
                 <v-row class="child-borders">              
-                  <v-col cols="6"><h2><span class="badge">Question</span></h2></v-col>
-                  <v-col cols="6"><h2><span class="badge">Answer</span></h2></v-col>
+                  <v-col cols="6" class="video_name" popover-top="답변자에게 질문하세요!"><div class="alert alert-secondary">질문자</div></v-col>
+                  <v-col cols="6" class="video_name" popover-top="질문에 진실만을 답변해야 합니다."><div class="alert alert-danger" >답변자</div></v-col>
                 </v-row>
                 <v-row>
                   <v-col class="Question_video" cols="6">
@@ -26,10 +26,13 @@
                     <div v-if="answerPlayer" class="child-borders">
                       <ov-video :stream-manager="answerPlayer"/>
                     </div>
-                  </v-col>              
+                    <div v-else  class="border" style="width:350px; height:263px">                        
+                        <h4>질문자를 선택해 주세요</h4>
+                    </div>
+                  </v-col>            
                 </v-row>
               </div>
-              <div class="place_check">
+              <div class="place_check" popover-bottom="장소에 X를 표시에 장소를 추리해봅시다">
                 <div>              
                   <button class="place1 paper-btn" @click="toggle(1)"><div id="x1" style="display:none"></div><p>경찰서</p></button>  
                   <button class="place2 paper-btn" @click="toggle(2)"><div id="x2" style="display:none"></div><p>자동차 정비소</p></button>  
@@ -61,82 +64,95 @@
               </div>
             </v-col>
             <v-col cols="2" class="right_menu">
-              <div class="badge"><h2>{{timerCount}}</h2></div>
-
-              <div class="badge"><h3><span>장소</span></h3></div>
-              <div class="badge">
-                <img :src="placeSrc" />
-                <h3 v-if="!isSpy">{{place}}</h3>
+              <div class="alert alert-primary" style="height: 125px; margin-bottom:10px">
+                <h4>게임 시간</h4>
+                <h2>{{MMSS}}</h2>
               </div>
-              <div class="badge"><h3><span>직업</span></h3></div>
-              <div class="badge"><h3><span>{{job}}</span></h3></div>
-
-              <!-- <img :src="`../../assets/place_image/${place}.jpg`"> -->
-              <div>
-                
+              <div class="alert alert-primary" style="height: 180px; margin-bottom:10px">
+                <h4>장소</h4>
+                <img :src="placeSrc"  style="width:100px; margin:0; height: 85px" />
+                <h5 v-if="!isSpy">{{place}}</h5>
+              </div>
+              <div class="alert alert-primary" style="height: 100px; margin-bottom:10px" v-if="!isSpy">
+                <h4>직업</h4>
+                <h4>{{job}}</h4>
+              </div>
+              <div v-else style="margin-bottom:10px">
+                <img src="../../assets/Spy.jpg" alt="spy">
+              </div>
+              <button class="paper-btn btn-secondary" color="primary" style="width:100%" @click="spyfall" v-if="isSpy" popover-right="장소를 추리하여 게임을 끝냅니다">스파이폴</button>
+              <div>                
                 <v-dialog v-model="dialog" persistent max-width="1000px">
-                  <!-- <div id="voteCompleted" class="alert" style="display:none">투표가 완료되었습니다.</div> -->
-                  <div class="row flex-spaces">
-                    <input class="alert-state" id="alert-1" type="checkbox">
-                    <div id="voteCompleted" class="alert" style="display:none">
-                      투표가 완료되었습니다.
-                      <label class="btn-close" for="alert-1">X</label>
-                    </div>
-                  </div>
-                  <v-card>
-                    <v-card-title>
-                      <span class="text-h5">누가 스파이일까요?</span>
-                    </v-card-title>              
+                  <v-card>         
                       <v-container class="vote">
                         <v-row class="vote_row">
                           <v-col cols="12">
                           </v-col>
                           <v-col cols="5" class="prosecutor">
+                          <div class="video_name"><div class="alert alert-secondary" popover-top="용의자를 고발하였습니다">고발자</div></div>
                           <div v-if="selectPlayer" class="child-borders">
                             <ov-video :stream-manager="selectPlayer"/>
                           </div>
                         </v-col>
-                        <v-col cols="2">
-                          <img src="../../assets/places_image/투표용.jpg" alt="투표용" style="width:100px">   
-                          <hr>
-
-                        <div id =" vote_cnt">
-                        투표 시간 : {{votetimeCnt}}
-                        
+                        <v-col cols="2" style="text-align:center">
+                        <div id ="time_cnt" class="alert alert-primary">
+                          <h4>투표 시간</h4>
+                          <h4>{{votetimeCnt}}</h4>
                         </div>                      
                         </v-col>
-                        <v-col cols="5" class="suspect">                        
+                        <v-col cols="5" class="suspect">      
+                          <div class="video_name"><div class="alert alert-danger" popover-top="용의자로 선택되었습니다">용의자</div></div>                  
                           <div v-if="votePlayer" class="child-borders">
                             <ov-video :stream-manager="votePlayer"/>
                           </div>
                         </v-col>        
-                        <v-col cols="12" style="height:80px"></v-col>
+                        <v-col cols="12" style="height:80px">
+                          <div class="row flex-spaces" >                 
+                            <input class="alert-state" id="alert-1" type="checkbox">
+                            <div id="voteCompleted" class="alert alert-secondary dismissible" style="display:none; text-align:center" >
+                              투표가 완료되었습니다.
+                            </div>
+                          </div>
+                        </v-col>
                         <v-col cols="4" id ="agree">
-                          <v-btn x-large color="blue darken-1" @click="voteTrue" 
-                          :disabled="isVoted || myUserName == suspectPlayer">찬성</v-btn>
+                          <button class="paper-btn btn-secondary" style="width:100px" @click="voteTrue" 
+                          :disabled="isVoted || myUserName == suspectPlayer"><h5>찬성</h5></button>
                         </v-col>    
                         <v-col cols="4" id="vote_cnt" v-if="voteList.voteCnt != streamManager.length-1">
-                          <h2> 투표수 {{voteList.voteCnt}}</h2>                   
+                          <h3 style="margin:15px"> 투표수 {{voteList.voteCnt}}</h3>                   
                         </v-col>
                         <v-col cols="4" id="vote_cnt" v-else>
-                          <h3>찬성:{{voteList.agreeCnt}}  반대:{{voteList.disagreeCnt}}</h3>
+                          <h3 style="margin:15px">찬성:{{voteList.agreeCnt}} vs 반대:{{voteList.disagreeCnt}}</h3>
                         </v-col>
                         <v-col cols="4" id="disagree" >
-                          <v-btn x-large color="red lighten-1" @click="voteFalse"
-                          :disabled="isVoted || myUserName == suspectPlayer">반대</v-btn>
-                        </v-col >         
+                          <button class="paper-btn btn-danger" style="width:100px" @click="voteFalse"
+                          :disabled="isVoted || myUserName == suspectPlayer"><h5>반대</h5></button>
+                        </v-col>
                       </v-row>
                     </v-container> 
                   </v-card>
                 </v-dialog>
-              </div>
-              <v-btn x-large color="primary" dark @click="spyfall" v-if="isSpy">스파이폴</v-btn>
+                </div>  
+                <button class="paper-btn btn-success" @click="openinfo = true" style="width:100%; margin-top:20px">게임설명</button>
+                <v-dialog class="infodialog"
+                  v-model="openinfo"
+                  persistent
+                  max-width="750px"                 
+                >
+                  <v-card  class="scrollx" height="500px" style="padding-right:10px">   
+                    <img src="@/assets/description_image/spyfall/스파이폴설명1.png" alt="">
+                    <img src="@/assets/description_image/spyfall/스파이폴설명2.png" alt="">
+                    <img src="@/assets/description_image/spyfall/스파이폴설명3.png" alt="">
+                    <img src="@/assets/description_image/spyfall/스파이폴설명4.png" alt="">
+                    <button class="paper-btn btn-success" style="align-self:center" @click="openinfo = false">닫기</button>
+                  </v-card>
+                </v-dialog>
             </v-col>
           </v-row>
         </v-container>
       </div>
       <div v-if="isEnded">
-        <spyfallEnd :spy-player="spyPlayer" :place="place" :is-spy="isSpy"></spyfallEnd>
+        <spyfallEnd :spy-player="spyPlayer" :place="place" :is-spy="isSpy" :gameRes="gameRes"></spyfallEnd>
       </div>
     </div>
   </div>
@@ -156,6 +172,7 @@ export default {
       job: null,
       place: null,
       placeSrc: null,
+
       timerEnabled: true,
       timerCount: 30,
       votetimeCnt: 30,
@@ -169,8 +186,12 @@ export default {
       isEnded: false,
       isStarted: false,
       isSpy: false,
-      spyName: null,
+      // spyName: null,
       spyPlayer : null,
+      openinfo: false,
+      desc: [
+          "p1","p2","p3", "p4"
+        ],
 		}
 	},
 
@@ -183,7 +204,7 @@ export default {
   components: {
 		OvVideo,
     SpyfallEnd,
-    SpyfallStart
+    SpyfallStart,
 	},
 	computed: {
 		...mapState([
@@ -206,19 +227,29 @@ export default {
       }
       return null
     },
+    MMSS () {
+      return new Date(this.timerCount*1000).toISOString().substr(14, 5)      
+    }
 	},
 
 	methods: {
+    // testclick() {
+    //   const testdiv = document.getElementById('testalert')
+    //   console.log(testdiv)
+    //   testdiv.style.display = "block"
+    // },
+
+
     spyfall(){
       this.pause()
-      this.spyName = this.myUserName
-      this.sendMessageToEveryBody(this.myUserName,'spyfall')
-      for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-				if (this.spyName == nickName.clientData) {
-          this.spyPlayer = this.subscribers[index]
-				}
-			}
+      // this.spyName = this.myUserName
+      this.sendMessageToEveryBody('','spyfall')
+      // for (let index = 0; index < this.subscribers.length; index++) {
+      //   let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+			// 	if (this.spyName == nickName.clientData) {
+      //     this.spyPlayer = this.subscribers[index]
+			// 	}
+			// }
       this.isEnded = true
       
     },
@@ -311,8 +342,10 @@ export default {
             this.votetimeCnt--;
           }, 1000);
         }
-        if(this.votetimeCnt == 0) {
-          this.restart()
+        if(this.votetimeCnt == 0) {          
+            setTimeout(()=> {
+              this.restart()
+            }, 3000);          
           }
       },
       immediate: false // 컴포넌트가 생성되자마자 즉시 실행
@@ -320,18 +353,29 @@ export default {
   },
 
   mounted() {
-    this.isStarted=false
     //초기화
     this.isStarted = false
-    this.place = this.gameRes.place.split(' ').join('_')
-    this.placeSrc = require("../../assets/places_image/"+this.place+".jpg")
+    this.place = this.gameRes.place
+    const placeImg = this.gameRes.place.split(' ').join('_')
+    this.placeSrc = require("../../assets/places_image/"+placeImg+".jpg")
     this.job = this.gameRes.jobs[this.myUserName]
+    this.timerCount = this.rules.playTime + 5
+
+
     if(this.job === '스파이') {
-      this.placeSrc = require("../../assets/places_image/x.png")
+      this.placeSrc = require("../../assets/places_image/unknown.png")
       this.isSpy = true
     }
-		this.timerCount = this.rules.playTime
-    this.play()   
+
+    for (let index = 0; index < this.subscribers.length; index++) {
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+        if (this.gameRes.jobs[nickName.clientData] == '스파이') {
+          // this.spyName = nickName.clientData
+          this.spyPlayer = this.subscribers[index]
+        }
+      }
+
+    this.play()
 
     this.session.once('signal:setFirstQuestionPlayer', (event)=> {
       const firstQuestionPlayerName = JSON.parse(event.data).clientData
@@ -348,14 +392,13 @@ export default {
       this.pause()
     })
 
-    this.session.on('signal:spyfall', (event)=>{
-      this.spyName = event.data
-      for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-        if (this.spyName == nickName.clientData) {
-          this.spyPlayer = this.subscribers[index]
-        }
-      }
+    this.session.on('signal:spyfall', ()=>{
+      // for (let index = 0; index < this.subscribers.length; index++) {
+      //   let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+      //   if (this.spyName == nickName.clientData) {
+      //     this.spyPlayer = this.subscribers[index]
+      //   }
+      // }
       this.isEnded=true
     })
 
@@ -375,11 +418,19 @@ export default {
             if (this.gameRes.jobs[this.suspectPlayer] == '스파이') {            
               this.$store.commit("CITIZEN_WIN")
               this.isEnded = true
+              this.$store.commit('SET_VOTEPLAYER', null)
+              this.$store.commit('SET_SELECTPLAYER', null)
+              this.$store.commit('SET_QUESTIONPLAYER', null)
+              this.$store.commit('SET_ANSWERPLAYER', null)
             }          
             // 스파이가 아니라면 스파이 승리
             else {
               this.$store.commit("SPY_WIN")
               this.isEnded = true
+              this.$store.commit('SET_VOTEPLAYER', null)
+              this.$store.commit('SET_SELECTPLAYER', null)
+              this.$store.commit('SET_QUESTIONPLAYER', null)
+              this.$store.commit('SET_ANSWERPLAYER', null)
             }
           }
           // 만약 만장일치가 아닐때 다시 게임 진행
@@ -432,14 +483,15 @@ export default {
 #game {
   padding: 0;
 }
-h2 {
+h2, h3 {
   text-align: center;
   margin : 0;
 }
-h3 {
-  text-align: center;
-  margin : 0;
+
+h3, h4, h5 {
+  font-family: 'GowunDodum-Regular';
 }
+
 #questiont_tag {
   border-radius: 5px;
   padding: 0 1em;
@@ -461,10 +513,31 @@ h3 {
 }
 .Question_video {
   position: relative;
+  padding-top: 0;
+  text-align: center;
 }
 .Answer_video {
   position: relative;
+  padding-top: 0;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
+.Answer_video div {
+  background-image: url(../../assets/answerplayer.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.Answer_video .border h4 {
+  position: absolute;
+  top: 40%;
+  left: 20%;
+  margin: 0;
+  background-color: rgb(116 116 116 / 65%);
+  padding: 13px;
+  color: white;
+}
+
 #p-name {
   position: absolute;
   bottom: 0px;
@@ -477,12 +550,54 @@ h3 {
 video {
   width: 350px;  
 }
+.video_name {
+  padding-bottom: 0;
+  padding-top: 10px;
+  height: 65px;
+  border: 0;
+  box-sizing: border-box;
+  font-family: 'GowunDodum-Regular';
+}
+.video_name div {
+    border-bottom-left-radius: 15px 255px;
+    border-bottom-right-radius: 225px 15px;
+    border-top-left-radius: 255px 15px;
+    border-top-right-radius: 15px 225px;
+    border-style: solid;
+    border-width: 2px;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    height: 52px;
+    margin: 0;
+}
+
+
 .right_menu {
   display: flex;
   flex-direction: column;   
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 247px 27px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 29px 268px;
+  color: #41403e;
+  color: var(--primary);
+  border-color: #41403e;
+  border-color: var(--primary);
+  background-image: none;
+  border-style: solid;
+  border-width: 2px;
+  display: inline-block;
+  /* font-size: 1rem; */
+  outline: none;
+  padding: 0.75rem;
 }
-.right_menu div {
+.right_menu h3, .right_menu h4, .right_menu h5 {
   margin-bottom: 20px;
+  font-family: 'GowunDodum-Regular';
+  text-align: center;
 }
 
 .place_check {
@@ -498,8 +613,12 @@ video {
 }
 .place_check button > p {
   font-weight: bold;
+  font-size: 15px;
+  color: white;
   margin: 0;
-  background-color: rgba(68, 68, 68, 0.3);
+  background-color: rgb(116 116 116 / 65%);
+  padding: 2px;
+  font-family: 'GowunDodum-Regular';
 }
 .place_check button > div {
   height: 90px;
@@ -647,15 +766,26 @@ video {
   text-align: center;
   background-color:rgb(138, 138, 138);
 }
-.game_row {
-  border-bottom-left-radius: 15px 255px;
-  border-bottom-right-radius: 225px 15px;
-  border-top-left-radius: 255px 6px;
-  border-top-right-radius: 15px 225px;
-  transition: opacity 235ms ease-in-out 0s;
-  border-color: #41403e;
-  border-color: var(--primary);
-  border-style: solid;
-  border-width: 2px;  
+
+#time_cnt {
+  text-align: center;
+}
+
+.scrollx {
+  overflow: scroll;
+  /* IE scroll 숨김 */
+  -ms-overflow-style: none;
+  position: relative;
+}
+
+.scrollx::-webkit-scrollbar { 
+  width: 0 !important;
+  display: none; 
+}
+.scrollx  button {
+width: 70px;
+position: relative;
+top: 0;
+left: 92%;
 }
 </style>

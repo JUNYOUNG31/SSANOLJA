@@ -16,10 +16,10 @@
     </div>
     <section class="test">
     <div v-on:click="GoogleLoginBtn">
-      <button class="paper-btn btn-lg black--text d-flex" style="width: 500px; height: 250px" >
-          <img src="../assets/googlelogo.png" alt="googlelogo" width="130px" style="margin-top: 45px">
+      <button class="paper-btn btn-lg black--text d-flex" style="width: 500px; height: 220px" >
+          <img src="../assets/googlelogo.png" alt="googlelogo" width="130px" style="margin-top: 30px">
           <p 
-          style="margin: 80px 0 8px; font-family: Patrick Hand SC, sans-serif; font-weight: normal; font-size: 50px" witdh="370px">
+          style="margin: 60px 0 8px; font-family: Patrick Hand SC, sans-serif; font-weight: normal; font-size: 50px" witdh="370px">
           Sign in with Google
           </p> 
         </button> 

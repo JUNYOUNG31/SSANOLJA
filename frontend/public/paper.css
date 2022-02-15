@@ -1018,7 +1018,7 @@ h6 {
 img {
   border-bottom-left-radius: 15px 255px;
   border-bottom-right-radius: 225px 15px;
-  border-top-left-radius: 255px 15px;
+  border-top-left-radius: 23px 15px;
   border-top-right-radius: 15px 225px;
   border-color: #41403e;
   border-color: var(--primary);
@@ -1027,6 +1027,7 @@ img {
   display: block;
   height: auto;
   max-width: 100%;
+  border-style: solid;
 }
 img.float-left {
   float: left;
@@ -2534,7 +2535,6 @@ fieldset.form-group {
 [popover-right],
 [popover-bottom],
 [popover-left] {
-  margin: 24px;
   position: relative;
 }
 [popover-top]:hover::after,
@@ -2562,7 +2562,7 @@ fieldset.form-group {
   color: white;
   font-size: 0.7em;
   left: 50%;
-  min-width: 80px;
+  min-width: 100px;
   opacity: 0;
   padding: 4px 2px;
   position: absolute;
