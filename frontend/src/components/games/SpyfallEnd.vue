@@ -65,6 +65,11 @@
       <button class="paper-btn" style="width:100%;" @click="backToRoom()">
         <span>게임 선택하기</span>
       </button>
+
+      <button class="paper-btn btn-secondary" style="width:100%" @click="leaveRoom()">
+        <span>방나가기</span>
+      </button>
+
     </div>
   </div>
 </template>
@@ -138,7 +143,7 @@ export default {
           filter.execMethod(
             "setOverlayedImage",
             {
-              "uri": "https://cdn.pixabay.com/photo/2013/07/12/14/14/derby-148046_960_720.png",
+              "uri": "../../assets/spy_overlay.png",
               "offsetXPercent":"-0.2F",
               "offsetYPercent":"-0.8F",
               "widthPercent":"1.3F",
@@ -154,7 +159,7 @@ export default {
   },
 
   deactivated () {
-        if(this.gameRes.jobs[this.myUserName]=="스파이") {
+    if(this.gameRes.jobs[this.myUserName]=="스파이") {
       this.publisher.stream.removeFilter()
       .then(()=>{
         console.log("필터 제거됨");
@@ -166,6 +171,10 @@ export default {
   },
 
   methods: {
+    leaveRoom() {
+      this.$store.dispatch('leaveSession')
+    },
+
     backToRoom() {
       this.sendMessageToEveryBody('', 'backToRoom')
       this.sendMessageToEveryBody('', 'initSpyfall')
