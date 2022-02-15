@@ -1,24 +1,20 @@
 <template>
-  <v-carousel v-model="model">
+  <v-carousel hide-delimiters v-model="model" 
+  :show-arrows="true"
+  class="SpyfallInfo border" height="567px">
     <v-carousel-item
       v-for="(num, i) in desc"
-      :key="num"
+      :key="num"      
     >
-      <v-sheet
-        :color="colors[i]"
-        height="100%"
-        tile
-      >
         <v-row
           class="fill-height"
           align="center"
           justify="center"
         >
-          <div class="text-h2">
-            <img :src="require(`@/assets/description_image/spyfall/` + `spy_`+(i+1)+`.png`)" width="100%"/>
+          <div>
+            <img :src="require(`@/assets/description_image/spyfall/` + `스파이폴설명`+(i+1)+`.png`)" class="spyfallinfoimg"/>
           </div>
         </v-row>
-      </v-sheet>
     </v-carousel-item>
   </v-carousel>
 </template>
@@ -28,17 +24,9 @@ export default {
   name: "SpyfallDescription",
   data () {
       return {
-        colors: [
-          'white',
-          'white',
-          'white',
-          'white',
-          'white',
-          'white',
-        ],
         model: 0,
         desc: [
-          "p1","p2","p3"
+          "p1","p2","p3", "p4"
         ],
       }
     },
@@ -49,9 +37,19 @@ export default {
 }
 </script>
 
-<style>
-.text-h2 {
-  /* text-align: center; */
-  padding:2cm
+<style scoped>
+.SpyfallInfo {
+  border-bottom-left-radius: 15px 255px;
+    border-bottom-right-radius: 225px 15px;
+    border-top-left-radius: 23px 15px;
+    border-top-right-radius: 15px 225px;
+}
+.spyfallinfoimg {
+  height: 567px;
+  margin-left: 10px;
+  margin-top: 5px;
+  border: 0;
+  border-radius: 0;
+  border-top-left-radius: 22px 15px;      
 }
 </style>
