@@ -1,7 +1,6 @@
 <template>
-  <div class="telestation-container" style = "color : black;">
-    <h1>텔레스테이션</h1>
-    <div v-show="gameMode ==='text'" style="display:flex; flex-direction: column; align-items: center;"> <!-- 키워드 입력 -->
+  <div class="telestation-container" id="divdiv" style = "color : black; overflow:scroll;">
+    <div v-show="gameMode ==='text'" style="display:flex; flex-direction: column_reverse; align-items: center;"> <!-- 키워드 입력 -->
       <div>
         {{textingTime}}
         {{drawingTime}}
@@ -31,34 +30,55 @@
     </div>
 
 
-    <div v-show="gameMode ==='album'" style="display:flex; flex-direction: column; align-items: center;">
-      <div v-for="(data,index) in recieveAlbum" :key="index">
-        <div style="display:flex;" v-if="index%2 === 0">
-            <p>{{data}}</p>
-            <div v-if="index !==0">
-              <button @click="bestPick(index)">
-                <v-icon color="blue">{{ index === best-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
-              </button>
-              <button @click="worstPick(index)">
-                <v-icon color="red">{{ index === worst-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
-              </button>             
+    <div v-show="gameMode ==='album'" style=" width:100%; text-align:center;">
+      <h2>{{recieveUsers[0]+"'s Album"}}</h2>
+      <button @click="testfn3()" style="display:block; margin:auto">클릭</button>
+      <div v-for="(data,index) in recieveAlbum" :key="index" style="display:flex; flex-direction: column; align-items:center;">
+        <div style="width:100%;" v-if="index%2 === 0" id="keyword">
+          <div class="animate__animated animate__slideInLeft" style="display:flex; flex-direction: column; align-items:center;">
+            <div class="d-flex" style="align-self:start;">
+              <img src="../../assets/inspector.png" alt="" style="width:50px;">
+              <div style="margin:auto 0; font-size:20px; font-weight: bold;">{{recieveUsers[index]}}</div>
             </div>
+            <div style="align-self:start; display:flex">
+              <div class="speech-bubble" style="font-size: 25px;">
+                <p style="margin:5px 15px">{{data}}</p>
+              </div>
+              <div v-if="index !==0">
+                <button @click="bestPick(index)" style="margin-top:20px;">
+                  <v-icon color="blue">{{ index === best-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
+                </button>
+                <button @click="worstPick(index)">
+                  <v-icon color="red">{{ index === worst-1 ? 'mdi-thumb-down' : 'mdi-thumb-down-outline' }}</v-icon>
+                </button>             
+              </div>
+            </div>
+          </div>
         </div>
-        <div v-else>
-          <img :src="data" alt="">
-            <div>
-              <button @click="bestPick(index)">
-                <v-icon color="blue">{{ index === best-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
-              </button>
-              <button @click="worstPick(index)">
-                <v-icon color="red">{{ index === worst-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
-              </button>
+        <div v-else id="draw" style="align-self:end;">
+          <div class="animate__animated animate__slideInRight" style="display:flex; flex-direction: column; align-items:center;">
+            <div class="d-flex flex" style="align-self:end;">
+              <div style="margin:auto 3px; font-size:20px; font-weight: bold;">{{recieveUsers[index]}}</div>
+              <img src="../../assets/artist.png" alt="" style="width:50px;">
             </div>
+              <div class="mt-3 me-3" style="display:flex; flex-direction: column; align-items:center;">
+                <img :src="data" alt="" style="width:400px; height:285px;">
+                <div>
+                  <button @click="bestPick(index)">
+                    <v-icon color="blue">{{ index === best-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
+                  </button>
+                  <button @click="worstPick(index)">
+                    <v-icon color="red">{{ index === worst-1 ? 'mdi-thumb-down' : 'mdi-thumb-down-outline' }}</v-icon>
+                  </button>
+                </div>
+              </div>
+          </div>
         </div>
       </div>
-        <button v-show="isRoomMaker && round<personnel" @click="sendMessageToEveryBody('','nextAlbum')">다음앨범</button>
-        <button v-show="isRoomMaker && round===personnel" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
-        <p>{{round}}</p>
+      <div id="next">
+        <button style="display:block; margin:auto; font-size:25px; background-color:rgb(1, 215, 236)" v-show="isRoomMaker && round<personnel" @click="sendMessageToEveryBody('','nextAlbum') ">다음 앨범</button>
+        <button style="display:block; margin:auto; font-size:25px; background-color:rgb(1, 215, 236)" v-show="isRoomMaker && round===personnel" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
+      </div>
     </div>
 
     <div v-show="gameMode ==='best'" style="display:flex; flex-direction: column; align-items: center;">
@@ -104,7 +124,7 @@ import axios from 'axios';
 import {mapState} from 'vuex';
 import CanvasApi from '@/components/CanvasApi';
 import UserVideo from '@/components/Video/UserVideo';
-
+import 'animate.css';
 export default {
   name: 'Telestation',
   props:{
@@ -128,18 +148,19 @@ export default {
       textingEnabled: false,
       votingEnabled: false,
 
-      gameMode: "text",
+      gameMode: "album",
       
       drawingOrder:1, /* 라운드 */
       completedPlayers:0, /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */
       myCompleted: false,
       readyPlayers:0, /* 전 라운드에서 키워드나 그림정보를 웹소켓으로 받은 플레이어 수*/
-      personnel:0, //인원수
+      personnel:4, //인원수
       participant: new Map(), // 참가자들
       targetUser: '', // 웹소켓 받는 사람
       receiveKeyword:'', // 받은 키워드
       recieveDraw:'', // 받은 그림
-      recieveAlbum: null,
+      recieveAlbum: ['졸라맨','https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150401_224%2Fche5466_14278577694929nElY_JPEG%2FXXX.PNG&type=a340','악당이름이 뭐지 ?','https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxNzEyMjNfODIg%2FMDAxNTE0MDM4NzU5MzU1.5LoCzGYvjU5pzVOVydLGbnhEKORvoRNJEc9f6cutzzEg.onVUrp8GZ0DA3XUmi0Q2eXLsmjEDfPKNyQwKBYvCFTIg.PNG.kyhk614%2F%25B2%25D9%25C0%25DA_3%25B1%25E2.png&type=a340'],
+      recieveUsers: ['조성현','강광은','배소원','박준영'],
       round:0,
       gameId: this.gameRes.playGameId,
       dataIndex: 0, // 앨범 번호
@@ -155,9 +176,55 @@ export default {
       worstData:'',
       bestPreData:'',
       bestData:'',
+      test:0,
+      testp:4,
 		}
 	},
   methods: {
+    testfn3(){
+      this.removeKeyword()
+      this.removeDraw()
+      this.testfn()
+      setTimeout(() => {
+        this.testfn2()
+      },2500);
+    },
+    testfn() {
+      var index = 0
+      var final = parseInt(this.testp/2)
+      var loading = setInterval(function(){
+        if (index === final) {
+          clearInterval(loading)
+        }
+        $('#keyword > div').eq(index).fadeIn(1000);index++
+        $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
+        },5000);
+    },
+    testfn2() {
+      var index1 = 0
+      var final1 = parseInt(this.testp/2)
+      var loading1 = setInterval(function(){
+        if (index1 === final1) {
+          clearInterval(loading1)
+        }
+        if (index1 === final1-1) {
+          setTimeout(() =>{
+            $('#next').fadeIn(1000)
+            $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
+          },2500)
+        }
+        $('#draw > div').eq(index1).fadeIn(1000);index1++
+        $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
+        },5000);
+    },
+    removeKeyword() {
+      console.log('리무브 들어왔니?ㄴ')
+      $('#keyword > div').hide();
+      $('#next').hide();
+    },
+    removeDraw() {
+      $('#draw > div').hide();
+    },
     getUsers() { // 참가자 닉네임과 connectinId 딕셔너리화 for(웹소켓)
       let myNickName = JSON.parse(this.publisher.stream.connection.data)
       this.participant.set(myNickName.clientData, this.publisher.stream.connection)
@@ -334,10 +401,13 @@ export default {
           this.gameMode = 'album'     
           this.dataIndex = res.data.dataIndex
           this.recieveAlbum = res.data.dataList
+          this.recieveUsers = res.data.userNicknameList
           console.log("this.dataIndex"+this.dataIndex);
           console.log("this.recieveAlbum"+this.recieveAlbum);
           this.worst = 0
           this.best = 0
+          // this.removeKeyword()
+          // this.loading = setInterval(this.fadeInKeyword(),5000)
         }else {
           this.bestPlayer = res.data.best.nickname
           this.worstPlayer = res.data.worst.nickname
@@ -520,6 +590,7 @@ export default {
     },
   },
   mounted() {
+    // $('#divdiv').scrollTop($('divdiv').prop('scrollHeight'));
     this.startTexting()
     this.getUsers()
     this.session.on('signal:keyword', (event) => { // 입력한 키워드 백에 보내기
@@ -580,4 +651,52 @@ export default {
   background: black;
   cursor: not-allowed;
 }
+#keyword > div {
+  transition: all 2s;
+}
+#divdiv{ -ms-overflow-style: none; }
+#divdiv::-webkit-scrollbar{ display:none; }
+
+.animate__bounceInRight {
+  --animate-duration: 2.5s;
+}
+.animate__bounceInLeft {
+  --animate-duration: 2.5s;
+}
+.animate__slideInDown {
+  --animate-duration: 1.7s;
+}
+.speech-bubble {
+	position: relative;
+	background: yellow;
+	border-radius: .4em;
+  margin-top:20px;
+  margin-left:15px;
+  min-width: 100px;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 20%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-bottom-color: yellow;
+	border-top: 0;
+	border-left: 0;
+	margin-left: -10px;
+	margin-top: -10px;
+}
+/* #divdiv {
+  display:flex;
+
+  flex-direction: column-reverse;
+
+  overflow-y:auto;
+
+  height:100%;
+} */
+
 </style>

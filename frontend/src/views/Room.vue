@@ -1,5 +1,5 @@
 <template>
-  <div class="room"> <!--전체화면-->
+  <div class="room" style=""> <!--전체화면-->
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
@@ -7,7 +7,7 @@
             <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
         </div>     
-        <v-col id="game"> <!--가운데 게임화면-->
+        <v-col id="game" style="height:100%"> <!--가운데 게임화면-->
           <span v-if="start">
             <span v-if="gameSelected == 'Spyfall'">
               <spyfall :stream-manager="streamManagers" :gameRes="gameRes" :rules="rules"></spyfall>
