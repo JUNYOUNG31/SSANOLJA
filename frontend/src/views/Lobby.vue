@@ -2,38 +2,46 @@
   <div class="lobby">
     <div class="myface">
 			<div class="bouncing-text">
-				<div class="S1"><h1>S</h1></div>
-				<div class="S2"><h1>S</h1></div>
-				<div class="A1"><h1>A</h1></div>
-				<div class="N"><h1>N</h1></div>
-				<div class="O"><h1>O</h1></div>
-				<div class="L"><h1>L</h1></div>
-				<div class="J"><h1>J</h1></div>
-				<div class="A2"><h1>A</h1></div>
+				<v-row class="texts">
+					<div class="S1"><h1>S</h1></div>
+					<div class="S2"><h1>S</h1></div>
+					<div class="A1"><h1>A</h1></div>
+					<div class="N"><h1>N</h1></div>
+					<div class="O"><h1>O</h1></div>
+					<div class="L"><h1>L</h1></div>
+					<div class="J"><h1>J</h1></div>
+					<div class="A2"><h1>A</h1></div>
+				</v-row>
+				<v-row  class="shadows">
 				<div class="shadow"></div>
 				<div class="shadow-two"></div>
 				<div class="shadow-three"></div>
 				<div class="shadow-four"></div>
+				</v-row>
 			</div>
     
-			<div id="join" v-if="!session">
+			<div id="join" v-if="!session" class="border" style="padding-bottom: 10px">
 				<div id="join-dialog" class="vertical-center">
-					<h1>LOBBY</h1>
-					<div>
-						<p>
-							<label>닉네임</label>
-						</p>
-						<input v-model="userData.userNickname" class="paper-input" style="width:200px" type="text" required placeholder="닉네임을 입력하세요">
-						<p>
-							<label>방 참여코드</label>
-						</p>
-						<input v-model="joinCode" class="paper-input" style="width:200px" type="text" required placeholder="참여코드를 입력하세요">
-						<p class="text-center">
-							<button class="paper-btn btn-lg btn-success" @click="checkRoom(joinCode)">입장하기</button>
-						</p>
-						<p class="text-center">
-							<button class="paper-btn btn-lg btn-success" @click="makeRoom()">방 만들기</button>
-						</p>
+					<h1 style="margin-top:10px">LOBBY</h1>
+					<div class="lobby_form">
+						<div>
+							<p>
+								<label>닉네임</label>
+							</p>
+							<input v-model="userData.userNickname" class="paper-input" style="width:200px" type="text" required placeholder="닉네임을 입력하세요">
+							<p>
+								<label>방 참여코드</label>
+							</p>
+							<input v-model="joinCode" class="paper-input" style="width:200px" type="text" required placeholder="참여코드를 입력하세요">
+						</div>
+						<div class="joinbutton">
+							<p class="text-center">
+								<button class="paper-btn btn-lg btn-success" @click="checkRoom(joinCode)">입장하기</button>
+							</p>
+							<p class="text-center">
+								<button class="paper-btn btn-lg btn-success" @click="makeRoom()">방 만들기</button>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -178,7 +186,7 @@ export default {
   color: black;
 }
 .lobby .myface {
-  width: 500px;
+  width: 600px;
 }
 .go-or-make {
   display: flex;
@@ -207,10 +215,22 @@ export default {
 .bouncing-text {
   position: relative;
   display: flex;  
+	flex-direction: column;
+	justify-content:center;
   font-family: "Patrick Hand SC", sans-serif;
   margin-bottom: 120px;
   margin-top: 120px;
 }
+
+.texts {
+	justify-content: center;
+}
+
+.shadows {
+	margin-left: 69px;
+	margin-top: 18px;
+}
+
 
 .S1, .S2, .A1, .N, .O, .A2 {
   color: rgb(0, 0, 0);
@@ -344,5 +364,17 @@ export default {
 .shadow-four:after {
   left: 404px;
   animation: scale 2s linear infinite 1.4s;
+}
+
+.lobby_form {
+	display: flex;
+	justify-content: space-around;
+}
+.joinbutton {
+	display: flex;
+	flex-direction: column;
+}
+.joinbutton p {
+	margin-top: 40px;
 }
 </style>
