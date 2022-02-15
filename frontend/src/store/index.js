@@ -28,7 +28,7 @@ export default new Vuex.Store({
     mySessionId: '',
     myUserName: '',
 		isRoomMaker: localStorage.getItem('isRoomMaker') === 'true',
-
+		sendUserEmail: ''
   },
 
   mutations: {
@@ -124,10 +124,12 @@ export default new Vuex.Store({
 			state.session.off('signal:voteFalse')
 			state.session.off('signal:spyfall')
 			state.session.off('signal:restart')
-		
+		},
 
+		SET_SENDUSEREMAIL: function(state, value) {
+			state.sendUserEmail = value
 		}
-  },
+  },	
 
   actions: {
     joinSession: function ({ commit, dispatch, state}, data) {

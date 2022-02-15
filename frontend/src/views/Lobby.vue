@@ -152,6 +152,7 @@ export default {
 		},
 		getUserData() {
 			this.sendUserEmail = this.$route.params.sendUserEmail
+			this.$store.commit("SET_SENDUSEREMAIL", this.sendUserEmail)
 			axios({
 					method:'POST',
 					url: '/api/login/sendUser',

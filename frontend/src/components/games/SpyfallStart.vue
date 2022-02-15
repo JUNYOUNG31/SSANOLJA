@@ -50,14 +50,14 @@ export default {
 	},
 
   mounted() {
-    // if(this.isRoomMaker) {
-    // setTimeout(() => {
-    //     const ramdomquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
-    //     const firstquestionplayerdata = JSON.parse(ramdomquestionplayerdata.stream.connection.data)
-    //     this.sendMessageToEveryBody(JSON.stringify(firstquestionplayerdata), 'setFirstQuestionPlayer')
-    //     this.$store.commit("SET_FIRSTQUESTIONPLAYER", ramdomquestionplayerdata)
-    //     }, 5000);
-    // }    
+    if(this.isRoomMaker) {
+    setTimeout(() => {
+        const ramdomquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
+        const firstquestionplayerdata = JSON.parse(ramdomquestionplayerdata.stream.connection.data)
+        this.sendMessageToEveryBody(JSON.stringify(firstquestionplayerdata), 'setFirstQuestionPlayer')
+        this.$store.commit("SET_FIRSTQUESTIONPLAYER", ramdomquestionplayerdata)
+        }, 5000);
+    }    
   },
 
   methods: {

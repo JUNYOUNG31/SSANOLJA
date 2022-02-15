@@ -81,27 +81,15 @@
                 <img src="../../assets/Spy.jpg" alt="spy">
               </div>
               <button class="paper-btn btn-secondary" color="primary" style="width:100%" @click="spyfall" v-if="isSpy" popover-right="장소를 추리하여 게임을 끝냅니다">스파이폴</button>
-              <!-- <button @click="testclick">div 활성화 버튼</button>
-              <div class="row flex-spaces" >                 
-                <input class="alert-state" id="alert-1" type="checkbox">
-                <div id="testalert" class="alert alert-secondary dismissible" style="display:none" >
-                  투표가 완료되었습니다.
-                  <label class="btn-close" for="alert-1">X</label>
-                </div>
-              </div> -->
-              
               <div>                
                 <v-dialog v-model="dialog" persistent max-width="1000px">
-                  <v-card>
-                    <v-card-title>
-                      <span class="text-h5">누가 스파이일까요?</span>
-                    </v-card-title>              
+                  <v-card>         
                       <v-container class="vote">
                         <v-row class="vote_row">
                           <v-col cols="12">
                           </v-col>
                           <v-col cols="5" class="prosecutor">
-                          <div class="video_name"><div class="alert alert-secondary">고발자</div></div>
+                          <div class="video_name"><div class="alert alert-secondary" popover-top="용의자를 고발하였습니다">고발자</div></div>
                           <div v-if="selectPlayer" class="child-borders">
                             <ov-video :stream-manager="selectPlayer"/>
                           </div>
@@ -113,7 +101,7 @@
                         </div>                      
                         </v-col>
                         <v-col cols="5" class="suspect">      
-                          <div class="video_name"><div class="alert alert-danger">용의자</div></div>                  
+                          <div class="video_name"><div class="alert alert-danger" popover-top="용의자로 선택되었습니다">용의자</div></div>                  
                           <div v-if="votePlayer" class="child-borders">
                             <ov-video :stream-manager="votePlayer"/>
                           </div>
@@ -144,7 +132,21 @@
                     </v-container> 
                   </v-card>
                 </v-dialog>
-              </div>             
+                </div>  
+                <button class="paper-btn btn-success" @click="openinfo = true" style="width:100%; margin-top:20px">게임설명</button>
+                <v-dialog class="infodialog"
+                  v-model="openinfo"
+                  persistent
+                  max-width="750px"                 
+                >
+                  <v-card  class="scrollx" height="500px" style="padding-right:10px">   
+                    <img src="@/assets/description_image/spyfall/스파이폴설명1.png" alt="">
+                    <img src="@/assets/description_image/spyfall/스파이폴설명2.png" alt="">
+                    <img src="@/assets/description_image/spyfall/스파이폴설명3.png" alt="">
+                    <img src="@/assets/description_image/spyfall/스파이폴설명4.png" alt="">
+                    <button class="paper-btn btn-success" style="align-self:center" @click="openinfo = false">닫기</button>
+                  </v-card>
+                </v-dialog>
             </v-col>
           </v-row>
         </v-container>
@@ -170,7 +172,7 @@ export default {
       job: null,
       place: null,
       placeSrc: null,
-      MMSS: new Date(this.timerCount*1000).toISOString().substr(14, 5),
+
       timerEnabled: true,
       timerCount: 30,
       votetimeCnt: 30,
@@ -186,7 +188,10 @@ export default {
       isSpy: false,
       // spyName: null,
       spyPlayer : null,
-      // dialog : false,
+      openinfo: false,
+      desc: [
+          "p1","p2","p3", "p4"
+        ],
 		}
 	},
 
@@ -199,7 +204,7 @@ export default {
   components: {
 		OvVideo,
     SpyfallEnd,
-    SpyfallStart
+    SpyfallStart,
 	},
 	computed: {
 		...mapState([
@@ -222,6 +227,9 @@ export default {
       }
       return null
     },
+    MMSS () {
+      return new Date(this.timerCount*1000).toISOString().substr(14, 5)      
+    }
 	},
 
 	methods: {
@@ -561,7 +569,6 @@ video {
     padding: 10px;
     width: 100%;
     font-size: 20px;
-    font-family: 'Patrick Hand SC';
     text-align: center;
     height: 52px;
     margin: 0;
@@ -762,5 +769,23 @@ video {
 
 #time_cnt {
   text-align: center;
+}
+
+.scrollx {
+  overflow: scroll;
+  /* IE scroll 숨김 */
+  -ms-overflow-style: none;
+  position: relative;
+}
+
+.scrollx::-webkit-scrollbar { 
+  width: 0 !important;
+  display: none; 
+}
+.scrollx  button {
+width: 70px;
+position: relative;
+top: 0;
+left: 92%;
 }
 </style>

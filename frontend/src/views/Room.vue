@@ -46,7 +46,7 @@
                 </v-col>
               </v-col>              
             </v-row>
-            <div class="gameInfo">게임설명 <!--게임설명-->
+            <div class="gameInfo border"> <!--게임설명-->
             <span v-if="gameSelected == 'Spyfall'">
               <spyfallDescription :gameSelected="gameSelected"></spyfallDescription>
             </span>
@@ -120,8 +120,8 @@ export default {
     },
 
     isReadyToStart() {
-      if (this.readyList.length == (this.subscribers.length - 1)) {
-      // if (this.readyList.length == 1) {
+      // if (this.readyList.length == (this.subscribers.length - 1)) {
+      if (this.readyList.length == 1) {
         return true;
       }
       return false;
@@ -287,8 +287,13 @@ export default {
   flex-direction: column;
 }
 
-.gameInfo{
-  height: 560px;
+.gameInfo {
+  margin-top: 10px;
+  height: 570px;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 21px 12px;
+  border-top-right-radius: 15px 225px;
 }
 
 

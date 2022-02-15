@@ -106,7 +106,8 @@ export default {
       "spyWin",
       "citizenWin",
       "isRoomMaker",
-      "myUserName"
+      "myUserName",
+      "sendUserEmail"
     ])
   },
   mounted() {
@@ -173,6 +174,7 @@ export default {
   methods: {
     leaveRoom() {
       this.$store.dispatch('leaveSession')
+      this.$router.push({name:'Lobby', params: { sendUserEmail: this.sendUserEmail}})
     },
 
     backToRoom() {

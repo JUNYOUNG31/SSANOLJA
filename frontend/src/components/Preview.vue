@@ -49,7 +49,7 @@ export default {
   name: "Preview",
   props: {
     joinCode: String,
-    myUserName: String
+    myUserName: String,
   },
   data: function () {
     return {
