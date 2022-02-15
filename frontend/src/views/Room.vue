@@ -167,6 +167,11 @@ export default {
         this.$store.commit('INIT_SPYFALL')
       })
     }
+    if(this.session.ee._events["signal:initTelestation"] == undefined) {
+      this.session.on('signal:initTelestation', ()=>{
+        this.start = false
+      })
+    }
 
 
     this.session.on('signal:ready', (event)=>{
@@ -226,7 +231,7 @@ export default {
         '/api/games/rules',
         JSON.stringify({
           // personnel: this.subscribers.length,
-          personnel: 3,
+          personnel: 1,
           selectedGame: game
         })
       )
@@ -239,7 +244,7 @@ export default {
             
             JSON.stringify({
               // userNicknames : this.playerList,
-              userNicknames : ["박준영", "정성우", "김범주"],
+              userNicknames : ["조성현"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),

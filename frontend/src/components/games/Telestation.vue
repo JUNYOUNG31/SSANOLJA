@@ -79,6 +79,16 @@
         <button style="display:block; margin:auto; font-size:25px; background-color:rgb(1, 215, 236)" v-show="isRoomMaker && round<personnel" @click="sendMessageToEveryBody('','nextAlbum') ">다음 앨범</button>
         <button style="display:block; margin:auto; font-size:25px; background-color:rgb(1, 215, 236)" v-show="isRoomMaker && round===personnel" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
       </div>
+      <div v-if="isRoomMaker">
+        <button class="paper-btn" style="width:100%;" @click="sendMessageToEveryBody('','replay')">
+          <span>게임 선택하기</span>
+        </button>
+
+        <button class="paper-btn btn-secondary" style="width:100%" @click="leaveRoom()">
+          <span>방나가기</span>
+        </button>
+
+      </div>
     </div>
 
     <div v-show="gameMode ==='best'" style="display:flex; flex-direction: column; align-items: center;">
@@ -112,7 +122,7 @@
         <img :src="worstPreData" alt="">
         <p>{{worstData}}</p>
       </div>
-      <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','room')">다시하기</button>
+      <!-- <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','room')">다시하기</button> -->
     </div>
 
     
@@ -181,6 +191,25 @@ export default {
 		}
 	},
   methods: {
+    leaveRoom() {
+    this.$store.dispatch('leaveSession')
+    this.$router.push({name:'Lobby', params: { sendUserEmail: this.sendUserEmail}})
+    },
+    backToRoom() {
+      // this.sendMessageToEveryBody('', 'backToRoom')
+      this.keyword= '',
+      this.draw='',
+      round=0,
+      gameMode= "album",
+      this.session.off('signal:keyword')
+      this.session.off('signal:draw')
+      this.session.off('signal:completed')
+      this.session.off('signal:ready')
+      this.session.off('signal:nextAlbum')
+      this.session.off('signal:result')
+      this.session.off('signal:worst')
+      this.sendMessageToEveryBody('', 'initTelestation')
+    },
     testfn3(){
       this.removeKeyword()
       this.removeDraw()
@@ -624,9 +653,9 @@ export default {
       this.bestVideo = null
       this.gameMode = 'worst'
     })
-    this.session.on('signal:result', (event) => { // 그린 그림 백에 보내기 
-    this.worstVideo = null
-      this.$router.push({ name: 'Room', params: { joinCode: this.joinCode}})
+    this.session.on('signal:replay', (event) => { // 그린 그림 백에 보내기 
+      this.worstVideo = null
+      this.backToRoom()
     })
   
 
