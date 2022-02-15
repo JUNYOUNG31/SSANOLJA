@@ -4,21 +4,16 @@
       v-for="(num, i) in desc"
       :key="num"
     >
-      <v-sheet
-        :color="colors[i]"
-        height="100%"
-        tile
-      >
         <v-row
           class="fill-height"
           align="center"
           justify="center"
         >
-          <div class="text-h2">
-            <img :src="require(`@/assets/description_image/spyfall/` + `spy_`+(i+1)+`.png`)" width="100%"/>
+          <div>
+            <img :src="require(`@/assets/description_image/spyfall/` + `스파이폴설명`+(i+1)+`.png`)" width="100%"/>
           </div>
         </v-row>
-      </v-sheet>
+
     </v-carousel-item>
   </v-carousel>
 </template>
@@ -50,8 +45,5 @@ export default {
 </script>
 
 <style>
-.text-h2 {
-  /* text-align: center; */
-  padding:2cm
-}
+
 </style>

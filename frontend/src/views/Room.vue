@@ -128,22 +128,26 @@ export default {
     }
     
 	},
+  
   mounted () {
-    // 방 입장시 준비된 사람들 리스트를 받아옴
-    this.sendMessageToEveryBody('getReadyList', 'getReadyList')
-
-    this.session.on('signal:getReadyList', ()=>{
-      // let readyListToString = this.readyList.toString()
-      this.sendMessageToEveryBody(this.readyList,'sendReadyList')
+    
+    this.session.on('signal:getReadyList', (event)=>{
+      if (this.myUserName != JSON.parse(event.from.data).clientData){
+        // let readyListToString = this.readyList.toString()
+        this.sendMessageToEveryBody(JSON.stringify(this.readyList),'sendReadyList')
+        console.log(this.readyList, '송신')
+      }
     })
 
     this.session.on('signal:sendReadyList', (event)=>{
-      // this.readyList = event.data.split(",")
-      this.readyList = event.data
+        // this.readyList = event.data.split(",")
+        console.log(typeof event.data, '이게 스트링?')
+        this.readyList = JSON.parse(event.data)
+        console.log(this.readyList, '수신')
     })
 
     this.session.on('signal:rules', (event) => {
-    this.rules = JSON.parse(event.data)
+      this.rules = JSON.parse(event.data)
     })
 
     this.session.on('signal:gameRes', (event)=>{
@@ -174,6 +178,14 @@ export default {
         this.readyList.push(person)
       }
     })
+    
+    console.log(this.readyList)
+    
+    // 방 입장시 준비된 사람들 리스트를 받아옴
+    setTimeout(()=>{
+      this.sendMessageToEveryBody('', 'getReadyList')
+    }, 500)
+
   },
 
   methods : {
@@ -203,7 +215,7 @@ export default {
       joinCodeToCopy.style.display = 'none'
     },
     leaveSession() {
-			this.$store.dispatch('leaveSession')
+      this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
 		},
     gameSelect(game) {
@@ -213,8 +225,8 @@ export default {
       axios.post(
         '/api/games/rules',
         JSON.stringify({
-          personnel: this.subscribers.length,
-          // personnel: 3,
+          // personnel: this.subscribers.length,
+          personnel: 3,
           selectedGame: game
         })
       )
@@ -226,8 +238,8 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              userNicknames : this.playerList,
-              // userNicknames : ["박준영", "정성우", "김범주"],
+              // userNicknames : this.playerList,
+              userNicknames : ["박준영", "정성우", "김범주"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),

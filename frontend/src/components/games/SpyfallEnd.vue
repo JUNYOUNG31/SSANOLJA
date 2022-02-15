@@ -51,14 +51,25 @@
     </div>
     <div v-if="spyWin">
       <p>스파이 승리</p>
+      <div v-if="spyPlayer" class="child-borders">
+        <ov-video :stream-manager="spyPlayer"/>
+      </div>
     </div>
     <div v-if="citizenWin">
       <p>시민 승리</p>
+      <div v-if="spyPlayer" class="child-borders">
+        <ov-video :stream-manager="spyPlayer"/>
+      </div>
     </div>
     <div v-if="isRoomMaker & (spyWin || citizenWin)">
       <button class="paper-btn" style="width:100%;" @click="backToRoom()">
         <span>게임 선택하기</span>
       </button>
+
+      <button class="paper-btn btn-secondary" style="width:100%" @click="leaveRoom()">
+        <span>방나가기</span>
+      </button>
+
     </div>
   </div>
 </template>
@@ -117,7 +128,7 @@ export default {
     if(this.gameRes.jobs[this.myUserName]=="스파이") {
 
       if(this.citizenWin) {
-        this.publisher.stream.applyFilter("GStreamerFilter", {command: 'noirtv textoverlay text="LOSE" valignment=top halignment=center font-desc="Cantarell 25"'})
+        this.publisher.stream.applyFilter("GStreamerFilter", {command: "videobalance saturation=0.0"})
         .then(()=>{
           console.log("필터 적용됨")
         })
@@ -132,7 +143,7 @@ export default {
           filter.execMethod(
             "setOverlayedImage",
             {
-              "uri": "https://cdn.pixabay.com/photo/2013/07/12/14/14/derby-148046_960_720.png",
+              "uri": "../../assets/spy_overlay.png",
               "offsetXPercent":"-0.2F",
               "offsetYPercent":"-0.8F",
               "widthPercent":"1.3F",
@@ -147,21 +158,26 @@ export default {
     }
   },
 
+  deactivated () {
+    if(this.gameRes.jobs[this.myUserName]=="스파이") {
+      this.publisher.stream.removeFilter()
+      .then(()=>{
+        console.log("필터 제거됨");
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    }
+  },
+
   methods: {
+    leaveRoom() {
+      this.$store.dispatch('leaveSession')
+    },
+
     backToRoom() {
       this.sendMessageToEveryBody('', 'backToRoom')
       this.sendMessageToEveryBody('', 'initSpyfall')
-
-
-      if(this.gameRes.jobs[this.myUserName]=="스파이") {
-        this.publisher.stream.removeFilter()
-        .then(()=>{
-          console.log("필터 제거됨");
-        })
-        .catch(error => {
-          console.error(error);
-        })
-      }
     },
 
     sendMessageToEveryBody(data, type) {

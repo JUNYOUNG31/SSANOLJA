@@ -63,7 +63,7 @@
             <v-col cols="2" class="right_menu">
               <div class="alert alert-primary" style="height: 125px; margin-bottom:10px">
                 <h4>게임 시간</h4>
-                <h2>{{timerCount}}</h2>
+                <h2>{{MMSS}}</h2>
               </div>
               <div class="alert alert-primary" style="height: 180px; margin-bottom:10px">
                 <h4>장소</h4>
@@ -137,7 +137,7 @@
                         <v-col cols="4" id="disagree" >
                           <button class="paper-btn btn-danger" style="width:100px" @click="voteFalse"
                           :disabled="isVoted || myUserName == suspectPlayer"><h5>반대</h5></button>
-                        </v-col >         
+                        </v-col>
                       </v-row>
                     </v-container> 
                   </v-card>
@@ -168,6 +168,7 @@ export default {
       job: null,
       place: null,
       placeSrc: null,
+      MMSS: new Date(this.timerCount*1000).toISOString().substr(14, 5),
       timerEnabled: true,
       timerCount: 30,
       votetimeCnt: 30,
