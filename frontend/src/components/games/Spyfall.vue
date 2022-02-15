@@ -10,8 +10,8 @@
             <v-col cols="10">
               <div>
                 <v-row class="child-borders">              
-                  <v-col cols="6" class="video_name" popover-top="답변자에게 질문하세요!"><div class="alert alert-secondary">Question</div></v-col>
-                  <v-col cols="6" class="video_name" popover-top="질문에 진실만을 답변해야 합니다."><div class="alert alert-danger" >Answer</div></v-col>
+                  <v-col cols="6" class="video_name" popover-top="답변자에게 질문하세요!"><div class="alert alert-secondary">질문자</div></v-col>
+                  <v-col cols="6" class="video_name" popover-top="질문에 진실만을 답변해야 합니다."><div class="alert alert-danger" >답변자</div></v-col>
                 </v-row>
                 <v-row>
                   <v-col class="Question_video" cols="6">
@@ -26,7 +26,10 @@
                     <div v-if="answerPlayer" class="child-borders">
                       <ov-video :stream-manager="answerPlayer"/>
                     </div>
-                  </v-col>              
+                    <div v-else  class="border" style="width:350px; height:263px">                        
+                        <h4>질문자를 선택해 주세요</h4>
+                    </div>
+                  </v-col>            
                 </v-row>
               </div>
               <div class="place_check" popover-bottom="장소에 X를 표시에 장소를 추리해봅시다">
@@ -98,7 +101,7 @@
                           <v-col cols="12">
                           </v-col>
                           <v-col cols="5" class="prosecutor">
-                          <div class="video_name"><div class="alert alert-secondary">Select</div></div>
+                          <div class="video_name"><div class="alert alert-secondary">고발자</div></div>
                           <div v-if="selectPlayer" class="child-borders">
                             <ov-video :stream-manager="selectPlayer"/>
                           </div>
@@ -110,7 +113,7 @@
                         </div>                      
                         </v-col>
                         <v-col cols="5" class="suspect">      
-                          <div class="video_name"><div class="alert alert-danger">Vote</div></div>                  
+                          <div class="video_name"><div class="alert alert-danger">용의자</div></div>                  
                           <div v-if="votePlayer" class="child-borders">
                             <ov-video :stream-manager="votePlayer"/>
                           </div>
@@ -118,9 +121,8 @@
                         <v-col cols="12" style="height:80px">
                           <div class="row flex-spaces" >                 
                             <input class="alert-state" id="alert-1" type="checkbox">
-                            <div id="voteCompleted" class="alert alert-secondary dismissible" style="display:none" >
+                            <div id="voteCompleted" class="alert alert-secondary dismissible" style="display:none; text-align:center" >
                               투표가 완료되었습니다.
-                              <label class="btn-close" for="alert-1">X</label>
                             </div>
                           </div>
                         </v-col>
@@ -508,8 +510,25 @@ h3, h4, h5 {
 .Answer_video {
   position: relative;
   padding-top: 0;
+  display: flex;
+  justify-content: center;
   text-align: center;
 }
+.Answer_video div {
+  background-image: url(../../assets/answerplayer.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.Answer_video .border h4 {
+  position: absolute;
+  top: 40%;
+  left: 20%;
+  margin: 0;
+  background-color: rgb(116 116 116 / 65%);
+  padding: 13px;
+  color: white;
+}
+
 #p-name {
   position: absolute;
   bottom: 0px;
@@ -552,15 +571,13 @@ video {
   display: flex;
   flex-direction: column;   
   border-bottom-left-radius: 15px 255px;
-  border-bottom-right-radius: 225px 15px;
+  border-bottom-right-radius: 247px 27px;
   border-top-left-radius: 255px 15px;
-  border-top-right-radius: 15px 225px;
+  border-top-right-radius: 29px 268px;
   color: #41403e;
   color: var(--primary);
   border-color: #41403e;
   border-color: var(--primary);
-  background-color: #41403e;
-  background-color: var(--main-background);
   background-image: none;
   border-style: solid;
   border-width: 2px;

@@ -51,9 +51,15 @@
     </div>
     <div v-if="spyWin">
       <p>스파이 승리</p>
+      <div v-if="spyPlayer" class="child-borders">
+        <ov-video :stream-manager="spyPlayer"/>
+      </div>
     </div>
     <div v-if="citizenWin">
       <p>시민 승리</p>
+      <div v-if="spyPlayer" class="child-borders">
+        <ov-video :stream-manager="spyPlayer"/>
+      </div>
     </div>
     <div v-if="isRoomMaker & (spyWin || citizenWin)">
       <button class="paper-btn" style="width:100%;" @click="backToRoom()">
@@ -117,7 +123,7 @@ export default {
     if(this.gameRes.jobs[this.myUserName]=="스파이") {
 
       if(this.citizenWin) {
-        this.publisher.stream.applyFilter("GStreamerFilter", {command: 'noirtv textoverlay text="LOSE" valignment=top halignment=center font-desc="Cantarell 25"'})
+        this.publisher.stream.applyFilter("GStreamerFilter", {command: "videobalance saturation=0.0"})
         .then(()=>{
           console.log("필터 적용됨")
         })
@@ -147,21 +153,22 @@ export default {
     }
   },
 
+  deactivated () {
+        if(this.gameRes.jobs[this.myUserName]=="스파이") {
+      this.publisher.stream.removeFilter()
+      .then(()=>{
+        console.log("필터 제거됨");
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    }
+  },
+
   methods: {
     backToRoom() {
       this.sendMessageToEveryBody('', 'backToRoom')
       this.sendMessageToEveryBody('', 'initSpyfall')
-
-
-      if(this.gameRes.jobs[this.myUserName]=="스파이") {
-        this.publisher.stream.removeFilter()
-        .then(()=>{
-          console.log("필터 제거됨");
-        })
-        .catch(error => {
-          console.error(error);
-        })
-      }
     },
 
     sendMessageToEveryBody(data, type) {

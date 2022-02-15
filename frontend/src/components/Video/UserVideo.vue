@@ -219,7 +219,7 @@ export default {
 }
 .video_div .btn3 {
 	position: absolute;
-	bottom: 0;
+	top: 0;
 	left: 35%;
 	padding: 7px;
 	font-family: "Patrick Hand SC", sans-serif;
