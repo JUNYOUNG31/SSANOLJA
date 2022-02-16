@@ -184,10 +184,16 @@ public class TelestationService {
             for (int i = 1; i <= personnel; i++) {
                 getAlbumList.add(getAlbumList(telestationReq, dataIndex, i));
             }
+            List<String> getUserNicknameList = new ArrayList<>();
+            for (int i = 1; i<= personnel; i++) {
+                Integer getUsersId = telestationRepository.findUsersIdByDataIndexDrawingOrder(dataIndex, i);
+                String getUserNickname =  userRepository.findByUserNicknameFromUsersId(getUsersId);
+                getUserNicknameList.add(getUserNickname);
+            }
 
             returnData.put("dataIndex", dataIndex);
             returnData.put("dataList", getAlbumList);
-
+            returnData.put("userNicknameList", getUserNicknameList);
 
         return returnData;
     }
