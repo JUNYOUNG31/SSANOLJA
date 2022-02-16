@@ -205,23 +205,6 @@
 
 
       </div>
-      <div v-if="isRoomMaker">
-        <button
-          class="paper-btn"
-          style="width: 100%"
-          @click="sendMessageToEveryBody('', 'replay')"
-        >
-          <span>게임 선택하기</span>
-        </button>
-
-        <button
-          class="paper-btn btn-secondary"
-          style="width: 100%"
-          @click="leaveRoom()"
-        >
-          <span>방나가기</span>
-        </button>
-      </div>
     </div>
   
     <div v-show="gameMode === 'best'" class="modeBestWorst">
@@ -431,13 +414,23 @@
               </div>
             </div>
             <div class="div2-3" style="overflow: hidden">
-              <button
-                class="animate__animated animate__bounceInUp"
-                v-show="isRoomMaker"
-                @click="sendMessageToEveryBody('', 'room')"
-              >
-                다시하기
-              </button>
+              <div v-if="isRoomMaker">
+        <button
+          class="paper-btn"
+          style="width: 100%"
+          @click="sendMessageToEveryBody('', 'replay')"
+        >
+          <span>게임 선택하기</span>
+        </button>
+
+        <button
+          class="paper-btn btn-secondary"
+          style="width: 100%"
+          @click="leaveRoom()"
+        >
+          <span>방나가기</span>
+        </button>
+      </div>
             </div>
           </div>
         </div>
@@ -486,7 +479,7 @@ export default {
       textingEnabled: false,
       votingEnabled: false,
 
-      gameMode: "album",
+      gameMode: "text",
 
       drawingOrder: 1 /* 라운드 */,
       completedPlayers: 0 /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */,
