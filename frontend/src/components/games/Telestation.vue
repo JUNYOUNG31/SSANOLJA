@@ -1,19 +1,6 @@
 <template>
-  <div
-    class="telestation-container paper-input"
-    id="divdiv"
-    style="background: rgb(231, 231, 231); border: 1px solid gray; color:black;  overflow: scroll"
-    oncontextmenu="return false"
-    onselectstart="return false"
-    ondragstart="return false"
-  >
-    <audio
-      autoplay
-      loop
-      onloadstart="this.volume=0.2"
-      src="../../assets/telestation_audio/차분한-약간 경쾌-피아노-재즈-G003.mp3"
-    ></audio>
-    <!-- <h1>텔레스테이션</h1> -->
+  <div class="telestation-container" id="divdiv" style = "color : black; overflow:scroll;">
+    <!-- 소원 시작 -->
     <div
       v-show="gameMode === 'text'"
       style="display: flex; flex-direction: column; align-items: center"
@@ -97,341 +84,151 @@
       </div>
     </div>
 
-    <div v-show="gameMode === 'album'" style="width: 100%; text-align: center">
-      <h2>{{ recieveUsers[0] + "'s Album" }}</h2>
-      <button @click="testfn3()" style="display: block; margin: auto">
-        클릭
-      </button>
-      <div
-        v-for="(data, index) in recieveAlbum"
-        :key="index"
-        style="display: flex; flex-direction: column; align-items: center"
-      >
-        <div style="width: 100%" v-if="index % 2 === 0" id="keyword">
-          <div
-            class="animate__animated animate__slideInLeft"
-            style="display: flex; flex-direction: column; align-items: center"
-          >
-            <div class="d-flex" style="align-self: start">
-              <img
-                src="../../assets/inspector.png"
-                alt=""
-                style="width: 50px"
-              />
-              <div style="margin: auto 0; font-size: 20px; font-weight: bold">
-                {{ recieveUsers[index] }}
-              </div>
+ <!-- 소원 끝 -->
+
+
+    <div v-show="gameMode ==='album'" style=" width:100%; text-align:center;">
+      <h2>{{recieveUsers[0]+"'s Album"}}</h2>
+      <button @click="testfn3()" style="display:block; margin:auto">클릭</button>
+      <div v-for="(data,index) in recieveAlbum" :key="index" style="display:flex; flex-direction: column; align-items:center;">
+        <div style="width:100%;" v-if="index%2 === 0" id="keyword">
+          <div class="animate__animated animate__slideInLeft" style="display:flex; flex-direction: column; align-items:center;">
+            <div class="d-flex" style="align-self:start;">
+              <img src="../../assets/inspector.png" alt="" style="width:50px;">
+              <div style="margin:auto 0; font-size:20px; font-weight: bold;">{{recieveUsers[index]}}</div>
             </div>
-            <div style="align-self: start; display: flex">
-              <div class="speech-bubble" style="font-size: 25px">
-                <p style="margin: 5px 15px">{{ data }}</p>
+            <div style="align-self:start; display:flex">
+              <div class="speech-bubble" style="font-size: 25px;">
+                <p style="margin:5px 15px">{{data}}</p>
               </div>
-              <div v-if="index !== 0">
-                <button @click="bestPick(index)" style="margin-top: 20px">
-                  <v-icon color="blue">{{
-                    index === best - 1 ? "mdi-thumb-up" : "mdi-thumb-up-outline"
-                  }}</v-icon>
+              <div v-if="index !==0">
+                <button @click="bestPick(index)" style="margin-top:20px;">
+                  <v-icon color="blue">{{ index === best-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
                 </button>
                 <button @click="worstPick(index)">
-                  <v-icon color="red">{{
-                    index === worst - 1
-                      ? "mdi-thumb-down"
-                      : "mdi-thumb-down-outline"
-                  }}</v-icon>
-                </button>
+                  <v-icon color="red">{{ index === worst-1 ? 'mdi-thumb-down' : 'mdi-thumb-down-outline' }}</v-icon>
+                </button>             
               </div>
             </div>
           </div>
         </div>
-        <div v-else id="draw" style="align-self: end">
-          <div
-            class="animate__animated animate__slideInRight"
-            style="display: flex; flex-direction: column; align-items: center"
-          >
-            <div class="d-flex flex" style="align-self: end">
-              <div style="margin: auto 3px; font-size: 20px; font-weight: bold">
-                {{ recieveUsers[index] }}
-              </div>
-              <img src="../../assets/artist.png" alt="" style="width: 50px" />
+        <div v-else id="draw" style="align-self:end;">
+          <div class="animate__animated animate__slideInRight" style="display:flex; flex-direction: column; align-items:center;">
+            <div class="d-flex flex" style="align-self:end;">
+              <div style="margin:auto 3px; font-size:20px; font-weight: bold;">{{recieveUsers[index]}}</div>
+              <img src="../../assets/artist.png" alt="" style="width:50px;">
             </div>
-            <div
-              class="mt-3 me-3"
-              style="display: flex; flex-direction: column; align-items: center"
-            >
-              <img :src="data" alt="" style="width: 400px; height: 285px" />
-              <div>
-                <button @click="bestPick(index)">
-                  <v-icon color="blue">{{
-                    index === best - 1 ? "mdi-thumb-up" : "mdi-thumb-up-outline"
-                  }}</v-icon>
-                </button>
-                <button @click="worstPick(index)">
-                  <v-icon color="red">{{
-                    index === worst - 1
-                      ? "mdi-thumb-down"
-                      : "mdi-thumb-down-outline"
-                  }}</v-icon>
-                </button>
+              <div class="mt-3 me-3" style="display:flex; flex-direction: column; align-items:center;">
+                <img :src="data" alt="" style="width:400px; height:285px;">
+                <div>
+                  <button @click="bestPick(index)">
+                    <v-icon color="blue">{{ index === best-1 ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
+                  </button>
+                  <button @click="worstPick(index)">
+                    <v-icon color="red">{{ index === worst-1 ? 'mdi-thumb-down' : 'mdi-thumb-down-outline' }}</v-icon>
+                  </button>
+                </div>
               </div>
-            </div>
           </div>
         </div>
       </div>
       <div id="next">
-        <button
-          style="
-            display: block;
-            margin: auto;
-            font-size: 25px;
-            background-color: rgb(1, 215, 236);
-          "
-          v-show="isRoomMaker && round < personnel"
-          @click="sendMessageToEveryBody('', 'nextAlbum')"
-        >
-          다음 앨범
-        </button>
-        <button
-          style="
-            display: block;
-            margin: auto;
-            font-size: 25px;
-            background-color: rgb(1, 215, 236);
-          "
-          v-show="isRoomMaker && round === personnel"
-          @click="sendMessageToEveryBody('', 'nextAlbum')"
-        >
-          결과보기
-        </button>
-
-
+        <button style="display:block; margin:auto; font-size:25px; background-color:rgb(1, 215, 236)" v-show="isRoomMaker && round<personnel" @click="sendMessageToEveryBody('','nextAlbum') ">다음 앨범</button>
+        <button style="display:block; margin:auto; font-size:25px; background-color:rgb(1, 215, 236)" v-show="isRoomMaker && round===personnel" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
       </div>
     </div>
-  
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  게임 모드 === best 시작    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
     <div v-show="gameMode === 'best'" class="modeBestWorst">
       <div class="word">
-        <span>B</span><span>e</span><span>s</span><span>t</span><span>P</span
-        ><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
+        <span>B</span><span>e</span><span>s</span><span>t</span><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
       </div>
-      <audio
-        autoplay
-        onloadstart="this.volume=0.3"
-        src="../../assets/telestation_audio/등장중일때.mp3"
-      ></audio>
+      <audio autoplay onloadstart="this.volume=0.3" src="../../assets/telestation_audio/등장중일때.mp3" ></audio>
       <canvas id="canvas"></canvas>
       <div class="parent1">
         <div class="div1-1">
           <div class="parent2">
-            <div
-              class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown"
-            >
+            <div class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown">
               <div class="">
-                <p
-                  class="animate__animated animate__pulse animate__infinite"
-                  style="
-                    text-align: center;
-                    margin: 0px 0px 0px 0px;
-                    font-size: 35px;
-                    font-style: italic;
-                    font-weight: bold;
-                  "
-                >
-                  - 강광은 -
+                <p class="animate__animated animate__pulse animate__infinite" style="text-align: center; margin: 0px 0px 0px 0px; font-size: 35px; font-style: italic; font-weight: bold;">
+                  - {{bestPlayer}} -
                 </p>
               </div>
             </div>
             <div class="div2-2">
               <div class="parent3">
-                <!-- <button @click="testFt">카메라 보이기</button>
                 <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="bestVideo" style="display:flex; flex-direction: column; justify-content: center;">
                   <user-video :best-video="bestVideo" />
-                </div> -->
-                <!-- <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="bestVideo" style="display:flex; flex-direction: column; justify-content: center;">
-                  카메라 div <user-video :best-video="bestVideo" />
-                </div> -->
-                <div
-                  class="div3-2 animate__animated animate__bounceInRight paper-input"
-                  style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                  "
-                >
-                  <div class="parent4">
-                    <div
-                      class="div4-1 speech-bubble-left"
-                      style="
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                      "
-                    >
-                      <span style="">이전 데이터 이름 (짱구)</span>
-                    </div>
-                    <div class="div4-2 speech-bubble-right">
-                      <img
-                        src="../../assets/telestation_image/gu.jpg"
-                        style="float: right; width: 350px; height: 250px"
-                      />
-                    </div>
-                  </div>
-                  <div class="parent5">
-                    <div class="div5-1 speech-bubble-left">
-                      <img
-                        src="../../assets/telestation_image/gu.jpg"
-                        style="width: 350px; height: 250px"
-                      />
-                    </div>
-                    <div class="div5-2">
-                      <span class="speech-bubble-right" style="float: right"
-                        >이전 데이터 이름 (짱구)</span
-                      >
-                    </div>
-                  </div>
-
-                  <!-- <div class="parent4" v-show="bestResultMode === 1">
-                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;">{{ bestPreData }}</span></div>
+                </div>
+                <div class="div3-2 animate__animated animate__bounceInRight paper-input" style="display: flex; flex-direction: column; justify-content: center;">
+                  <div class="parent4" v-show="bestResultMode === 1">
+                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;"><span>{{ bestPreData }}</span></div>
                     <div class="div4-2 speech-bubble-right"><img :src="bestData" alt="" style="float:right; width:350px; height:250px;"/></div>
                   </div>
                   <div class="parent5" v-show="bestResultMode === 2">
                     <div class="div5-1 speech-bubble-left"><img :src="bestData" alt="" style=" width:350px; height:250px;" /></div>
                     <div class="div5-2" style="float:right;"><span class="speech-bubble-right" style="float:right">{{ bestPreData }}</span></div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
             <div class="div2-3" style="overflow: hidden">
-              <button
-                class="animate__animated animate__bounceInUp"
-                v-show="isRoomMaker"
-                @click="sendMessageToEveryBody('', 'worst')"
-              >
-                worst보러가기
-              </button>
+              <button class="animate__animated animate__bounceInUp" v-show="isRoomMaker" @click="sendMessageToEveryBody('', 'worst')">worst보러가기</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
     <div v-show="gameMode === 'worst'" class="modeBestWorst">
       <div class="word">
-        <span>W</span><span>o</span><span>r</span><span>s</span><span>t</span
-        ><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span
-        ><span>r</span>
+        <span>W</span><span>o</span><span>r</span><span>s</span><span>t</span><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
       </div>
-      <audio
-        autoplay
-        onloadstart="this.volume=0.3"
-        src="../../assets/telestation_audio/등장중일때.mp3"
-      ></audio>
-      <canvas id="canvas"></canvas>
+      <!-- <canvas id="canvas"></canvas> -->
       <div class="parent1">
         <div class="div1-1">
           <div class="parent2">
-            <div
-              class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown"
-            >
+            <div class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown">
               <div class="">
-                <p
-                  class="animate__animated animate__pulse animate__infinite"
-                  style="
-                    text-align: center;
-                    margin: 0px 0px 0px 0px;
-                    font-size: 35px;
-                    font-style: italic;
-                    font-weight: bold;
-                  "
-                >
-                  - 강광은 -
+                <p class="animate__animated animate__pulse animate__infinite"
+                  style=" text-align: center; margin: 0px 0px 0px 0px; font-size: 35px; font-style: italic; font-weight: bold;">
+                  - {{worstPlayer}} -
                 </p>
               </div>
             </div>
             <div class="div2-2">
               <div class="parent3">
-                <button @click="testFt">카메라 보이기</button>
-                <div
-                  class="div3-1 animate__animated animate__bounceInLeft paper-input"
-                  v-if="bestVideo"
-                  style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                  "
-                >
-                  <user-video :best-video="bestVideo" />
+                <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="worstVideo" style="display:flex; flex-direction: column; justify-content: center;">
+                  <user-video :worst-video="worstVideo" />
                 </div>
-                <!-- <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="bestVideo" style="display:flex; flex-direction: column; justify-content: center;">
-                  카메라 div <user-video :best-video="worstVideo" />
-                </div> -->
-                <div
-                  class="div3-2 animate__animated animate__bounceInRight paper-input"
-                  style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                  "
-                >
-                  <div class="parent4">
-                    <div
-                      class="div4-1 speech-bubble-left"
-                      style="
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                      "
-                    >
-                      <span style="">이전 데이터 이름 (짱구)</span>
-                    </div>
-                    <div class="div4-2 speech-bubble-right">
-                      <img
-                        src="../../assets/telestation_image/gu.jpg"
-                        style="float: right; width: 350px; height: 250px"
-                      />
-                    </div>
-                  </div>
-                  <div class="parent5">
-                    <div class="div5-1 speech-bubble-left">
-                      <img
-                        src="../../assets/telestation_image/gu.jpg"
-                        style="width: 350px; height: 250px"
-                      />
-                    </div>
-                    <div class="div5-2">
-                      <span class="speech-bubble-right" style="float: right"
-                        >이전 데이터 이름 (짱구)</span
-                      >
-                    </div>
-                  </div>
-
-                  <!-- <div class="parent4" v-show="bestResultMode === 1">
-                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;">{{ worstPreData }}</span></div>
+                <div class="div3-2 animate__animated animate__bounceInRight paper-input" style=" display: flex; flex-direction: column; justify-content: center;">
+                  <div class="parent4" v-show="worstResultMode === 1">
+                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;"><span>{{ worstPreData }}</span></div>
                     <div class="div4-2 speech-bubble-right"><img :src="worstData" alt="" style="float:right; width:350px; height:250px;"/></div>
                   </div>
-                  <div class="parent5" v-show="bestResultMode === 2">
+                  <div class="parent5" v-show="worstResultMode === 2">
                     <div class="div5-1 speech-bubble-left"><img :src="worstData" alt="" style=" width:350px; height:250px;" /></div>
                     <div class="div5-2" style="float:right;"><span class="speech-bubble-right" style="float:right">{{ worstPreData }}</span></div>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="div2-3" style="overflow: hidden">
-              <div v-if="isRoomMaker">
-        <button
-          class="paper-btn"
-          style="width: 100%"
-          @click="sendMessageToEveryBody('', 'replay')"
-        >
-          <span>게임 선택하기</span>
-        </button>
+            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@  버튼 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+            <div v-if="isRoomMaker">
+              <button class="paper-btn" style="width:100%;" @click="sendMessageToEveryBody('','replay')">
+                <span>게임 선택하기</span>
+              </button>
 
-        <button
-          class="paper-btn btn-secondary"
-          style="width: 100%"
-          @click="leaveRoom()"
-        >
-          <span>방나가기</span>
-        </button>
-      </div>
+              <button class="paper-btn btn-secondary" style="width:100%" @click="leaveRoom()">
+                <span>방나가기</span>
+              </button>
             </div>
+            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
           </div>
         </div>
       </div>
@@ -440,338 +237,277 @@
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <button @click="startDrawing">fsdfsdfsd</button>
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
   </div>
 </template>
-<script src="../../assets/js/app.js"></script>
 <script
   type="module"
   src="https://unpkg.com/wired-elements/lib/wired-slider.js?module"
 ></script>
+
 <script>
-import axios from "axios";
-import { mapState } from "vuex";
-import CanvasApi from "@/components/CanvasApi";
-import UserVideo from "@/components/Video/UserVideo";
-import "animate.css"; //글자 css
+import axios from 'axios';
+import {mapState} from 'vuex';
+import CanvasApi from '@/components/CanvasApi';
+import UserVideo from '@/components/Video/UserVideo';
+import 'animate.css';
 import { WiredSlider } from "wired-elements/lib/wired-slider.js";
 
 export default {
-  name: "Telestation",
-  props: {
+  name: 'Telestation',
+  props:{
     streamManager: Object,
     rules: Object,
     gameRes: Object,
   },
-  components: {
+  components:{
+    WiredSlider,
     CanvasApi,
-    UserVideo,
+    UserVideo
   },
-  data() {
-    return {
-      keyword: "",
-      draw: "",
+  data () {
+		return {
+			keyword: '',
+      draw:'',
       // 타이머
-      drawingTime: this.rules.drawingTime,
-      textingTime: this.rules.textingTime,
+      drawingTime:this.rules.drawingTime,
+      textingTime:this.rules.textingTime,
       voteTime: this.rules.voteTime,
       drawingEnabled: false,
       textingEnabled: false,
       votingEnabled: false,
 
       gameMode: "text",
-
-      drawingOrder: 1 /* 라운드 */,
-      completedPlayers: 0 /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */,
+      
+      drawingOrder:1, /* 라운드 */
+      completedPlayers:0, /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */
       myCompleted: false,
-      readyPlayers: 0 /* 전 라운드에서 키워드나 그림정보를 웹소켓으로 받은 플레이어 수*/,
-      personnel: 4, //인원수
+      readyPlayers:0, /* 전 라운드에서 키워드나 그림정보를 웹소켓으로 받은 플레이어 수*/
+      personnel:0, //인원수
       participant: new Map(), // 참가자들
-      targetUser: "", // 웹소켓 받는 사람
-      receiveKeyword: "", // 받은 키워드
-      recieveDraw: "", // 받은 그림
+      targetUser: '', // 웹소켓 받는 사람
+      receiveKeyword:'', // 받은 키워드
+      recieveDraw:'', // 받은 그림
       recieveAlbum: null,
-      round: 0,
+      recieveUsers: [],
+      round:0,
       gameId: this.gameRes.playGameId,
-      dataIndex: 0, // 앨범 번호
-      worst: 0,
-      best: 0,
-      worstPlayer: "",
-      worstVideo: null,
-      bestPlayer: "",
-      bestVideo: null,
-      worstResultMode: 0, //1 이면 키워드 사진 2이면 사진 키워드
-      bestResultMode: 0,
-      worstPreData: "",
-      worstData: "",
-      bestPreData: "",
-      bestData: "",
-      test: 0,
-      testp: 4,
-    };
-  },
+      dataIndex:0, // 앨범 번호
+      worst:0,
+      best:0,
+      worstPlayer:'',
+      worstVideo:null,
+      bestPlayer:'',
+      bestVideo:null,
+      worstResultMode:0, //1 이면 키워드 사진 2이면 사진 키워드
+      bestResultMode:0,
+      worstPreData:'',
+      worstData:'',
+      bestPreData:'',
+      bestData:'',
+		}
+	},
   methods: {
     leaveRoom() {
-      this.$store.dispatch("leaveSession");
-      this.$router.push({
-        name: "Lobby",
-        params: { sendUserEmail: this.sendUserEmail },
-      });
+    this.$store.dispatch('leaveSession')
+    this.$router.push({name:'Lobby', params: { sendUserEmail: this.sendUserEmail}})
     },
     backToRoom() {
       // this.sendMessageToEveryBody('', 'backToRoom')
-      (this.keyword = ""),
-        (this.draw = ""),
-        (round = 0),
-        (gameMode = "album"),
-        this.session.off("signal:keyword");
-      this.session.off("signal:draw");
-      this.session.off("signal:completed");
-      this.session.off("signal:ready");
-      this.session.off("signal:nextAlbum");
-      this.session.off("signal:result");
-      this.session.off("signal:worst");
-      this.sendMessageToEveryBody("", "initTelestation");
+      this.keyword= '',
+      this.draw='',
+      this.round=0,
+      this.gameMode= "album",
+      this.session.off('signal:keyword')
+      this.session.off('signal:draw')
+      this.session.off('signal:completed')
+      this.session.off('signal:ready')
+      this.session.off('signal:nextAlbum')
+      this.session.off('signal:result')
+      this.session.off('signal:worst')
+      this.sendMessageToEveryBody('', 'initTelestation')
     },
-    testfn3() {
-      this.removeKeyword();
-      this.removeDraw();
-      this.testfn();
+    testfn3(){
+      this.removeKeyword()
+      this.removeDraw()
+      this.testfn()
       setTimeout(() => {
-        this.testfn2();
-      }, 2500);
+        this.testfn2()
+      },2500);
     },
     testfn() {
-      var index = 0;
-      var final = parseInt(this.testp / 2);
-      var loading = setInterval(function () {
+      var index = 0
+      var final = parseInt(this.personnel/2)
+      var loading = setInterval(function(){
         if (index === final) {
-          clearInterval(loading);
+          clearInterval(loading)
         }
-        $("#keyword > div").eq(index).fadeIn(1000);
-        index++;
-        $("#divdiv").scrollTop($("#divdiv")[0].scrollHeight);
-      }, 5000);
+        $('#keyword > div').eq(index).fadeIn(1000);index++
+        $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
+        },5000);
     },
     testfn2() {
-      var index1 = 0;
-      var final1 = parseInt(this.testp / 2);
-      var loading1 = setInterval(function () {
+      var index1 = 0
+      var final1 = parseInt(this.personnel/2)
+      var loading1 = setInterval(function(){
         if (index1 === final1) {
-          clearInterval(loading1);
+          clearInterval(loading1)
         }
-        if (index1 === final1 - 1) {
-          setTimeout(() => {
-            $("#next").fadeIn(1000);
-            $("#divdiv").scrollTop($("#divdiv")[0].scrollHeight);
-          }, 2500);
+        if (index1 === final1-1) {
+          setTimeout(() =>{
+            $('#next').fadeIn(1000)
+            $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
+          },2500)
         }
-        $("#draw > div").eq(index1).fadeIn(1000);
-        index1++;
-        $("#divdiv").scrollTop($("#divdiv")[0].scrollHeight);
-      }, 5000);
+        $('#draw > div').eq(index1).fadeIn(1000);index1++
+        $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
+        },5000);
     },
     removeKeyword() {
-      console.log("리무브 들어왔니?ㄴ");
-      $("#keyword > div").hide();
-      $("#next").hide();
+      console.log('리무브 들어왔니?ㄴ')
+      $('#keyword > div').hide();
+      $('#next').hide();
     },
     removeDraw() {
-      $("#draw > div").hide();
+      $('#draw > div').hide();
     },
-    getUsers() {
-      // 참가자 닉네임과 connectinId 딕셔너리화 for(웹소켓)
-      let myNickName = JSON.parse(this.publisher.stream.connection.data);
-      this.participant.set(
-        myNickName.clientData,
-        this.publisher.stream.connection
-      );
+    getUsers() { // 참가자 닉네임과 connectinId 딕셔너리화 for(웹소켓)
+      let myNickName = JSON.parse(this.publisher.stream.connection.data)
+      this.participant.set(myNickName.clientData, this.publisher.stream.connection)
       for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(
-          this.subscribers[index].stream.connection.data
-        );
-        this.participant.set(
-          nickName.clientData,
-          this.subscribers[index].stream.connection
-        );
+        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+        this.participant.set(nickName.clientData, this.subscribers[index].stream.connection)
       }
     },
-    sendMessageToEveryBody(data, type) {
-      // 참가자 전원 웹소켓
-      this.session
-        .signal({
+    sendMessageToEveryBody(data, type) { // 참가자 전원 웹소켓
+      this.session.signal({
           data: data,
           to: [],
-          type: type,
-        })
-        .then(() => {})
-        .catch((error) => {
+          type: type
+      })
+      .then(() => {
+      })
+      .catch(error => {
           console.error(error);
-        });
+      })
     },
-    sendMessageToTargetUser(data, type, targetUser) {
-      // 특정 참가자 웹소켓
-      this.session
-        .signal({
+    sendMessageToTargetUser(data, type, targetUser) { // 특정 참가자 웹소켓
+      this.session.signal({
           data: data,
           to: [targetUser],
-          type: type,
-        })
-        .then(() => {})
-        .catch((error) => {
+          type: type
+      })
+      .then(() => {})
+      .catch(error => {
           console.error(error);
-        });
+      })
     },
     // 타이머 함수 모음 시작
-    startDrawing() {
-      //Drawing 타이머 on
+    startDrawing() { //Drawing 타이머 on
       this.drawingEnabled = true;
     },
-    startTexting() {
-      //Texting 타이머 on
+    startTexting() { //Texting 타이머 on
       this.textingEnabled = true;
     },
-    pauseDrawing() {
-      //Drawing 타이머 off
+    pauseDrawing(){ //Drawing 타이머 off
       this.drawingEnabled = false;
     },
-    pauseTexting() {
-      //Texting 타이머 off
+    pauseTexting(){ //Texting 타이머 off
       this.textingEnabled = false;
     },
     worstPick(index) {
-      this.worst = index + 1;
-      console.log(this.worst);
+      this.worst = index +1
+      console.log(this.worst)
     },
     bestPick(index) {
-      this.best = index + 1;
-      console.log(this.best);
+      this.best = index +1
+      console.log(this.best)
     },
     changeCompleted() {
-      this.myCompleted = true;
+      this.myCompleted = true
     },
-    // startAlbum(){
-    //   this.votingEnabled = true;
-    // },
-    // pauseAlbum(){
-    //   this.votingEnabled = false;
-    // },
-
-    // startTimer(){
-    //   if (gmaeMode === 'drawing') {
-    //     this.drawingEnabled = true;
-    //   }
-    //   else if (gmaeMode === 'keyword') {
-    //     this.textingEnabled = true;
-    //   }
-    //   else if (gmaeMode === 'vote') {
-    //     this.votingEnabled = true;
-    //   }
-    // },
-    // 타이머 함수 모음 끝
-
-    // 캔버스 관련 함수 시작
-    canvasCompleted() {
-      this.sendMessageToEveryBody("", "completed");
-      console.log("캔버스에서 완료 버튼 눌렀나 ?");
+    canvasCompleted(){
+      this.sendMessageToEveryBody('','completed')
+      console.log('캔버스에서 완료 버튼 눌렀나 ?')
     },
-    setDrawData(imageData) {
-      console.log("그림데이터 저장완료@@@@@@@@@@@@");
-      this.draw = imageData;
+    setDrawData(imageData){
+      console.log('그림데이터 저장완료@@@@@@@@@@@@')
+      this.draw = imageData
     },
-    // 캔버스 관련 함수 시작
-
-    //라운드 끝내기& 시작 함수 모음 시작
-    endTextRound() {
-      // Texting 라운드 끝
-      this.pauseTexting();
-      this.textingTime = this.rules.textingTime;
+    endTextRound() { // Texting 라운드 끝
+      this.pauseTexting()
+      this.textingTime = this.rules.textingTime
       axios({
-        method: "POST",
-        url: "/api/telestations/saveData",
+        method:'POST',
+        url: '/api/telestations/saveData',
         data: {
           data: this.keyword,
           userNickname: this.myUserName,
           roomCode: this.mySessionId,
           drawingOrder: this.drawingOrder,
           personnel: this.personnel,
-        },
-      }).then((res) => {
-        this.targetUser = res.data.userNickname;
-        this.keyword = "";
-        this.sendMessageToTargetUser(
-          JSON.stringify(res.data),
-          "keyword",
-          this.participant.get(this.targetUser)
-        );
-      });
+        }
+      })
+      .then((res)=> {
+        this.targetUser = res.data.userNickname
+        this.keyword = ''
+        this.sendMessageToTargetUser(JSON.stringify(res.data), "keyword", this.participant.get(this.targetUser))
+      })
     },
-    endDrawRound() {
-      // Drawing 라운드 끝
-      this.pauseDrawing();
-      this.drawingTime = this.rules.drawingTime;
-      console.log(
-        "-------------------------------------------------------------------------------"
-      );
-      console.log(this.drawingTime, this.rules.drawingTime);
-      console.log(
-        "-------------------------------------------------------------------------------"
-      );
-      this.$refs.canvasApi.saveClick();
-      console.log(this.drawingOrder);
-      console.log(
-        this.myUserName,
-        this.mySessionId,
-        this.drawingOrder,
-        this.personnel,
-        this.draw
-      );
-      // canvas에서 그림 축출해서 this.darw에 저장
+    endDrawRound() { // Drawing 라운드 끝
+      this.pauseDrawing()
+      this.drawingTime = this.rules.drawingTime
+      console.log('-------------------------------------------------------------------------------')
+      console.log(this.drawingTime, this.rules.drawingTime)
+      console.log('-------------------------------------------------------------------------------')
+      this.$refs.canvasApi.saveClick()
+      console.log(this.drawingOrder)
+      console.log(this.myUserName,this.mySessionId,this.drawingOrder,this.personnel,this.draw)
       axios({
-        method: "POST",
-        url: "/api/telestations/saveData",
+        method:'POST',
+        url: '/api/telestations/saveData',
         data: {
           data: this.draw,
           userNickname: this.myUserName,
           roomCode: this.mySessionId,
           drawingOrder: this.drawingOrder,
           personnel: this.personnel,
-        },
-      }).then((res) => {
-        this.targetUser = res.data.userNickname;
-        this.$refs.canvasApi.resetAll();
-        this.sendMessageToTargetUser(
-          JSON.stringify(res.data),
-          "draw",
-          this.participant.get(this.targetUser)
-        );
-      });
+        }
+      })
+      .then((res)=> {
+        this.targetUser = res.data.userNickname
+        this.$refs.canvasApi.resetAll()
+        this.sendMessageToTargetUser(JSON.stringify(res.data), "draw", this.participant.get(this.targetUser))
+      })
     },
     startTextRound() {
-      this.myCompleted = false;
+      this.myCompleted = false
       this.drawingOrder++;
-      if (this.drawingOrder === this.personnel + 1) {
-        this.startAlbumRound();
-      } else {
-        this.gameMode = "text";
-        this.startTexting();
+      if (this.drawingOrder === this.personnel +1) {
+        this.startAlbumRound()
+      }else {
+      this.gameMode = 'text'
+      this.startTexting()
       }
     },
     startDrawRound() {
-      // this.sendMessageToEveryBody('', "drawingOrder")
-      this.drawingOrder++;
-      if (this.drawingOrder === this.personnel + 1) {
-        this.startAlbumRound();
-      } else {
-        this.gameMode = "drawing";
-        this.startDrawing();
+      this.drawingOrder++
+      if (this.drawingOrder === this.personnel +1) {
+        this.startAlbumRound()
+      }else {
+        this.gameMode = 'drawing'
+        this.startDrawing()
       }
     },
-    startAlbumRound() {
-      this.round++;
+    startAlbumRound(){
+      this.round ++;
+      console.log("dataIndex" + this.dataIndex);
+      console.log("베슽흐" + this.best);
+      console.log("워스트" + this.worst);
       axios({
-        method: "POST",
-        url: "/api/telestations/showAlbum",
+        method:'POST',
+        url: '/api/telestations/showAlbum',
         data: {
           userNickname: this.myUserName,
           gameId: this.gameId,
@@ -779,250 +515,208 @@ export default {
           dataIndex: this.dataIndex,
           worstVote: this.worst,
           bestVote: this.best,
-        },
+        }
       })
-        .then((res) => {
-          if (this.round <= this.personnel) {
-            this.gameMode = "album";
-            this.dataIndex = res.data.dataIndex;
-            this.recieveAlbum = res.data.dataList;
-            this.recieveUsers = res.data.userNicknameList;
-            console.log("this.dataIndex" + this.dataIndex);
-            console.log("this.recieveAlbum" + this.recieveAlbum);
-            this.worst = 0;
-            this.best = 0;
-          } else {
-            this.bestPlayer = res.data.best.nickname;
-            this.worstPlayer = res.data.worst.nickname;
-            this.worstPreData = res.data.worst.preData;
-            this.worstData = res.data.worst.data;
-            this.bestPreData = res.data.best.preData;
-            this.bestData = res.data.best.data;
-            if (res.data.best.preDrawingOrder % 2 === 1) {
-              this.bestResultMode = 1;
-            } else {
-              this.bestResultMode = 2;
-            }
-            if (res.data.worst.preDrawingOrder % 2 === 1) {
-              this.worstResultMode = 1;
-            } else {
-              this.worstResultMode = 2;
-            }
-            this.gameMode = "best";
+      .then((res)=> {
+        if (this.round <= this.personnel) {
+          this.gameMode = 'album'     
+          this.dataIndex = res.data.dataIndex
+          this.recieveAlbum = res.data.dataList
+          this.recieveUsers = res.data.userNicknameList
+          console.log("this.dataIndex"+this.dataIndex);
+          console.log("this.recieveAlbum"+this.recieveAlbum);
+          this.worst = 0
+          this.best = 0
+        }else {
+          this.bestPlayer = res.data.best.nickname
+          this.worstPlayer = res.data.worst.nickname
+          this.worstPreData = res.data.worst.preData
+          this.worstData = res.data.worst.data
+          this.bestPreData = res.data.best.preData
+          this.bestData = res.data.best.data
+          if (res.data.best.preDrawingOrder%2 === 1) {
+            this.bestResultMode = 1
+          }else {
+            this.bestResultMode = 2
           }
-        })
-        .catch((err) => {
-          console.log(err, "앨범에러");
-        });
+          if (res.data.worst.preDrawingOrder%2 === 1) {
+            this.worstResultMode = 1
+          }else {
+            this.worstResultMode = 2
+          }
+          this.gameMode='best'
+          this.testfn3()
+        }
+      })
+      .catch((err)=> {
+        console.log(err, '앨범에러')
+      })
     },
-    // startResult() {
-    //   axios({
-    //     method:'POST',
-    //     url: '/api/telestations/voteResult',
-    //     data: {
-    //       gameId: this.gameId
-    //     }
-    //   })
-    //   .then((res)=> {
-    //     this.bestPlayer = res.data.best.nickName
-    //     this.worstPlayer = res.data.worst.nickName
-    //     this.worstPreData = res.data.worst.preData
-    //     this.worstData = res.data.worst.data
-    //     this.bestPreData = res.data.best.preData
-    //     this.bestData = res.data.best.data
-    //     if (res.data.best.preDrawingOrder%2 === 1) {
-    //       this.bestResultMode = 1
-    //     }else {
-    //       this.bestResultMode = 2
-    //     }
-    //     if (res.data.worst.preDrawingOrder%2 === 1) {
-    //       this.worstResultMode = 1
-    //     }else {
-    //       this.worstResultMode = 2
-    //     }
-    //     this.gameMode='best'
-    //   })
-
-    // },
-
-    // this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
   },
   computed: {
     ...mapState([
-      "myUserName",
-      "mySessionId",
-      "subscribers",
-      "publisher",
-      "session",
-      "isRoomMaker",
+    "myUserName",
+    "mySessionId",
+    "subscribers",
+    "publisher",
+    "session",
+    "isRoomMaker",
     ]),
   },
   watch: {
     // Drawing timer
     drawingEnabled(value) {
-      if (value) {
-        setTimeout(() => {
-          this.drawingTime--;
-        }, 1000);
-      }
-    },
+          if (value) {
+              setTimeout(() => {
+                  this.drawingTime--;
+              }, 1000);
+          }
+      },
 
     drawingTime: {
-      handler(value) {
-        if (value > 0 && this.drawingEnabled) {
-          setTimeout(() => {
-            this.drawingTime--;
-          }, 1000);
-        } else if (value === 0) {
-          this.endDrawRound();
-        }
-      },
-      immediate: false,
+        handler(value) {
+
+            if (value > 0 && this.drawingEnabled) {
+                setTimeout(() => {
+                    this.drawingTime--;
+                }, 1000);
+            }
+            else if (value === 0) {
+              this.endDrawRound()
+            }
+        },
+        immediate: false
     },
     //Text timer
     textingEnabled(value) {
-      if (value) {
-        setTimeout(() => {
-          this.textingTime--;
-        }, 1000);
-      }
+          if (value) {
+              setTimeout(() => {
+                  this.textingTime--;
+              }, 1000);
+          }
     },
     textingTime: {
-      handler(value) {
-        if (value > 0 && this.textingEnabled) {
-          setTimeout(() => {
-            this.textingTime--;
-          }, 1000);
-        } else if (value === 0) {
-          this.endTextRound();
-        }
-      },
-      immediate: false,
+        handler(value) {
+            if (value > 0 && this.textingEnabled) {
+                setTimeout(() => {
+                    this.textingTime--;
+                }, 1000);
+            }
+            else if (value === 0) {
+              this.endTextRound()
+            }
+        },
+        immediate: false
     },
     votingEnabled(value) {
-      if (value) {
-        setTimeout(() => {
-          this.voteTime--;
-        }, 1000);
-      }
+          if (value) {
+              setTimeout(() => {
+                  this.voteTime--;
+              }, 1000);
+          }
     },
     voteTime: {
-      handler(value) {
-        if (value > 0 && this.votingEnabled) {
-          setTimeout(() => {
-            this.voteTime--;
-          }, 1000);
-        } else if (value === 0) {
-          this.endTextRound();
-        }
-      },
-      immediate: false,
+        handler(value) {
+            if (value > 0 && this.votingEnabled) {
+                setTimeout(() => {
+                    this.voteTime--;
+                }, 1000);
+            }
+            else if (value === 0) {
+              this.endTextRound()
+            }
+        },
+        immediate: false
     },
 
-    completedPlayers: {
-      // 제출완료
+    completedPlayers: { // 제출완료
       handler(value) {
-        if (value === this.personnel && this.gameMode === "text") {
-          this.completedPlayers = 0;
-          this.endTextRound();
-        } else if (value === this.personnel && this.gameMode === "drawing") {
-          this.completedPlayers = 0;
-          this.endDrawRound();
+        if (value === this.personnel && this.gameMode==='text') {
+          this.completedPlayers = 0
+          this.endTextRound()
         }
-      },
+        else if (value === this.personnel && this.gameMode==='drawing') {
+          this.completedPlayers = 0
+          this.endDrawRound()
+        }
+      }
     },
-    readyPlayers: {
-      // 웹소켓 수신 완료 => 다음라운드로 가기위한 변수
+    readyPlayers: { // 웹소켓 수신 완료 => 다음라운드로 가기위한 변수
       handler(value) {
-        if (value === this.personnel && this.gameMode === "text") {
-          this.readyPlayers = 0;
-          this.startDrawRound();
-        } else if (value === this.personnel && this.gameMode === "drawing") {
-          this.readyPlayers = 0;
-          this.startTextRound();
+        if (value === this.personnel && this.gameMode==='text') {
+          this.readyPlayers = 0
+          this.startDrawRound()
         }
-      },
+        else if (value === this.personnel && this.gameMode==='drawing') {
+          this.readyPlayers = 0
+          this.startTextRound()
+        }
+      }
     },
     bestPlayer: {
       handler() {
         for (let index = 0; index < this.subscribers.length; index++) {
-          let nickName = JSON.parse(
-            this.subscribers[index].stream.connection.data
-          );
+          let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
           if (this.bestPlayer == nickName.clientData) {
-            this.bestVideo = this.subscribers[index];
-            console.log(nickName, this.bestVideo);
+            this.bestVideo = this.subscribers[index]
+            console.log(nickName,this.bestVideo)
           }
         }
-      },
+      }
     },
     worstPlayer: {
       handler() {
         for (let index = 0; index < this.subscribers.length; index++) {
-          let nickName = JSON.parse(
-            this.subscribers[index].stream.connection.data
-          );
+          let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
           if (this.worstPlayer == nickName.clientData) {
-            this.worstVideo = this.subscribers[index];
-            console.log(nickName, this.bestVideo);
+            this.worstVideo = this.subscribers[index]
+            console.log(nickName,this.bestVideo)
           }
         }
-      },
+      }
     },
   },
   mounted() {
-    this.startTexting();
-    this.getUsers();
-    this.session.on("signal:keyword", (event) => {
-      // 입력한 키워드 백에 보내기
-      let data = JSON.parse(event.data);
-      this.receiveKeyword = data.data;
-      this.sendMessageToEveryBody("", "ready");
-    });
-    this.session.on("signal:draw", (event) => {
-      // 그린 그림 백에 보내기
-      let data = JSON.parse(event.data);
-      this.recieveDraw = data.data;
-      this.sendMessageToEveryBody("", "ready");
-    });
-    this.session.on("signal:completed", (event) => {
-      // 입력버튼 누르면 완료된 사람 +1
-      console.log(event.data);
-      this.completedPlayers++;
-    });
-    this.session.on("signal:ready", (event) => {
-      // 백에서 데이터 받아서 웹소켓 통신하고 나면 +1
-      console.log(event.data);
-      this.readyPlayers++;
-    });
-    this.session.on("signal:nextAlbum", (event) => {
-      // 그린 그림 백에 보내기
-      console.log(event.data);
-      this.startAlbumRound();
-    });
-    this.session.on("signal:result", (event) => {
-      // 그린 그림 백에 보내기
-      console.log(event.data);
-      this.startResult();
-    });
-    this.session.on("signal:worst", (event) => {
-      // 그린 그림 백에 보내기
-      console.log(event.data);
-      this.bestVideo = null;
-      this.gameMode = "worst";
-    });
-    this.session.on("signal:replay", (event) => {
-      // 그린 그림 백에 보내기
-      this.worstVideo = null;
-      this.backToRoom();
-    });
-
-    // this.session.on('signal:gameRes', (event)=>{
-    //   console.log(event.data)
-    //   this.gameRes = JSON.parse(event.data)
-    // })
-
-    // 꽃가루날리기
+    // $('#divdiv').scrollTop($('divdiv').prop('scrollHeight'));
+    this.startTexting()
+    this.getUsers()
+    this.session.on('signal:keyword', (event) => { // 입력한 키워드 백에 보내기
+      let data = JSON.parse(event.data)
+      this.receiveKeyword = data.data
+      this.sendMessageToEveryBody('', "ready")
+    })
+    this.session.on('signal:draw', (event) => { // 그린 그림 백에 보내기 
+      let data = JSON.parse(event.data)
+      this.recieveDraw = data.data
+      this.sendMessageToEveryBody('', "ready")
+    })
+    this.session.on('signal:completed', (event) => { // 입력버튼 누르면 완료된 사람 +1
+      console.log(event.data)
+      this.completedPlayers++
+    })
+    this.session.on('signal:ready', (event) => { // 백에서 데이터 받아서 웹소켓 통신하고 나면 +1
+      console.log(event.data)
+      this.readyPlayers++
+    })
+    this.session.on('signal:nextAlbum', (event) => { // 그린 그림 백에 보내기 
+      console.log(event.data)
+      this.startAlbumRound()
+    })
+    this.session.on('signal:result', (event) => { // 그린 그림 백에 보내기 
+      console.log(event.data)
+      this.startResult()
+    })
+    this.session.on('signal:worst', (event) => { // 그린 그림 백에 보내기 
+      console.log(event.data)
+      this.bestVideo = null
+      this.gameMode = 'worst'
+    })
+    this.session.on('signal:replay', (event) => { // 그린 그림 백에 보내기 
+      this.worstVideo = null
+    })
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     (function () {
       // globals
       var canvas;
@@ -1287,16 +981,91 @@ export default {
         span.classList.add("active");
       }, 750 * (idx + 1));
     });
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   },
   created() {
-    this.personnel = this.subscribers.length;
-  },
-};
+    this.personnel = this.subscribers.length
+  }
+}
+
+
 </script>
 
 <style scoped>
-/* 최종결과 */
-/* 꽃가루 날리기 */
+.telestation-container {
+  height: 100%;
+}
+.completed {
+  background: black;
+  cursor: not-allowed;
+}
+#keyword > div {
+  transition: all 2s;
+}
+#divdiv{ -ms-overflow-style: none; }
+#divdiv::-webkit-scrollbar{ display:none; }
+
+.animate__bounceInRight {
+  --animate-duration: 2.5s;
+}
+.animate__bounceInLeft {
+  --animate-duration: 2.5s;
+}
+.animate__slideInDown {
+  --animate-duration: 1.7s;
+}
+.speech-bubble {
+	position: relative;
+	background: yellow;
+	border-radius: .4em;
+  margin-top:20px;
+  margin-left:15px;
+  min-width: 100px;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 20%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-bottom-color: yellow;
+	border-top: 0;
+	border-left: 0;
+	margin-left: -10px;
+	margin-top: -10px;
+}
+.pstyle {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+}
+.inline-input {
+  display: inline-block;
+  margin-right: 10px;
+  width: 700px;
+  height: 40px;
+  font-size: 18px;
+}
+.text-div {
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.receive-draw {
+  width: 800px;
+  height: 533px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 canvas {
   z-index: 10;
   pointer-events: none;
@@ -1308,16 +1077,6 @@ canvas {
 /* 글자 css */
 .animate__animated {
   --animate-duration: 2.5s;
-}
-
-.telestation-container {
-  background-color: rgb(231, 231, 231);
-  height: 100%;
-  /* background-color: white; */ /* background-image: url(assets/background.jpg); */
-}
-.completed {
-  /* background: black; */
-  cursor: not-allowed;
 }
 
 .modeBestWorst {
@@ -1348,44 +1107,6 @@ canvas {
   height: 0;
   border: 10px solid transparent;
   border-bottom-color: #ffffff;
-}
-#keyword > div {
-  transition: all 2s;
-}
-#divdiv {
-  -ms-overflow-style: none;
-}
-#divdiv::-webkit-scrollbar {
-  display: none;
-}
-
-.animate__bounceInRight {
-  --animate-duration: 2.5s;
-}
-.animate__bounceInLeft {
-  --animate-duration: 2.5s;
-}
-.animate__slideInDown {
-  --animate-duration: 1.7s;
-}
-.speech-bubble {
-  position: relative;
-  background: yellow;
-  border-radius: 0.4em;
-  margin-top: 20px;
-  margin-left: 15px;
-  min-width: 100px;
-}
-
-.speech-bubble:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 20%;
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  border-bottom-color: yellow;
   border-top: 0;
   border-left: 0;
   margin-left: -10px;
@@ -1637,32 +1358,5 @@ canvas {
   60% {
     transform: rotate(45deg);
   }
-}
-.pstyle {
-  font-size: 25px;
-  font-weight: bold;
-  text-align: center;
-}
-.inline-input {
-  display: inline-block;
-  margin-right: 10px;
-  width: 700px;
-  height: 40px;
-  font-size: 18px;
-}
-.text-div {
-  height: 600px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.receive-draw {
-  width: 800px;
-  height: 533px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 </style>
