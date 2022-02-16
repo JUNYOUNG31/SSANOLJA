@@ -124,257 +124,92 @@
     </div>
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  게임 모드 === best 시작    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- <div v-show="gameMode ==='best'" style="display:flex; flex-direction: column; align-items: center;">
-      <h1>bestPlayer</h1>
-      <div v-if="bestVideo">
-        <user-video :best-video="bestVideo"/>
-      </div>
-      <p>베스트 플레이어는 {{bestPlayer}} 입니다.</p>
-      <div v-show="bestResultMode === 1">
-        <p>{{bestPreData}}</p>
-        <img :src="bestData" alt="">
-      </div>
-      <div v-show="bestResultMode === 2">
-        <img :src="bestPreData" alt="">
-        <p>{{bestData}}</p>
-      </div>
-      <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','worst')">worst보러가기</button>
-    </div> -->
 
-    <!-- <div v-show="gameMode ==='worst'" style="display:flex; flex-direction: column; align-items: center;">
-      <h1>worstPlayer</h1>
-      <div v-if="worstVideo">
-        <user-video :worst-video="worstVideo"/>
-      </div>
-      <p>워스트 플레이어는 {{worstPlayer}} 입니다.</p>
-      <div v-show="worstResultMode === 1">
-        <p>{{worstPreData}}</p>
-        <img :src="worstData" alt="">
-      </div>
-      <div v-show="worstResultMode === 2">
-        <img :src="worstPreData" alt="">
-        <p>{{worstData}}</p>
-      </div>
-      <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','room')">다시하기</button>
-    </div> -->
     <div v-show="gameMode === 'best'" class="modeBestWorst">
       <div class="word">
-        <span>B</span><span>e</span><span>s</span><span>t</span><span>P</span
-        ><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
+        <span>B</span><span>e</span><span>s</span><span>t</span><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
       </div>
-      <audio
-        autoplay
-        onloadstart="this.volume=0.3"
-        src="../../assets/telestation_audio/등장중일때.mp3"
-      ></audio>
+      <audio autoplay onloadstart="this.volume=0.3" src="../../assets/telestation_audio/등장중일때.mp3" ></audio>
       <canvas id="canvas"></canvas>
       <div class="parent1">
         <div class="div1-1">
           <div class="parent2">
-            <div
-              class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown"
-            >
+            <div class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown">
               <div class="">
-                <p
-                  class="animate__animated animate__pulse animate__infinite"
-                  style="
-                    text-align: center;
-                    margin: 0px 0px 0px 0px;
-                    font-size: 35px;
-                    font-style: italic;
-                    font-weight: bold;
-                  "
-                >
-                  - 강광은 -
-                </p>
-              </div>
-            </div>
-            <div class="div2-2">
-              <div class="parent3">
-                <!-- <button @click="testFt">카메라 보이기</button>
-                <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="bestVideo" style="display:flex; flex-direction: column; justify-content: center;">
-                  <user-video :best-video="bestVideo" />
-                </div> -->
-                <!-- <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="bestVideo" style="display:flex; flex-direction: column; justify-content: center;">
-                  카메라 div <user-video :best-video="bestVideo" />
-                </div> -->
-                <div
-                  class="div3-2 animate__animated animate__bounceInRight paper-input"
-                  style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                  "
-                >
-                  <div class="parent4">
-                    <div
-                      class="div4-1 speech-bubble-left"
-                      style="
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                      "
-                    >
-                      <span style="">이전 데이터 이름 (짱구)</span>
-                    </div>
-                    <div class="div4-2 speech-bubble-right">
-                      <img
-                        src="../../assets/telestation_image/gu.jpg"
-                        style="float: right; width: 350px; height: 250px"
-                      />
-                    </div>
-                  </div>
-                  <div class="parent5">
-                    <div class="div5-1 speech-bubble-left">
-                      <img
-                        src="../../assets/telestation_image/gu.jpg"
-                        style="width: 350px; height: 250px"
-                      />
-                    </div>
-                    <div class="div5-2">
-                      <span class="speech-bubble-right" style="float: right"
-                        >이전 데이터 이름 (짱구)</span
-                      >
-                    </div>
-                  </div>
-
-                  <!-- <div class="parent4" v-show="bestResultMode === 1">
-                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;">{{ bestPreData }}</span></div>
-                    <div class="div4-2 speech-bubble-right"><img :src="bestData" alt="" style="float:right; width:350px; height:250px;"/></div>
-                  </div>
-                  <div class="parent5" v-show="bestResultMode === 2">
-                    <div class="div5-1 speech-bubble-left"><img :src="bestData" alt="" style=" width:350px; height:250px;" /></div>
-                    <div class="div5-2" style="float:right;"><span class="speech-bubble-right" style="float:right">{{ bestPreData }}</span></div>
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="div2-3" style="overflow: hidden">
-              <button
-                class="animate__animated animate__bounceInUp"
-                v-show="isRoomMaker"
-                @click="sendMessageToEveryBody('', 'worst')"
-              >
-                worst보러가기
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-show="gameMode === 'worst'" class="modeBestWorst">
-      <div class="word">
-        <span>W</span><span>o</span><span>r</span><span>s</span><span>t</span
-        ><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span
-        ><span>r</span>
-      </div>
-      <audio
-        autoplay
-        onloadstart="this.volume=0.3"
-        src="../../assets/telestation_audio/등장중일때.mp3"
-      ></audio>
-      <canvas id="canvas"></canvas>
-      <div class="parent1">
-        <div class="div1-1">
-          <div class="parent2">
-            <div
-              class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown"
-            >
-              <div class="">
-                <p
-                  class="animate__animated animate__pulse animate__infinite"
-                  style="
-                    text-align: center;
-                    margin: 0px 0px 0px 0px;
-                    font-size: 35px;
-                    font-style: italic;
-                    font-weight: bold;
-                  "
-                >
-                  - 강광은 -
+                <p class="animate__animated animate__pulse animate__infinite" style="text-align: center; margin: 0px 0px 0px 0px; font-size: 35px; font-style: italic; font-weight: bold;">
+                  - {{bestPlayer}} -
                 </p>
               </div>
             </div>
             <div class="div2-2">
               <div class="parent3">
                 <button @click="testFt">카메라 보이기</button>
-                <div
-                  class="div3-1 animate__animated animate__bounceInLeft paper-input"
-                  v-if="bestVideo"
-                  style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                  "
-                >
+                <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="bestVideo" style="display:flex; flex-direction: column; justify-content: center;">
                   <user-video :best-video="bestVideo" />
                 </div>
-                <!-- <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="bestVideo" style="display:flex; flex-direction: column; justify-content: center;">
-                  카메라 div <user-video :best-video="worstVideo" />
-                </div> -->
-                <div
-                  class="div3-2 animate__animated animate__bounceInRight paper-input"
-                  style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                  "
-                >
-                  <div class="parent4">
-                    <div
-                      class="div4-1 speech-bubble-left"
-                      style="
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                      "
-                    >
-                      <span style="">이전 데이터 이름 (짱구)</span>
-                    </div>
-                    <div class="div4-2 speech-bubble-right">
-                      <img
-                        src="../../assets/telestation_image/gu.jpg"
-                        style="float: right; width: 350px; height: 250px"
-                      />
-                    </div>
-                  </div>
-                  <div class="parent5">
-                    <div class="div5-1 speech-bubble-left">
-                      <img
-                        src="../../assets/telestation_image/gu.jpg"
-                        style="width: 350px; height: 250px"
-                      />
-                    </div>
-                    <div class="div5-2">
-                      <span class="speech-bubble-right" style="float: right"
-                        >이전 데이터 이름 (짱구)</span
-                      >
-                    </div>
-                  </div>
-
-                  <!-- <div class="parent4" v-show="bestResultMode === 1">
-                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;">{{ worstPreData }}</span></div>
-                    <div class="div4-2 speech-bubble-right"><img :src="worstData" alt="" style="float:right; width:350px; height:250px;"/></div>
+                <div class="div3-2 animate__animated animate__bounceInRight paper-input" style="display: flex; flex-direction: column; justify-content: center;">
+                  <div class="parent4" v-show="bestResultMode === 1">
+                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;"><span>{{ bestPreData }}</span></div>
+                    <div class="div4-2 speech-bubble-right"><img :src="bestData" alt="" style="float:right; width:350px; height:250px;"/></div>
                   </div>
                   <div class="parent5" v-show="bestResultMode === 2">
-                    <div class="div5-1 speech-bubble-left"><img :src="worstData" alt="" style=" width:350px; height:250px;" /></div>
-                    <div class="div5-2" style="float:right;"><span class="speech-bubble-right" style="float:right">{{ worstPreData }}</span></div>
-                  </div> -->
+                    <div class="div5-1 speech-bubble-left"><img :src="bestData" alt="" style=" width:350px; height:250px;" /></div>
+                    <div class="div5-2" style="float:right;"><span class="speech-bubble-right" style="float:right">{{ bestPreData }}</span></div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="div2-3" style="overflow: hidden">
-              <button
-                class="animate__animated animate__bounceInUp"
-                v-show="isRoomMaker"
-                @click="sendMessageToEveryBody('', 'room')"
-              >
-                다시하기
-              </button>
+              <button class="animate__animated animate__bounceInUp" v-show="isRoomMaker" @click="sendMessageToEveryBody('', 'worst')">worst보러가기</button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div v-show="gameMode === 'worst'" class="modeBestWorst">
+      <div class="word">
+        <span>W</span><span>o</span><span>r</span><span>s</span><span>t</span><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
+      </div>
+      <canvas id="canvas"></canvas>
+      <div class="parent1">
+        <div class="div1-1">
+          <div class="parent2">
+            <div class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown">
+              <div class="">
+                <p class="animate__animated animate__pulse animate__infinite"
+                  style=" text-align: center; margin: 0px 0px 0px 0px; font-size: 35px; font-style: italic; font-weight: bold;">
+                  - {{worstPlayer}} -
+                </p>
+              </div>
+            </div>
+            <div class="div2-2">
+              <div class="parent3">
+                <button @click="testFt">카메라 보이기</button>
+                <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="worstVideo" style="display:flex; flex-direction: column; justify-content: center;">
+                  <user-video :worst-video="worstVideo" />
+                </div>
+                <div class="div3-2 animate__animated animate__bounceInRight paper-input" style=" display: flex; flex-direction: column; justify-content: center;">
+                  <div class="parent4" v-show="worstResultMode === 1">
+                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;"><span>{{ worstPreData }}</span></div>
+                    <div class="div4-2 speech-bubble-right"><img :src="worstData" alt="" style="float:right; width:350px; height:250px;"/></div>
+                  </div>
+                  <div class="parent5" v-show="worstResultMode === 2">
+                    <div class="div5-1 speech-bubble-left"><img :src="worstData" alt="" style=" width:350px; height:250px;" /></div>
+                    <div class="div5-2" style="float:right;"><span class="speech-bubble-right" style="float:right">{{ worstPreData }}</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@  버튼 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+            <div class="div2-3" style="overflow: hidden">
+              <button class="animate__animated animate__bounceInUp" v-show="isRoomMaker" @click="sendMessageToEveryBody('', 'room')"> 다시하기</button>
+            </div>
+            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
           </div>
         </div>
       </div>
@@ -438,8 +273,8 @@ export default {
       worstVideo: null,
       bestPlayer: "",
       bestVideo: null,
-      worstResultMode: 0, //1 이면 키워드 사진 2이면 사진 키워드
-      bestResultMode: 0,
+      worstResultMode: 1, //1 이면 키워드 사진 2이면 사진 키워드
+      bestResultMode: 2,
       worstPreData: "",
       worstData: "",
       bestPreData: "",
@@ -447,9 +282,12 @@ export default {
     };
   },
   methods: {
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     testFt() {
       this.bestPlayer = "강광은";
+      this.worstPlayer = "강광은";
     },
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     getUsers() {
       // 참가자 닉네임과 connectinId 딕셔너리화 for(웹소켓)
       let myNickName = JSON.parse(this.publisher.stream.connection.data);
@@ -688,37 +526,6 @@ export default {
           console.log(err, "앨범에러");
         });
     },
-    // startResult() {
-    //   axios({
-    //     method:'POST',
-    //     url: '/api/telestations/voteResult',
-    //     data: {
-    //       gameId: this.gameId
-    //     }
-    //   })
-    //   .then((res)=> {
-    //     this.bestPlayer = res.data.best.nickName
-    //     this.worstPlayer = res.data.worst.nickName
-    //     this.worstPreData = res.data.worst.preData
-    //     this.worstData = res.data.worst.data
-    //     this.bestPreData = res.data.best.preData
-    //     this.bestData = res.data.best.data
-    //     if (res.data.best.preDrawingOrder%2 === 1) {
-    //       this.bestResultMode = 1
-    //     }else {
-    //       this.bestResultMode = 2
-    //     }
-    //     if (res.data.worst.preDrawingOrder%2 === 1) {
-    //       this.worstResultMode = 1
-    //     }else {
-    //       this.worstResultMode = 2
-    //     }
-    //     this.gameMode='best'
-    //   })
-
-    // },
-
-    // this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
   },
   computed: {
     ...mapState([
@@ -895,7 +702,9 @@ export default {
     //   this.gameRes = JSON.parse(event.data)
     // })
 
-    // 꽃가루날리기
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     (function () {
       // globals
       var canvas;
@@ -1160,6 +969,9 @@ export default {
         span.classList.add("active");
       }, 750 * (idx + 1));
     });
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   },
   created() {
     this.personnel = this.subscribers.length;
@@ -1168,6 +980,17 @@ export default {
 </script>
 
 <style scoped>
+.telestation-container {
+  height: 100%;
+  /* background-color: white; */ /* background-image: url(assets/background.jpg); */
+}
+.completed {
+  /* background: black; */
+  cursor: not-allowed;
+}
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@       최종결과        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 /* 최종결과 */
 /* 꽃가루 날리기 */
 canvas {
@@ -1181,15 +1004,6 @@ canvas {
 /* 글자 css */
 .animate__animated {
   --animate-duration: 2.5s;
-}
-
-.telestation-container {
-  height: 100%;
-  /* background-color: white; */ /* background-image: url(assets/background.jpg); */
-}
-.completed {
-  /* background: black; */
-  cursor: not-allowed;
 }
 
 .modeBestWorst {
@@ -1472,4 +1286,7 @@ canvas {
     transform: rotate(45deg);
   }
 }
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 </style>
