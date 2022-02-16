@@ -102,6 +102,10 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     @Query(value = "select count(*) from telestations where games_id = ? and drawing_order = 1", nativeQuery = true)
     Integer findCountByGamesIdDrawing_order(Integer gamesId);
 
+    // 최다 투표 데이터의 preUsersId 찾기
+    @Query(value = "select users_id from telestations where data_index = ? and drawing_order = ?", nativeQuery = true)
+    Integer findPreUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
+
 
 
 }

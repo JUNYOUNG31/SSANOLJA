@@ -220,19 +220,29 @@ public class TelestationService {
         Integer bestUserDrawingOrder = bestUser.getDrawingOrder();
         String  bestUserData = bestUser.getData();
 
-        // pre best => data, drawingOrder
+        // pre best => data, drawingOrder, userNickname
         Integer preBestUserDrawingOrder = 0;
+        Integer preBestUserDataIndex = 0;
+        Integer preBestUserId = 0;
         String preBestUserData = null;
+        String preBestUserNickname = null;
 
         if(bestUser.getDrawingOrder() - 1 == 0){
             Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
             Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
             preBestUserDrawingOrder = preBestUser.getDrawingOrder();
             preBestUserData = preBestUser.getData();
+            preBestUserDataIndex = preBestUser.getDataIndex();
+            preBestUserId = telestationRepository.findPreUsersIdByDataIndexDrawingOrder(preBestUserDataIndex, personnel);
+            preBestUserNickname = userRepository.findByUserNicknameFromUsersId(preBestUserId);
+
         }else{
             Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
             preBestUserDrawingOrder = preBestUser.getDrawingOrder();
             preBestUserData = preBestUser.getData();
+            preBestUserDataIndex = preBestUser.getDataIndex();
+            preBestUserId = telestationRepository.findPreUsersIdByDataIndexDrawingOrder(preBestUserDataIndex, preBestUser.getDrawingOrder() - 1);
+            preBestUserNickname = userRepository.findByUserNicknameFromUsersId(preBestUserId);
         }
 
         // worst => 유저 닉네임
@@ -243,19 +253,29 @@ public class TelestationService {
         Integer worstUserDrawingOrder = worstUser.getDrawingOrder();
         String worstUserData = worstUser.getData();
 
-        // pre best => data, drawingOrder
+        // pre worst => data, drawingOrder
         Integer preWorstUserDrawingOrder = 0;
+        Integer preWorstUserDataIndex = 0;
+        Integer preWorstUserId = 0;
         String preWorstUserData = null;
+        String preWorstUserNickname = null;
+
+
         if(worstUser.getDrawingOrder() - 1 == 0){
             Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
             Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), personnel);
             preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
             preWorstUserData = preWorstUser.getData();
-
+            preWorstUserDataIndex = preWorstUser.getDataIndex();
+            preWorstUserId = telestationRepository.findPreUsersIdByDataIndexDrawingOrder(preWorstUserDataIndex, personnel);
+            preWorstUserNickname = userRepository.findByUserNicknameFromUsersId(preWorstUserId);
         }else{
             Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), worstUser.getDrawingOrder() - 1);
             preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
             preWorstUserData = preWorstUser.getData();
+            preWorstUserDataIndex = preWorstUser.getDataIndex();
+            preWorstUserId = telestationRepository.findPreUsersIdByDataIndexDrawingOrder(preWorstUserDataIndex, preWorstUser.getDrawingOrder() - 1);
+            preWorstUserNickname = userRepository.findByUserNicknameFromUsersId(preWorstUserId);
         }
 
         Map<String, Object> res = new HashMap<>();
@@ -266,12 +286,14 @@ public class TelestationService {
         res.put("best", best);
 
         worst.put("nickname", worstUserNickname);
+        worst.put("preNickname", preWorstUserNickname);
         worst.put("preDrawingOrder", preWorstUserDrawingOrder);
         worst.put("preData", preWorstUserData);
         worst.put("drawingOrder", worstUserDrawingOrder);
         worst.put("data", worstUserData);
 
         best.put("nickname", bestUserNickname);
+        worst.put("preNickname", preBestUserNickname);
         best.put("preDrawingOrder", preBestUserDrawingOrder);
         best.put("preData", preBestUserData);
         best.put("drawingOrder", bestUserDrawingOrder);
