@@ -2,7 +2,7 @@
   <div>
     <div class="spyfallstart">
       <h1 style="margin-top:30px">SPYFALL</h1>
-      <div class="border" style="width:500px; height:500px">       
+      <div class="border" style="width:500px; height:500px; background-color: white;">       
         <div class="alert alert-primary" style="width:500px; text-align:center; height:50px">
           <h5 style="margin: 0">장소와 직업을 확인해주세요. 5초 뒤 게임이 시작됩니다</h5>
         </div>
@@ -22,8 +22,7 @@
           <img src="../../assets/Spy.jpg" alt="" style="width:380px">
           <h5 class="border">당신은 스파이 입니다. 장소를 추리하세요</h5>
         </div>
-      </div>
-      
+      </div>      
     </div>    
   </div>
 </template>
@@ -33,7 +32,6 @@ import {mapState} from 'vuex';
 
 export default {
   name: "SpyfallStart",
-  
 
   props: {
     isSpy : Boolean,
@@ -51,12 +49,12 @@ export default {
 
   mounted() {
     if(this.isRoomMaker) {
-    setTimeout(() => {
+      setTimeout(() => {
         const ramdomquestionplayerdata = this.session.streamManagers[Math.floor(Math.random() * this.session.streamManagers.length)]
         const firstquestionplayerdata = JSON.parse(ramdomquestionplayerdata.stream.connection.data)
         this.sendMessageToEveryBody(JSON.stringify(firstquestionplayerdata), 'setFirstQuestionPlayer')
         this.$store.commit("SET_FIRSTQUESTIONPLAYER", ramdomquestionplayerdata)
-        }, 5000);
+      }, 5000);
     }    
   },
 
@@ -82,13 +80,19 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;  
+  animation: fadein 2s;
 }
-
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
 .spyfallstart h5, .spyfallstart h4{
   font-family: 'GowunDodum-Regular';
 }
-
-
 .border {
   border-bottom-left-radius: 9px 255px;
   border-bottom-right-radius: 225px 15px;
@@ -98,7 +102,6 @@ export default {
   align-items: center;
   flex-direction: column;
 }
-
 .spypick {
   position: relative;
 }
@@ -110,10 +113,8 @@ export default {
   background-color: rgb(33 32 32 / 93%);
   border-bottom-right-radius: 656px 39px;
   padding: 13px;
-  color: white;
-  
+  color: white;  
 }
-
 .citizenpick {
   text-align: center;
   display: flex;
@@ -133,7 +134,6 @@ export default {
   margin-top: 0;
   margin-bottom: 30px;
 }
-
 .citizenpick h4 {
   padding: 5px;
   background-color: white;

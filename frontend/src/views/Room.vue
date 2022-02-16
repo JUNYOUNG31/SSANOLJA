@@ -19,53 +19,46 @@
           <div v-else><!--대기방 게임 초기화면(게임선택하는곳)-->
             <v-row class="control">
               <v-col class="col-10 row-cols-3 gameselect">
-                  <v-row style="height:100%;">
-                    <v-col>
-                      <button class="paper-btn" v-bind:class="{'btn-primary': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
-                    </v-col>
-                    <v-col>
-                      <button class="paper-btn" v-bind:class="{'btn-primary': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
-                    </v-col>                 
-                  </v-row> <!--게임 3개 선택하는 부분-->
+                <v-row style="height:100%;">
+                  <v-col>
+                    <button class="paper-btn" v-bind:class="{'btn-primary': gameSelected == 'Spyfall'}" @click="gameSelect('Spyfall')">스파이폴</button>
+                  </v-col>
+                  <v-col>
+                    <button class="paper-btn" v-bind:class="{'btn-primary': gameSelected == 'Telestation'}" @click="gameSelect('Telestation')">텔레스테이션</button>
+                  </v-col>                 
+                </v-row> <!--게임 3개 선택하는 부분-->
               </v-col>
               <v-col class="col-2 ready">        
                 <v-col >
-                  <button class="paper-btn" style="width:100%;" @click="copyJoinCode(mySessionId)">
-                    {{ mySessionId }}
-                  </button>
+                  <button class="paper-btn" style="width:100%;" @click="copyJoinCode(mySessionId)">{{ mySessionId }}</button>
                 </v-col>
                 <v-col v-if="!isRoomMaker">
-                  <button class="paper-btn" style="width:100%;" @click="beReady(myUserName)" >
-                    <span>레디</span>
-                  </button>
+                  <button class="paper-btn" style="width:100%;" @click="beReady(myUserName)"><span>레디</span></button>
                 </v-col>
                 <v-col v-if="isRoomMaker">
-                  <button class="paper-btn" style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart">
-                    <span>시작</span>
-                  </button>
+                  <button class="paper-btn" style="width:100%;" @click="gameStart(gameSelected)" :disabled="!isReadyToStart"><span>시작</span></button>
                 </v-col>
               </v-col>              
             </v-row>
             <div class="gameInfo border"> <!--게임설명-->
-            <span v-if="gameSelected == 'Spyfall'">
-              <spyfallDescription :gameSelected="gameSelected"></spyfallDescription>
-            </span>
-            <span v-if="gameSelected == 'Telestation'">
-              <telestationDescription :gameSelected="gameSelected"></telestationDescription>
-            </span>
+              <span v-if="gameSelected == 'Spyfall'">
+                <spyfallDescription :gameSelected="gameSelected"></spyfallDescription>
+              </span>
+              <span v-if="gameSelected == 'Telestation'">
+                <telestationDescription :gameSelected="gameSelected"></telestationDescription>
+              </span>
             </div>
           </div>
         </v-col>
-          <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
-            <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
-              <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
-            </div>
+        <div class="right-cam"> <!--오른쪽 카메라모음--><!--20%-->
+          <div v-for="user in oddplayer" :key="user.stream.connection.connectionId" class="playercamera">
+            <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
+        </div>
       </v-row>
     </v-container>    
   </div>
 </template>
-
 
 <script>
 import UserVideo from '@/components/Video/UserVideo';
@@ -108,11 +101,13 @@ export default {
 			"mainStreamManager",
       "isRoomMaker"
 		]),
+
     oddplayer: function () {
       return this.subscribers.filter((user, index) => {
         return index % 2 === 1
       })
     },
+
     evenplayer : function() {
       return this.subscribers.filter((user, index) => {
         return index % 2 === 0
@@ -125,25 +120,26 @@ export default {
         return true;
       }
       return false;
-    }
-    
+    }    
 	},
   
-  mounted () {
-    
+  watch: {
+    subscribers: {
+      handler() {
+        this.makePlayerList()
+      }
+    }
+  },
+
+  mounted () {    
     this.session.on('signal:getReadyList', (event)=>{
       if (this.myUserName != JSON.parse(event.from.data).clientData){
-        // let readyListToString = this.readyList.toString()
         this.sendMessageToEveryBody(JSON.stringify(this.readyList),'sendReadyList')
-        console.log(this.readyList, '송신')
       }
     })
 
-    this.session.on('signal:sendReadyList', (event)=>{
-        // this.readyList = event.data.split(",")
-        console.log(typeof event.data, '이게 스트링?')
-        this.readyList = JSON.parse(event.data)
-        console.log(this.readyList, '수신')
+    this.session.on('signal:sendReadyList', (event)=>{    
+      this.readyList = JSON.parse(event.data)
     })
 
     this.session.on('signal:rules', (event) => {
@@ -168,7 +164,6 @@ export default {
       })
     }
 
-
     this.session.on('signal:ready', (event)=>{
       const person = event.data
       if (this.readyList.includes(person)) {
@@ -179,13 +174,9 @@ export default {
       }
     })
     
-    console.log(this.readyList)
-    
-    // 방 입장시 준비된 사람들 리스트를 받아옴
     setTimeout(()=>{
       this.sendMessageToEveryBody('', 'getReadyList')
     }, 500)
-
   },
 
   methods : {
@@ -214,13 +205,16 @@ export default {
       alert('복사되었습니다')
       joinCodeToCopy.style.display = 'none'
     },
+
     leaveSession() {
       this.$store.dispatch('leaveSession')
       this.$router.push('lobby')
 		},
+
     gameSelect(game) {
       this.gameSelected = game
     },
+
     gameStart(game) {   
       axios.post(
         '/api/games/rules',
@@ -231,33 +225,30 @@ export default {
         })
       )
       .then(res => {
-          this.rules=res.data
-          this.sendMessageToEveryBody(JSON.stringify(this.rules), 'rules')
-          axios
-          .post(
-            '/api/games/start',
-            
-            JSON.stringify({
-              // userNicknames : this.playerList,
-              userNicknames : ["박준영", "정성우", "김범주"],
-              roomCode : this.mySessionId,
-              selectedGame: game
-            }),
-          )
-          .then(resp =>{
-            
-            this.gameRes = resp.data
-            this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
-            this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
-          })
-          .catch(error => console.log(error))
-
+        this.rules=res.data
+        this.sendMessageToEveryBody(JSON.stringify(this.rules), 'rules')
+        axios.post(
+          '/api/games/start',          
+          JSON.stringify({
+            // userNicknames : this.playerList,
+            userNicknames : ["박준영", "정성우", "김범주"],
+            roomCode : this.mySessionId,
+            selectedGame: game
+          }),
+        )
+        .then(resp =>{            
+          this.gameRes = resp.data
+          this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
+          this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
+        })
+        .catch(error => console.log(error))
       })
       .catch(err =>{
         console.log(err)
         alert('게임 가능한 인원 수는 3명 이상 8명 이하 입니다')
       })
     },
+
     makePlayerList () {
       this.playerList=[]
       for (let index = 0; index < this.subscribers.length; index++) {
@@ -265,28 +256,29 @@ export default {
         this.playerList.push(participant.clientData)
       }
     }
-  },
-  watch: {
-    subscribers: {
-      handler() {
-        this.makePlayerList()
-      }
-    }
-  }
+  } 
 }
 
 </script>
 <style scoped>
-/* 배조 */
-.left-cam,
-.right-cam {
+.room {
+  animation: fadein 2s;
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+.left-cam, .right-cam {
   width: 16%;
   height: 100%;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
 }
-
 .gameInfo {
   margin-top: 10px;
   height: 570px;
@@ -295,9 +287,6 @@ export default {
   border-top-left-radius: 21px 12px;
   border-top-right-radius: 15px 225px;
 }
-
-
-/* 배조 */
 #p-name {
   position: absolute;
   bottom: 0px;
@@ -310,22 +299,21 @@ export default {
 .playercamera {
   position: relative;
 }
-.right-cam > div,
-.left-cam > div{
+.right-cam > div, .left-cam > div{
   height: 25%;
 }
 .playercamera > div{
   height: 100%;
 }
 .room {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh;
 }
 /* 메인 화면 */
 .room .container {
-    width: 1455px;
-    height: 730px;
-    margin: auto;
+  width: 1455px;
+  height: 730px;
+  margin: auto;
 }
 .wrap {
   height: 100%;
@@ -340,7 +328,6 @@ export default {
   padding: 0;
   margin: 0;
 }
-
 .gameselect .col button {
   height: 100%;
   width: 100%;
@@ -359,7 +346,6 @@ export default {
   border-style: solid;
   border-width: 2px;
 }
-
 @media (max-width: 1455px) {
   .room{
     width: 1455px;
@@ -370,6 +356,4 @@ export default {
     height: 730px;
   }
 }
-
-
 </style>

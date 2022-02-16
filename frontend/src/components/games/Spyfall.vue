@@ -26,8 +26,8 @@
                     <div v-if="answerPlayer" class="child-borders">
                       <ov-video :stream-manager="answerPlayer"/>
                     </div>
-                    <div v-else  class="border" style="width:350px; height:263px">                        
-                        <h4>질문자를 선택해 주세요</h4>
+                    <div v-else  class="border" style="width:350px; height:263px">    
+                      <h4>질문자를 선택해 주세요</h4>
                     </div>
                   </v-col>            
                 </v-row>
@@ -84,12 +84,13 @@
               <div>                
                 <v-dialog v-model="dialog" persistent max-width="1000px">
                   <v-card>         
-                      <v-container class="vote">
-                        <v-row class="vote_row">
-                          <v-col cols="12">
-                          </v-col>
-                          <v-col cols="5" class="prosecutor">
-                          <div class="video_name"><div class="alert alert-secondary" popover-top="용의자를 고발하였습니다">고발자</div></div>
+                    <v-container class="vote">
+                      <v-row class="vote_row">
+                        <v-col cols="12"></v-col>
+                        <v-col cols="5" class="prosecutor">
+                          <div class="video_name">
+                            <div class="alert alert-secondary" popover-top="용의자를 고발하였습니다">고발자</div>
+                          </div>
                           <div v-if="selectPlayer" class="child-borders">
                             <ov-video :stream-manager="selectPlayer"/>
                           </div>
@@ -101,7 +102,9 @@
                         </div>                      
                         </v-col>
                         <v-col cols="5" class="suspect">      
-                          <div class="video_name"><div class="alert alert-danger" popover-top="용의자로 선택되었습니다">용의자</div></div>                  
+                          <div class="video_name">
+                            <div class="alert alert-danger" popover-top="용의자로 선택되었습니다">용의자</div>
+                          </div>                  
                           <div v-if="votePlayer" class="child-borders">
                             <ov-video :stream-manager="votePlayer"/>
                           </div>
@@ -109,9 +112,7 @@
                         <v-col cols="12" style="height:80px">
                           <div class="row flex-spaces" >                 
                             <input class="alert-state" id="alert-1" type="checkbox">
-                            <div id="voteCompleted" class="alert alert-secondary dismissible" style="display:none; text-align:center" >
-                              투표가 완료되었습니다.
-                            </div>
+                            <div id="voteCompleted" class="alert alert-secondary dismissible" style="display:none; text-align:center">투표가 완료되었습니다.</div>
                           </div>
                         </v-col>
                         <v-col cols="4" id ="agree">
@@ -132,21 +133,17 @@
                     </v-container> 
                   </v-card>
                 </v-dialog>
-                </div>  
-                <button class="paper-btn btn-success" @click="openinfo = true" style="width:100%; margin-top:20px">게임설명</button>
-                <v-dialog class="infodialog"
-                  v-model="openinfo"
-                  persistent
-                  max-width="750px"                 
-                >
-                  <v-card  class="scrollx" height="500px" style="padding-right:10px">   
-                    <img src="@/assets/description_image/spyfall/스파이폴설명1.png" alt="">
-                    <img src="@/assets/description_image/spyfall/스파이폴설명2.png" alt="">
-                    <img src="@/assets/description_image/spyfall/스파이폴설명3.png" alt="">
-                    <img src="@/assets/description_image/spyfall/스파이폴설명4.png" alt="">
-                    <button class="paper-btn btn-success" style="align-self:center" @click="openinfo = false">닫기</button>
-                  </v-card>
-                </v-dialog>
+              </div>  
+              <button class="paper-btn btn-success" @click="openinfo = true" style="width:100%; margin-top:20px">게임설명</button>
+              <v-dialog class="infodialog" v-model="openinfo" persistent max-width="750px">
+                <v-card  class="scrollx" height="500px" style="padding-right:10px">   
+                  <img src="@/assets/description_image/spyfall/스파이폴설명1.png" alt="">
+                  <img src="@/assets/description_image/spyfall/스파이폴설명2.png" alt="">
+                  <img src="@/assets/description_image/spyfall/스파이폴설명3.png" alt="">
+                  <img src="@/assets/description_image/spyfall/스파이폴설명4.png" alt="">
+                  <button class="paper-btn btn-success" style="align-self:center" @click="openinfo = false">닫기</button>
+                </v-card>
+              </v-dialog>
             </v-col>
           </v-row>
         </v-container>
@@ -172,7 +169,6 @@ export default {
       job: null,
       place: null,
       placeSrc: null,
-
       timerEnabled: true,
       timerCount: 30,
       votetimeCnt: 30,
@@ -186,12 +182,11 @@ export default {
       isEnded: false,
       isStarted: false,
       isSpy: false,
-      // spyName: null,
       spyPlayer : null,
       openinfo: false,
       desc: [
-          "p1","p2","p3", "p4"
-        ],
+        "p1","p2","p3", "p4"
+      ],
 		}
 	},
 
@@ -206,6 +201,7 @@ export default {
     SpyfallEnd,
     SpyfallStart,
 	},
+
 	computed: {
 		...mapState([
       "session",
@@ -227,82 +223,11 @@ export default {
       }
       return null
     },
+
     MMSS () {
       return new Date(this.timerCount*1000).toISOString().substr(14, 5)      
     }
 	},
-
-	methods: {
-    // testclick() {
-    //   const testdiv = document.getElementById('testalert')
-    //   console.log(testdiv)
-    //   testdiv.style.display = "block"
-    // },
-
-
-    spyfall(){
-      this.pause()
-      // this.spyName = this.myUserName
-      this.sendMessageToEveryBody('','spyfall')
-      // for (let index = 0; index < this.subscribers.length; index++) {
-      //   let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-			// 	if (this.spyName == nickName.clientData) {
-      //     this.spyPlayer = this.subscribers[index]
-			// 	}
-			// }
-      this.isEnded = true
-      
-    },
-
-    getConnectionData () {
-    const { connection } = this.questionVideo.stream;
-    return JSON.parse(connection.data);
-		},
-    sendMessageToEveryBody(data, type) {
-      this.session.signal({
-        data: data,
-        to: [],
-        type: type
-      })
-      .then(() => {})
-      .catch(error => {
-        console.error(error);
-      })
-		}, 
-
-    play() {
-      this.timerEnabled = true;      
-    },
-
-    pause() {
-      this.timerEnabled = false;
-      this.voteEnabled = true;
-    },
-    
-    restart() {
-      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'restart')
-    },
-    
-    toggle(num) {
-      var select = `x${num}`
-      var con = document.getElementById(select)
-      con.style.display = (con.style.display!= 'none') ? "none":"block"
-    },
-    voteTrue() {
-      this.isVoted = true
-      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')     
-      
-    },
-    voteFalse() {
-      this.isVoted = true
-      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
-    },
-    voteclose() { // 투표창 끄는 method
-      this.timerEnabled = true;
-      this.votetimeCnt = 30;
-      this.voteEnabled = false;
-    }
-  },
 
   watch: {
     timerEnabled(value) {
@@ -312,6 +237,7 @@ export default {
         }, 1000);
       }
     },
+    
     timerCount: {
       handler(value) {
         if (value > 0 && this.timerEnabled) {
@@ -343,24 +269,24 @@ export default {
           }, 1000);
         }
         if(this.votetimeCnt == 0) {          
-            setTimeout(()=> {
-              this.restart()
-            }, 3000);          
-          }
+          setTimeout(()=> {
+            this.restart()
+          }, 3000);          
+        }
       },
       immediate: false // 컴포넌트가 생성되자마자 즉시 실행
     }
   },
 
-  mounted() {
+    mounted() {
     //초기화
     this.isStarted = false
     this.place = this.gameRes.place
     const placeImg = this.gameRes.place.split(' ').join('_')
     this.placeSrc = require("../../assets/places_image/"+placeImg+".jpg")
     this.job = this.gameRes.jobs[this.myUserName]
-    this.timerCount = this.rules.playTime + 5
-
+    this.timerCount = this.rules.playTime + 5   
+    this.play()
 
     if(this.job === '스파이') {
       this.placeSrc = require("../../assets/places_image/unknown.png")
@@ -368,14 +294,11 @@ export default {
     }
 
     for (let index = 0; index < this.subscribers.length; index++) {
-        let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-        if (this.gameRes.jobs[nickName.clientData] == '스파이') {
-          // this.spyName = nickName.clientData
-          this.spyPlayer = this.subscribers[index]
-        }
+      let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
+      if (this.gameRes.jobs[nickName.clientData] == '스파이') {
+        this.spyPlayer = this.subscribers[index]
       }
-
-    this.play()
+    }
 
     this.session.once('signal:setFirstQuestionPlayer', (event)=> {
       const firstQuestionPlayerName = JSON.parse(event.data).clientData
@@ -393,12 +316,6 @@ export default {
     })
 
     this.session.on('signal:spyfall', ()=>{
-      // for (let index = 0; index < this.subscribers.length; index++) {
-      //   let nickName = JSON.parse(this.subscribers[index].stream.connection.data)
-      //   if (this.spyName == nickName.clientData) {
-      //     this.spyPlayer = this.subscribers[index]
-      //   }
-      // }
       this.isEnded=true
     })
 
@@ -409,8 +326,7 @@ export default {
       if ( this.voteList.voteCnt == this.streamManager.length -1) {    
         // 투표가 끝나고 3초 보여주기  
         const div = document.getElementById('voteCompleted')
-        div.style.display = "block"
-          
+        div.style.display = "block"          
         setTimeout(() => {
           // 만약 만장일치일때
           if (this.voteList.agreeCnt == this.streamManager.length - 1) {
@@ -448,7 +364,6 @@ export default {
       if ( this.voteList.voteCnt >= this.streamManager.length-1) {
         this.voteList.voteCnt = this.streamManager.length-1
         const div = document.getElementById('voteCompleted')
-        console.log(div)
         div.style.display = "block"
         setTimeout(() => {
           // alert('투표가 완료 되었습니다.')
@@ -457,21 +372,79 @@ export default {
       }
     })
 
-      this.session.on('signal:restart', (event)=>{
-        this.voteList = JSON.parse(event.data)
-        this.timerEnabled = true;
-        this.$store.commit('SET_VOTEPLAYER', null)
-        this.voteList.voteCnt = 0
-        this.voteList.agreeCnt = 0
-        this.voteList.disagreeCnt = 0
-        this.isVoted = false
-        this.voteEnabled = false;
-        this.votetimeCnt = 30;
-        const div = document.getElementById('voteCompleted')
-        div.style.display = "none"
+    this.session.on('signal:restart', (event)=>{
+      this.voteList = JSON.parse(event.data)
+      this.timerEnabled = true;
+      this.$store.commit('SET_VOTEPLAYER', null)
+      this.voteList.voteCnt = 0
+      this.voteList.agreeCnt = 0
+      this.voteList.disagreeCnt = 0
+      this.isVoted = false
+      this.voteEnabled = false;
+      this.votetimeCnt = 30;
+      const div = document.getElementById('voteCompleted')
+      div.style.display = "none"
+    })
+  },
+
+	methods: {
+    spyfall() {
+      this.pause()
+      this.sendMessageToEveryBody('','spyfall')
+      this.isEnded = true      
+    },
+
+    getConnectionData () {
+    const { connection } = this.questionVideo.stream;
+    return JSON.parse(connection.data);
+		},
+
+    sendMessageToEveryBody(data, type) {
+      this.session.signal({
+        data: data,
+        to: [],
+        type: type
       })
+      .then(() => {})
+      .catch(error => {
+        console.error(error);
+      })
+		}, 
 
+    play() {
+      this.timerEnabled = true;      
+    },
 
+    pause() {
+      this.timerEnabled = false;
+      this.voteEnabled = true;
+    },
+    
+    restart() {
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'restart')
+    },
+    
+    toggle(num) {
+      var select = `x${num}`
+      var con = document.getElementById(select)
+      con.style.display = (con.style.display!= 'none') ? "none":"block"
+    },
+
+    voteTrue() {
+      this.isVoted = true
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')           
+    },
+
+    voteFalse() {
+      this.isVoted = true
+      this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
+    },
+
+    voteclose() { // 투표창 끄는 method
+      this.timerEnabled = true;
+      this.votetimeCnt = 30;
+      this.voteEnabled = false;
+    }
   }
 }
 </script>
@@ -479,7 +452,17 @@ export default {
 <style scoped>
 .container{
   padding: 0;
+  animation: fadein 2s;
 }
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+
 #game {
   padding: 0;
 }
@@ -487,11 +470,9 @@ h2, h3 {
   text-align: center;
   margin : 0;
 }
-
 h3, h4, h5 {
   font-family: 'GowunDodum-Regular';
 }
-
 #questiont_tag {
   border-radius: 5px;
   padding: 0 1em;
@@ -537,7 +518,6 @@ h3, h4, h5 {
   padding: 13px;
   color: white;
 }
-
 #p-name {
   position: absolute;
   bottom: 0px;
@@ -559,22 +539,20 @@ video {
   font-family: 'GowunDodum-Regular';
 }
 .video_name div {
-    border-bottom-left-radius: 15px 255px;
-    border-bottom-right-radius: 225px 15px;
-    border-top-left-radius: 255px 15px;
-    border-top-right-radius: 15px 225px;
-    border-style: solid;
-    border-width: 2px;
-    margin-bottom: 20px;
-    padding: 10px;
-    width: 100%;
-    font-size: 20px;
-    text-align: center;
-    height: 52px;
-    margin: 0;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  border-style: solid;
+  border-width: 2px;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+  font-size: 20px;
+  text-align: center;
+  height: 52px;
+  margin: 0;
 }
-
-
 .right_menu {
   display: flex;
   flex-direction: column;   
@@ -590,7 +568,6 @@ video {
   border-style: solid;
   border-width: 2px;
   display: inline-block;
-  /* font-size: 1rem; */
   outline: none;
   padding: 0.75rem;
 }
@@ -599,7 +576,6 @@ video {
   font-family: 'GowunDodum-Regular';
   text-align: center;
 }
-
 .place_check {
   display: flex;
   flex-direction: column;
@@ -766,18 +742,14 @@ video {
   text-align: center;
   background-color:rgb(138, 138, 138);
 }
-
 #time_cnt {
   text-align: center;
 }
-
 .scrollx {
   overflow: scroll;
-  /* IE scroll 숨김 */
   -ms-overflow-style: none;
   position: relative;
 }
-
 .scrollx::-webkit-scrollbar { 
   width: 0 !important;
   display: none; 

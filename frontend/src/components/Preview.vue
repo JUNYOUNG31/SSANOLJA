@@ -1,43 +1,40 @@
 <template>
-  <v-dialog 
-      v-model="dialog"
-      max-width="900"
-    >
-      <v-card>
-        <div>
-          <v-card-title>
-          <h3 style="font-family: 'GowunDodum-Regular'">대기화면</h3>
-          </v-card-title>
-        </div>
-        <div class="d-flex">
-          <video :srcObject.prop="videoSrc" autoplay></video>
-          <div class="videoselect">
+  <v-dialog v-model="dialog" max-width="900">
+    <v-card>
+      <div>
+        <v-card-title>
+        <h3 style="font-family: 'GowunDodum-Regular'">대기화면</h3>
+        </v-card-title>
+      </div>
+      <div class="d-flex">
+        <video :srcObject.prop="videoSrc" autoplay></video>
+        <div class="videoselect">
+          <div>
+            <label> 비디오 선택</label>
+            <select @change="changeDevice" v-model="publishInfo.videoSource" placehoder="video" style="border-style: solid; width: 350px">
+              <option v-for="(item,index) in videoDevices" :key="index" :value="item.deviceId">{{item.label}}</option>
+            </select>
+            <label> 오디오 선택</label>
+            <select @click="changeDevice" v-model="publishInfo.audioSource" style="border-style: solid">
+              <option v-for="(item, index) in audioDevices" :key="index" :value="item.deviceId">{{item.label}}</option>
+            </select>
+          </div>
+          <div class="videocontrol">
             <div>
-              <label> 비디오 선택</label>
-              <select @change="changeDevice" v-model="publishInfo.videoSource" placehoder="video" style="border-style: solid; width: 350px">
-                <option v-for="(item,index) in videoDevices" :key="index" :value="item.deviceId">{{item.label}}</option>
-              </select>
-              <label> 오디오 선택</label>
-              <select @click="changeDevice" v-model="publishInfo.audioSource" style="border-style: solid">
-                  <option v-for="(item, index) in audioDevices" :key="index" :value="item.deviceId">{{item.label}}</option>
-                </select>
-            </div>
-            <div class="videocontrol">
-              <div>
-                <button class="paper-btn btn-secondary" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
-                  <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
-                </button>
-                <button class="paper-btn btn-secondary" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
-                  <v-icon>{{ publishInfo.publishVideo ? 'mdi-camera-outline' : 'mdi-camera-off-outline' }}</v-icon>
-                </button>
+              <button class="paper-btn btn-secondary" fab @click="publishInfo.publishAudio = !publishInfo.publishAudio">
+                <v-icon>{{ publishInfo.publishAudio ? 'mdi-volume-high' : 'mdi-volume-off' }}</v-icon>
+              </button>
+              <button class="paper-btn btn-secondary" fab @click="publishInfo.publishVideo = !publishInfo.publishVideo">
+                <v-icon>{{ publishInfo.publishVideo ? 'mdi-camera-outline' : 'mdi-camera-off-outline' }}</v-icon>
+              </button>
               </div>
-              <button class="paper-btn enter btn-success" @click="enterRoom">입장</button>
-            </div>
+            <button class="paper-btn enter btn-success" @click="enterRoom">입장</button>
           </div>
         </div>
-        <v-divider></v-divider>
-        <v-card-actions>          
-        </v-card-actions>
+      </div>
+      <v-divider></v-divider>
+      <v-card-actions>          
+      </v-card-actions>
       </v-card>
     </v-dialog>
 </template>
@@ -46,23 +43,19 @@
 import { OpenVidu } from 'openvidu-browser'
 import { mapActions } from 'vuex'
 export default {
-  name: "Preview",
-  props: {
-    joinCode: String,
-    myUserName: String,
-  },
+  name: "Preview",  
   data: function () {
     return {
-        publishInfo: {
-          audioSource: undefined, // The source of audio. If undefined default microphone
-          videoSource: undefined, // The source of video. If undefined default webcam
-          publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-          publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-          resolution: '640x480',  // The resolution of your video
-          frameRate: 30,			// The frame rate of your video
-          insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-          mirror: false       	// Whether to mirror your local video or not
-        },
+      publishInfo: {
+        audioSource: undefined, // The source of audio. If undefined default microphone
+        videoSource: undefined, // The source of video. If undefined default webcam
+        publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+        publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+        resolution: '640x480',  // The resolution of your video
+        frameRate: 30,			// The frame rate of your video
+        insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+        mirror: false       	// Whether to mirror your local video or not
+      },
       dialog: false,
       OV: undefined,
       videoDevices: [],
@@ -70,9 +63,28 @@ export default {
       videoSrc: undefined,
     }
   },
-  mounted: function () {
-  this.OV = new OpenVidu()//
+
+  props: {
+    joinCode: String,
+    myUserName: String,
   },
+
+  watch: {
+    dialog: function () {
+      if (this.dialog) {
+        this.getUserDevices()
+        this.changeDevice()
+      }
+      else {
+        this.videoSrc.getTracks()[0].stop()
+      }
+    }
+  },
+
+  mounted: function () {
+    this.OV = new OpenVidu()
+  },  
+
   methods: {
     ...mapActions([
       'joinSession'
@@ -117,24 +129,7 @@ export default {
       }
       this.$router.push({ name: 'Room', params: { joinCode: this.joinCode}})
     }
-  },
-  computed: {
-    // ...mapState('accounts', [
-    //   'user'
-    // ])
-  },
-  
-  watch: {
-    dialog: function () {
-      if (this.dialog) {
-        this.getUserDevices()
-        this.changeDevice()
-      }
-      else {
-        this.videoSrc.getTracks()[0].stop()
-      }
-    }
-  }
+  }  
 };
 </script>
 

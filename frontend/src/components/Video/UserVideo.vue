@@ -1,20 +1,19 @@
 <template>
-<div>
-	<div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
-		<!-- <ov-video :stream-manager="streamManager" v-if="answerPlayer != streamManager && questionPlayer != streamManager && firstQuestionPlayer != streamManager"/> -->
-		<ov-video :stream-manager="streamManager"/>
-		<div class="pname"><p>{{ clientData }}</p></div>
-		<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) || isQuestionPlayer" popover-top="질문할 사람을 선택하세요">지목하기</button></div>
-		<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><button class="paper-btn" @click="voteSelect" :disabled="isMyself || voteClick" popover-bottom="스파이로 의심되는 사람을 선택하세요">투표하기</button></div>
-		<div v-if="ready" style="border:0"><button class="btn3 paper-btn btn-success">READY!</button></div>
+	<div>
+		<div v-if="streamManager" style="display: flex; align-items: center;" class="video_div child-borders">
+			<ov-video :stream-manager="streamManager"/>
+			<div class="pname"><p>{{ clientData }}</p></div>
+			<div v-if="gameSelected == 'Spyfall' && start" class="btn1"><button class="paper-btn" @click="answerSelect" :disabled="isMyself || !(isAnswerPlayer || isFirstQuestionPlayer) || isQuestionPlayer" popover-top="질문할 사람을 선택하세요">지목하기</button></div>
+			<div v-if="gameSelected == 'Spyfall' && start" class="btn2" ><button class="paper-btn" @click="voteSelect" :disabled="isMyself || voteClick" popover-bottom="스파이로 의심되는 사람을 선택하세요">투표하기</button></div>
+			<div v-if="ready" style="border:0"><button class="btn3 paper-btn btn-success">READY!</button></div>
+		</div>
+		<div v-if="bestVideo">
+			<ov-video :stream-manager="bestVideo"></ov-video>
+		</div>
+		<div v-if="worstVideo">
+			<ov-video :stream-manager="worstVideo"></ov-video>
+		</div>
 	</div>
-	<div v-if="bestVideo">
-		<ov-video :stream-manager="bestVideo"></ov-video>
-	</div>
-	<div v-if="worstVideo">
-		<ov-video :stream-manager="worstVideo"></ov-video>
-	</div>
-</div>
 </template>
 
 <script>
@@ -23,15 +22,11 @@ import {mapState} from 'vuex';
 export default {
 	name: 'UserVideo',
 
-	components: {
-		OvVideo,
-	},
-
 	data () {
 		return {			
 			questionVideo: null,
-      answerVideo: null,
-      voteVideo : null,
+			answerVideo: null,
+			voteVideo : null,
 			selectVideo: null,
 			isAnswerPlayer : false,
 			isFirstQuestionPlayer : false,
@@ -49,6 +44,10 @@ export default {
 		readyList: Array,
 	},
 
+	components: {
+		OvVideo,
+	},
+
 	computed: {		
 		...mapState([
 			"session",
@@ -61,6 +60,7 @@ export default {
 			"voteClick",       // 투표버튼 클릭 여부
 			"myUserName"
 		]),
+
 		ready() {
 			if (this.readyList.includes(this.clientData)) {
 				return true;
@@ -73,7 +73,6 @@ export default {
 			const { clientData } = this.getConnectionData();
 			return clientData;
 		},		
-
 	},
 
 	watch: {
@@ -119,38 +118,10 @@ export default {
 			}
 		}
 	},
-	methods: {
-		sendMessageToEveryBody(data, type) {
-      this.session.signal({
-        data: data,
-        to: [],
-        type: type
-      })
-      .then(() => {})
-      .catch(error => {
-        console.error(error);
-      })
-		},
-
-		getConnectionData () {
-		const { connection } = this.streamManager.stream;
-		return JSON.parse(connection.data);
-		},
-		voteSelect () {
-			this.$store.commit('SET_VOTECLICK')
-			this.voteVideo = JSON.parse(this.streamManager.stream.connection.data)
-			this.sendMessageToEveryBody(JSON.stringify(this.voteVideo), 'votePlayer')
-		},
-		answerSelect () {
-			this.answerVideo = JSON.parse(this.streamManager.stream.connection.data)		
-			this.sendMessageToEveryBody(JSON.stringify(this.answerVideo), 'answerPlayer')
-		}
-	},
-	mounted() {
+  
+		mounted() {
 		this.isMyself = (this.myUserName === this.clientData)
 
-
-		// if(this.session.ee._events["signal:votePlayer"] == undefined) {
 		this.session.on('signal:votePlayer', (event)=>{
 			const votedata = JSON.parse(event.data) 
 			const selectdata = JSON.parse(event.from.data)
@@ -166,11 +137,8 @@ export default {
 			this.$store.commit('SET_SELECTPLAYER', this.selectVideo)
 			this.$store.commit('SET_VOTEPLAYER', this.voteVideo)	
     })
-		// }
-
 
 		if(this.session.ee._events["signal:answerPlayer"] == undefined) {
-
 			this.session.on('signal:answerPlayer', (event)=>{
 				const questiondata = JSON.parse(event.from.data)
 				const answerdata = JSON.parse(event.data)
@@ -188,16 +156,44 @@ export default {
 				this.$store.commit('SET_ANSWERPLAYER', this.answerVideo)
 			})		
 		}
+	},
+
+	methods: {
+		sendMessageToEveryBody(data, type) {
+      this.session.signal({
+        data: data,
+        to: [],
+        type: type
+      })
+      .then(() => {})
+      .catch(error => {
+        console.error(error);
+      })
+		},
+
+		getConnectionData () {
+		const { connection } = this.streamManager.stream;
+		return JSON.parse(connection.data);
+		},
+
+		voteSelect () {
+			this.$store.commit('SET_VOTECLICK')
+			this.voteVideo = JSON.parse(this.streamManager.stream.connection.data)
+			this.sendMessageToEveryBody(JSON.stringify(this.voteVideo), 'votePlayer')
+		},
+
+		answerSelect () {
+			this.answerVideo = JSON.parse(this.streamManager.stream.connection.data)		
+			this.sendMessageToEveryBody(JSON.stringify(this.answerVideo), 'answerPlayer')
+		}
 	}
 };
-
 </script>
 
 <style scoped>
 .video_div {
 	position: relative;
 }
-
 .video_div p {
 	position:absolute;
 	left: 40%;
@@ -237,5 +233,4 @@ export default {
 	padding: 7px;
 	font-family: "Patrick Hand SC", sans-serif;
 }
-
 </style>
