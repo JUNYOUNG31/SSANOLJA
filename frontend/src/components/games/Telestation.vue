@@ -19,43 +19,64 @@
       style="display: flex; flex-direction: column; align-items: center"
     >
       <!-- 키워드 입력 -->
-      <div>
-        {{ textingTime }}
-        {{ drawingTime }}
-        <button @click="startTexting()">시작</button>
-        <button @click="pauseTexting()">정지</button>
+      <v-progress-linear v-model="textingTime" height="30" style="pointer-events:none">
+      </v-progress-linear>
+
+      <div class="text-div">
+        <div v-show="drawingOrder == 1">
+          <img
+            src="../../assets/paint/artist.png"
+            style="
+              width: 80px;
+              height: 80px;
+              margin: 0 auto;
+              margin-bottom: 10px;
+            "
+          />
+          <p class="pstyle">친구에게 전달할 문장을 입력해주세요</p>
+          <input
+            v-model="keyword"
+            class="form-control inline-input"
+            type="text"
+            required
+            placeholder="eX)라이브 방송을 듣는 싸피인"
+          />
+          <button
+            class="paper-btn btn-lg btn-warning writeEnd"
+            @click="
+              [sendMessageToEveryBody('', 'completed'), changeCompleted()]
+            "
+            :disabled="myCompleted"
+          >
+            입력 완료
+          </button>
+        </div>
+        <div v-show="drawingOrder !== 1">
+          <div class="receive-draw">
+            <img
+              :src="recieveDraw"
+              alt="받은그림"
+              style="border: 1px solid black; width: 700px; height: 500px"
+            />
+          </div>
+          <input
+            v-model="keyword"
+            class="form-control inline-input"
+            type="text"
+            required
+            placeholder="어떤 그림인지 맞춰주세요!"
+          />
+          <button
+            class="paper-btn btn-lg btn-warning writeEnd"
+            @click="
+              [sendMessageToEveryBody('', 'completed'), changeCompleted()]
+            "
+            :disabled="myCompleted"
+          >
+            입력 완료
+          </button>
+        </div>
       </div>
-      <div
-        v-show="drawingOrder !== 1"
-        style="
-          width: 800px;
-          height: 400px;
-          background-color: white;
-          color: black;
-        "
-      >
-        <img :src="recieveDraw" alt="받은그림" />
-      </div>
-      <div style="width: 800px; text-align: center">
-        <label>키워드</label>
-        <input
-          v-model="keyword"
-          class="form-control"
-          type="text"
-          required
-          placeholder="키워드를 입력하세요"
-        />
-        <br />
-      </div>
-      <p class="text-center">
-        <button
-          class="btn btn-lg btn-success"
-          @click="[sendMessageToEveryBody('', 'completed'), changeCompleted()]"
-          :disabled="myCompleted"
-        >
-          입력 완료
-        </button>
-      </p>
     </div>
 
     <div
@@ -63,7 +84,10 @@
       style="display: flex; flex-direction: column; align-items: center"
     >
       {{ drawingTime }}
-      <div>{{ receiveKeyword }}</div>
+      <v-progress-linear v-model="drawingTime" height="25" style="pointer-events:none">
+        <strong>{{ drawingTime }}</strong>
+      </v-progress-linear>
+      <div style="font-size: 35px">{{ receiveKeyword }}</div>
       <div id="gamearea">
         <canvasApi
           ref="canvasApi"
@@ -427,12 +451,17 @@
   </div>
 </template>
 <script src="../../assets/js/app.js"></script>
+<script
+  type="module"
+  src="https://unpkg.com/wired-elements/lib/wired-slider.js?module"
+></script>
 <script>
 import axios from "axios";
 import { mapState } from "vuex";
 import CanvasApi from "@/components/CanvasApi";
 import UserVideo from "@/components/Video/UserVideo";
 import "animate.css"; //글자 css
+import { WiredSlider } from "wired-elements/lib/wired-slider.js";
 
 export default {
   name: "Telestation",
@@ -468,13 +497,7 @@ export default {
       targetUser: "", // 웹소켓 받는 사람
       receiveKeyword: "", // 받은 키워드
       recieveDraw: "", // 받은 그림
-      recieveAlbum: [
-        "졸라맨",
-        "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150401_224%2Fche5466_14278577694929nElY_JPEG%2FXXX.PNG&type=a340",
-        "악당이름이 뭐지 ?",
-        "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxNzEyMjNfODIg%2FMDAxNTE0MDM4NzU5MzU1.5LoCzGYvjU5pzVOVydLGbnhEKORvoRNJEc9f6cutzzEg.onVUrp8GZ0DA3XUmi0Q2eXLsmjEDfPKNyQwKBYvCFTIg.PNG.kyhk614%2F%25B2%25D9%25C0%25DA_3%25B1%25E2.png&type=a340",
-      ],
-      recieveUsers: ["조성현", "강광은", "배소원", "박준영"],
+      recieveAlbum: null,
       round: 0,
       gameId: this.gameRes.playGameId,
       dataIndex: 0, // 앨범 번호
@@ -753,9 +776,6 @@ export default {
     },
     startAlbumRound() {
       this.round++;
-      console.log("dataIndex" + this.dataIndex);
-      console.log("베슽흐" + this.best);
-      console.log("워스트" + this.worst);
       axios({
         method: "POST",
         url: "/api/telestations/showAlbum",
@@ -778,8 +798,6 @@ export default {
             console.log("this.recieveAlbum" + this.recieveAlbum);
             this.worst = 0;
             this.best = 0;
-            // this.removeKeyword()
-            // this.loading = setInterval(this.fadeInKeyword(),5000)
           } else {
             this.bestPlayer = res.data.best.nickname;
             this.worstPlayer = res.data.worst.nickname;
@@ -960,7 +978,6 @@ export default {
     },
   },
   mounted() {
-    // $('#divdiv').scrollTop($('divdiv').prop('scrollHeight'));
     this.startTexting();
     this.getUsers();
     this.session.on("signal:keyword", (event) => {
@@ -1301,6 +1318,7 @@ canvas {
 }
 
 .telestation-container {
+  background-color: rgb(231, 231, 231);
   height: 100%;
   /* background-color: white; */ /* background-image: url(assets/background.jpg); */
 }
@@ -1626,5 +1644,32 @@ canvas {
   60% {
     transform: rotate(45deg);
   }
+}
+.pstyle {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+}
+.inline-input {
+  display: inline-block;
+  margin-right: 10px;
+  width: 700px;
+  height: 40px;
+  font-size: 18px;
+}
+.text-div {
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.receive-draw {
+  width: 800px;
+  height: 533px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>
