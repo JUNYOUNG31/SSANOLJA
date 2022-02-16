@@ -230,8 +230,8 @@ export default {
       axios.post(
         '/api/games/rules',
         JSON.stringify({
-          // personnel: this.subscribers.length,
-          personnel: 1,
+          personnel: this.subscribers.length,
+          // personnel: 1,
           selectedGame: game
         })
       )
@@ -243,8 +243,8 @@ export default {
             '/api/games/start',
             
             JSON.stringify({
-              // userNicknames : this.playerList,
-              userNicknames : ["조성현"],
+              userNicknames : this.playerList,
+              // userNicknames : ["조성현"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),
