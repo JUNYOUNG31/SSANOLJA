@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Repository
@@ -69,6 +70,9 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     @Query(value = "select *  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
     Telestation findByIndexAndDrawingOrder(Integer dataIndex, Integer bestVote);
 
+    //--------------showAlbum find usersId
+    @Query(value = "select users_id from telestations where data_index = ? and drawing_order= ?", nativeQuery = true)
+    Integer findUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
 
     //--------DataGet-------------------
     @Query(value = "select data_index, data from telestations where games_id = ? and data_index = ( select data_index from telestations where games_id = ? and user_order = ? and drawing_order = 1)", nativeQuery = true)
