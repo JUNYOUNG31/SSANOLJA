@@ -1,8 +1,8 @@
 <template>
   <div
-<<<<<<< HEAD
     class="telestation-container paper-input"
-    style="background: rgb(231, 231, 231); border: 1px solid gray"
+    id="divdiv"
+    style="background: rgb(231, 231, 231); border: 1px solid gray; color:black;  overflow: scroll"
     oncontextmenu="return false"
     onselectstart="return false"
     ondragstart="return false"
@@ -17,15 +17,6 @@
     <div
       v-show="gameMode === 'text'"
       style="display: flex; flex-direction: column; align-items: center"
-=======
-    class="telestation-container"
-    id="divdiv"
-    style="color: black; overflow: scroll"
-  >
-    <div
-      v-show="gameMode === 'text'"
-      style="display: flex; flex-direction: column_reverse; align-items: center"
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
     >
       <!-- 키워드 입력 -->
       <div>
@@ -82,64 +73,6 @@
       </div>
     </div>
 
-<<<<<<< HEAD
-    <div
-      v-show="gameMode === 'album'"
-      style="display: flex; flex-direction: column; align-items: center"
-    >
-      <div v-for="(data, index) in recieveAlbum" :key="index">
-        <div style="display: flex" v-if="index % 2 === 0">
-          <p>{{ data }}</p>
-          <div v-if="index !== 0">
-            <button @click="bestPick(index)">
-              <v-icon color="blue">{{
-                index === best - 1 ? "mdi-thumb-up" : "mdi-thumb-up-outline"
-              }}</v-icon>
-            </button>
-            <button @click="worstPick(index)">
-              <v-icon color="red">{{
-                index === worst - 1 ? "mdi-thumb-up" : "mdi-thumb-up-outline"
-              }}</v-icon>
-            </button>
-          </div>
-        </div>
-        <div v-else>
-          <img :src="data" alt="" />
-          <div>
-            <button @click="bestPick(index)">
-              <v-icon color="blue">{{
-                index === best - 1 ? "mdi-thumb-up" : "mdi-thumb-up-outline"
-              }}</v-icon>
-            </button>
-            <button @click="worstPick(index)">
-              <v-icon color="red">{{
-                index === worst - 1 ? "mdi-thumb-up" : "mdi-thumb-up-outline"
-              }}</v-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-      <button
-        v-show="isRoomMaker && round < personnel"
-        @click="sendMessageToEveryBody('', 'nextAlbum')"
-      >
-        다음앨범
-      </button>
-      <button
-        v-show="isRoomMaker && round === personnel"
-        @click="sendMessageToEveryBody('', 'nextAlbum')"
-      >
-        결과보기
-      </button>
-      <p>{{ round }}</p>
-    </div>
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- <div v-show="gameMode ==='best'" style="display:flex; flex-direction: column; align-items: center;">
-=======
     <div v-show="gameMode === 'album'" style="width: 100%; text-align: center">
       <h2>{{ recieveUsers[0] + "'s Album" }}</h2>
       <button @click="testfn3()" style="display: block; margin: auto">
@@ -245,6 +178,8 @@
         >
           결과보기
         </button>
+
+
       </div>
       <div v-if="isRoomMaker">
         <button
@@ -264,57 +199,7 @@
         </button>
       </div>
     </div>
-
-    <div
-      v-show="gameMode === 'best'"
-      style="display: flex; flex-direction: column; align-items: center"
-    >
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
-      <h1>bestPlayer</h1>
-      <div v-if="bestVideo">
-        <user-video :best-video="bestVideo" />
-      </div>
-      <p>베스트 플레이어는 {{ bestPlayer }} 입니다.</p>
-      <div v-show="bestResultMode === 1">
-        <p>{{ bestPreData }}</p>
-        <img :src="bestData" alt="" />
-      </div>
-      <div v-show="bestResultMode === 2">
-        <img :src="bestPreData" alt="" />
-        <p>{{ bestData }}</p>
-      </div>
-<<<<<<< HEAD
-      <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','worst')">worst보러가기</button>
-    </div> -->
-
-    <!-- <div v-show="gameMode ==='worst'" style="display:flex; flex-direction: column; align-items: center;">
-=======
-      <button v-show="isRoomMaker" @click="sendMessageToEveryBody('', 'worst')">
-        worst보러가기
-      </button>
-    </div>
-
-    <div
-      v-show="gameMode === 'worst'"
-      style="display: flex; flex-direction: column; align-items: center"
-    >
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
-      <h1>worstPlayer</h1>
-      <div v-if="worstVideo">
-        <user-video :worst-video="worstVideo" />
-      </div>
-      <p>워스트 플레이어는 {{ worstPlayer }} 입니다.</p>
-      <div v-show="worstResultMode === 1">
-        <p>{{ worstPreData }}</p>
-        <img :src="worstData" alt="" />
-      </div>
-      <div v-show="worstResultMode === 2">
-        <img :src="worstPreData" alt="" />
-        <p>{{ worstData }}</p>
-      </div>
-<<<<<<< HEAD
-      <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','room')">다시하기</button>
-    </div> -->
+  
     <div v-show="gameMode === 'best'" class="modeBestWorst">
       <div class="word">
         <span>B</span><span>e</span><span>s</span><span>t</span><span>P</span
@@ -539,10 +424,6 @@
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-=======
-      <!-- <button v-show="isRoomMaker" @click="sendMessageToEveryBody('','room')">다시하기</button> -->
-    </div>
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
   </div>
 </template>
 <script src="../../assets/js/app.js"></script>
@@ -551,12 +432,8 @@ import axios from "axios";
 import { mapState } from "vuex";
 import CanvasApi from "@/components/CanvasApi";
 import UserVideo from "@/components/Video/UserVideo";
-<<<<<<< HEAD
 import "animate.css"; //글자 css
 
-=======
-import "animate.css";
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
 export default {
   name: "Telestation",
   props: {
@@ -580,28 +457,17 @@ export default {
       textingEnabled: false,
       votingEnabled: false,
 
-<<<<<<< HEAD
-      gameMode: "best",
-=======
       gameMode: "album",
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
 
       drawingOrder: 1 /* 라운드 */,
       completedPlayers: 0 /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */,
       myCompleted: false,
       readyPlayers: 0 /* 전 라운드에서 키워드나 그림정보를 웹소켓으로 받은 플레이어 수*/,
-<<<<<<< HEAD
-      personnel: 0, //인원수
-=======
       personnel: 4, //인원수
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
       participant: new Map(), // 참가자들
       targetUser: "", // 웹소켓 받는 사람
       receiveKeyword: "", // 받은 키워드
       recieveDraw: "", // 받은 그림
-<<<<<<< HEAD
-      recieveAlbum: null,
-=======
       recieveAlbum: [
         "졸라맨",
         "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150401_224%2Fche5466_14278577694929nElY_JPEG%2FXXX.PNG&type=a340",
@@ -609,7 +475,6 @@ export default {
         "https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAxNzEyMjNfODIg%2FMDAxNTE0MDM4NzU5MzU1.5LoCzGYvjU5pzVOVydLGbnhEKORvoRNJEc9f6cutzzEg.onVUrp8GZ0DA3XUmi0Q2eXLsmjEDfPKNyQwKBYvCFTIg.PNG.kyhk614%2F%25B2%25D9%25C0%25DA_3%25B1%25E2.png&type=a340",
       ],
       recieveUsers: ["조성현", "강광은", "배소원", "박준영"],
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
       round: 0,
       gameId: this.gameRes.playGameId,
       dataIndex: 0, // 앨범 번호
@@ -625,13 +490,6 @@ export default {
       worstData: "",
       bestPreData: "",
       bestData: "",
-<<<<<<< HEAD
-    };
-  },
-  methods: {
-    testFt() {
-      this.bestPlayer = "강광은";
-=======
       test: 0,
       testp: 4,
     };
@@ -704,7 +562,6 @@ export default {
     },
     removeDraw() {
       $("#draw > div").hide();
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
     },
     getUsers() {
       // 참가자 닉네임과 connectinId 딕셔너리화 for(웹소켓)
@@ -916,19 +773,13 @@ export default {
             this.gameMode = "album";
             this.dataIndex = res.data.dataIndex;
             this.recieveAlbum = res.data.dataList;
-<<<<<<< HEAD
-=======
             this.recieveUsers = res.data.userNicknameList;
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
             console.log("this.dataIndex" + this.dataIndex);
             console.log("this.recieveAlbum" + this.recieveAlbum);
             this.worst = 0;
             this.best = 0;
-<<<<<<< HEAD
-=======
             // this.removeKeyword()
             // this.loading = setInterval(this.fadeInKeyword(),5000)
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
           } else {
             this.bestPlayer = res.data.best.nickname;
             this.worstPlayer = res.data.worst.nickname;
@@ -1109,10 +960,7 @@ export default {
     },
   },
   mounted() {
-<<<<<<< HEAD
-=======
     // $('#divdiv').scrollTop($('divdiv').prop('scrollHeight'));
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
     this.startTexting();
     this.getUsers();
     this.session.on("signal:keyword", (event) => {
@@ -1153,17 +1001,10 @@ export default {
       this.bestVideo = null;
       this.gameMode = "worst";
     });
-<<<<<<< HEAD
-    this.session.on("signal:result", (event) => {
-      // 그린 그림 백에 보내기
-      this.worstVideo = null;
-      this.$router.push({ name: "Room", params: { joinCode: this.joinCode } });
-=======
     this.session.on("signal:replay", (event) => {
       // 그린 그림 백에 보내기
       this.worstVideo = null;
       this.backToRoom();
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
     });
 
     // this.session.on('signal:gameRes', (event)=>{
@@ -1467,7 +1308,6 @@ canvas {
   /* background: black; */
   cursor: not-allowed;
 }
-<<<<<<< HEAD
 
 .modeBestWorst {
   display: flex;
@@ -1497,7 +1337,7 @@ canvas {
   height: 0;
   border: 10px solid transparent;
   border-bottom-color: #ffffff;
-=======
+}
 #keyword > div {
   transition: all 2s;
 }
@@ -1535,13 +1375,11 @@ canvas {
   height: 0;
   border: 10px solid transparent;
   border-bottom-color: yellow;
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
   border-top: 0;
   border-left: 0;
   margin-left: -10px;
   margin-top: -10px;
 }
-<<<<<<< HEAD
 
 .speech-bubble-right {
   position: relative;
@@ -1789,15 +1627,4 @@ canvas {
     transform: rotate(45deg);
   }
 }
-=======
-/* #divdiv {
-  display:flex;
-
-  flex-direction: column-reverse;
-
-  overflow-y:auto;
-
-  height:100%;
-} */
->>>>>>> f3f240190fdaaee4281d584092885b1410d14527
 </style>
