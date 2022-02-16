@@ -6,8 +6,10 @@
       style="display: flex; flex-direction: column; align-items: center"
     >
       <!-- 키워드 입력 -->
-      <v-progress-linear v-model="textingTime" height="30" style="pointer-events:none">
-      </v-progress-linear>
+        <div class="progress" style="width:900px; margin-top:10px;">
+          <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="30" :style="{width:textingTime*3.4+'%'}">
+          </div>
+        </div>
 
       <div class="text-div">
         <div v-show="drawingOrder == 1">
@@ -70,10 +72,12 @@
       v-show="gameMode === 'drawing'"
       style="display: flex; flex-direction: column; align-items: center"
     >
-      {{ drawingTime }}
-      <v-progress-linear v-model="drawingTime" height="25" style="pointer-events:none">
-        <strong>{{ drawingTime }}</strong>
-      </v-progress-linear>
+        <div class="progress" style="width:900px; margin-bottom:40px; margin-top:10px;">
+          <div class="progress-bar" role="progressbar" aria-valuenow="100"
+          aria-valuemin="0" aria-valuemax="120" :style="{width:drawingTime/1.2+'%'}">
+          </div>
+        </div>
+
       <div style="font-size: 35px">{{ receiveKeyword }}</div>
       <div id="gamearea">
         <canvasApi
@@ -237,14 +241,10 @@
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <button @click="startDrawing">fsdfsdfsd</button>
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
   </div>
 </template>
-<script
-  type="module"
-  src="https://unpkg.com/wired-elements/lib/wired-slider.js?module"
-></script>
+<script type="module" src="https://unpkg.com/wired-elements/lib/wired-slider.js?module"></script>
 
 <script>
 import axios from 'axios';
@@ -252,7 +252,7 @@ import {mapState} from 'vuex';
 import CanvasApi from '@/components/CanvasApi';
 import UserVideo from '@/components/Video/UserVideo';
 import 'animate.css';
-import { WiredSlider } from "wired-elements/lib/wired-slider.js";
+import { WiredSlider } from 'wired-elements/lib/wired-slider.js';
 
 export default {
   name: 'Telestation',
@@ -278,7 +278,7 @@ export default {
       textingEnabled: false,
       votingEnabled: false,
 
-      gameMode: "text",
+      gameMode: "drawing",
       
       drawingOrder:1, /* 라운드 */
       completedPlayers:0, /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */
@@ -306,6 +306,9 @@ export default {
       worstData:'',
       bestPreData:'',
       bestData:'',
+
+
+      
 		}
 	},
   methods: {
@@ -1000,6 +1003,7 @@ export default {
 <style scoped>
 .telestation-container {
   height: 100%;
+  background-color: rgb(245, 245, 245);
 }
 .completed {
   background: black;

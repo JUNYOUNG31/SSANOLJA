@@ -43,9 +43,9 @@
                     <div class="color" @click = "colorChange($event)" style="background-color:rgb(88,86,214)"></div>
                   </div>
                   <div class = "left inputarea" style="display:flex">
-                    <p style="display:inline-block; margin:10px 15px;">o</p>
-                    <wired-slider type="range" value="5.0" min="0.1" max="100.0"   @change="onRangeChange"></wired-slider>
-                    <p style="display:inline-block; margin:5px 7px; font-size:25px">O</p>
+                    <p style="display:inline-block; margin:20px 15px;">o</p>
+                    <wired-slider type="range" value="5.0" min="0.1" max="100.0" style="margin:7px 0;"  @change="onRangeChange"></wired-slider>
+                    <p style="display:inline-block; margin:12px 7px; font-size:25px">O</p>
                   </div>
                 </div>
                 
@@ -74,12 +74,13 @@ data:function(){
     //   this.myComplete = !this.myComplete
     // },
     canvasComplete() {
-      if(this.drawComplete == false){
+     if(this.drawComplete == false){
         this.drawComplete = true;
       }
         this.$emit("canvasCompleted");
     },
     saveClick(){//그림 저장하는 코드
+      this.drawComplete = false;
       this.image = this.$refs.canvas.toDataURL("image/jpeg");
       this.$emit("setDrawData", this.image)
       console.log(this.image);
@@ -154,7 +155,7 @@ data:function(){
       resetAll(){
         this.ctx.clearRect(0,0,this.$refs.canvas.width, this.$refs.canvas.height);
         this.ctx.fillStyle='white';
-         this.ctx.fillRect(0,0,this.$refs.canvas.width, this.$refs.canvas.height);
+        this.ctx.fillRect(0,0,this.$refs.canvas.width, this.$refs.canvas.height);
       },
 
     },
@@ -229,7 +230,7 @@ canvas {
 
 .colors {
   margin-left: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
   display: flex;
 }
 

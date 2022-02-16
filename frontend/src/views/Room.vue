@@ -244,7 +244,7 @@ export default {
             
             JSON.stringify({
               userNicknames : this.playerList,
-              // userNicknames : ["조성현"],
+              // userNicknames : ["배소원"],
               roomCode : this.mySessionId,
               selectedGame: game
             }),
@@ -363,6 +363,7 @@ export default {
   border-color: var(--primary);
   border-style: solid;
   border-width: 2px;
+  background-color: rgb(241, 241, 241);
 }
 
 @media (max-width: 1455px) {
