@@ -93,7 +93,7 @@
 
     <div v-show="gameMode ==='album'" style=" width:100%; text-align:center;">
       <h2>{{recieveUsers[0]+"'s Album"}}</h2>
-      <button @click="testfn3()" style="display:block; margin:auto">클릭</button>
+      <!-- <button @click="testfn3()" style="display:block; margin:auto">클릭</button> -->
       <div v-for="(data,index) in recieveAlbum" :key="index" style="display:flex; flex-direction: column; align-items:center;">
         <div style="width:100%;" v-if="index%2 === 0" id="keyword">
           <div class="animate__animated animate__slideInLeft" style="display:flex; flex-direction: column; align-items:center;">
@@ -148,10 +148,10 @@
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 
     <div v-show="gameMode === 'best'" class="modeBestWorst">
-      <div class="word">
+      <div class="worst">
         <span>B</span><span>e</span><span>s</span><span>t</span><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
       </div>
-      <audio autoplay onloadstart="this.volume=0.3" src="../../assets/telestation_audio/등장중일때.mp3" ></audio>
+      <audio v-if="gameMode === 'best'" autoplay onloadstart="this.volume=0.3" src="../../assets/telestation_audio/등장중일때.mp3" ></audio>
       <canvas id="canvas"></canvas>
       <div class="parent1">
         <div class="div1-1">
@@ -223,13 +223,12 @@
               </div>
             </div>
             <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@  버튼 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-            <div v-if="isRoomMaker">
-              <button class="paper-btn" style="width:100%;" @click="sendMessageToEveryBody('','replay')">
+            <div class="div2-3" style="display: flex; justify-content: center;">
+              <button v-if="isRoomMaker" class="paper-btn" style="width:100%;" @click="sendMessageToEveryBody('','replay')">
                 <span>게임 선택하기</span>
               </button>
-
               <button class="paper-btn btn-secondary" style="width:100%" @click="leaveRoom()">
-                <span>방나가기</span>
+                <span>방 나가기</span>
               </button>
             </div>
             <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
@@ -321,7 +320,7 @@ export default {
       this.keyword= '',
       this.draw='',
       this.round=0,
-      this.gameMode= "album",
+      this.gameMode= "text",
       this.session.off('signal:keyword')
       this.session.off('signal:draw')
       this.session.off('signal:completed')
@@ -720,6 +719,7 @@ export default {
     })
     this.session.on('signal:replay', (event) => { // 그린 그림 백에 보내기 
       this.worstVideo = null
+      this.backToRoom()
     })
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
