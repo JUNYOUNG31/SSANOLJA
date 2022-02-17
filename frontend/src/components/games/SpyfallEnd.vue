@@ -42,14 +42,14 @@
       </div>
     </div>
     <div v-show="spyWin">   
+      <canvas id="canvas" v-show="isSpy"></canvas>
       <p>스파이 승리</p>
-      <canvas id="canvas"></canvas>
       <div v-if="spyPlayer" class="child-borders">
         <ov-video :stream-manager="spyPlayer"/>
       </div>
     </div>
     <div v-show="citizenWin">   
-      <canvas id="canvas"></canvas>
+      <canvas id="canvas" v-show="!isSpy"></canvas>
       <p>시민 승리</p>
       <div v-if="spyPlayer" class="child-borders">
         <ov-video :stream-manager="spyPlayer"/>
@@ -117,7 +117,7 @@ export default {
       // this.effect()
     }           
 
-    (function () {
+(function () {
       // globals
       var canvas;
       var ctx;
@@ -381,37 +381,34 @@ export default {
       }
 
       if(this.spyWin) {
-        this.publisher.stream.applyFilter("FaceOverlayFilter")
-        .then(filter => {
-          filter.execMethod(
-            "setOverlayedImage",
-            {
-              "uri": "../../assets/spy_overlay.png",
-              "offsetXPercent":"-0.2F",
-              "offsetYPercent":"-0.8F",
-              "widthPercent":"1.3F",
-              "heightPercent":"1.0F"
-            }
-          )
-        })
-        .catch(error =>{
-          console.error(error)
-        })
+        if (this.publisher.stream.filter == undefined){
+        this.publisher.stream.applyFilter(
+          "ChromaFilter",
+          {
+              "window": {
+                  "topRightCornerX": 0,
+                  "topRightCornerY": 0,
+                  "width": 50,
+                  "height": 50
+              },
+              "backgroundImage": "../../assets/background.jpg"
+          });
+        }
       }
     }
   },
 
-  deactivated () {
-    if(this.gameRes.jobs[this.myUserName]=="스파이") {
-      this.publisher.stream.removeFilter()
-      .then(()=>{
-        console.log("필터 제거됨");
-      })
-      .catch(error => {
-        console.error(error);
-      })
-    }
-  },
+  // deactivated () {
+  //   if(this.gameRes.jobs[this.myUserName]=="스파이") {
+  //     this.publisher.stream.removeFilter()
+  //     .then(()=>{
+  //       console.log("필터 제거됨");
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     })
+  //   }
+  // },
 
 
 
@@ -427,6 +424,8 @@ export default {
 
     backToRoom() {
       if(this.gameRes.jobs[this.myUserName]=="스파이") {
+        if(this.publisher.stream.filter){
+
         this.publisher.stream.removeFilter()
         .then(()=>{
           console.log("필터 제거됨");
@@ -434,6 +433,7 @@ export default {
         .catch(error => {
           console.error(error);
         })
+      }
       }
       this.sendMessageToEveryBody('', 'initSpyfall')
     },
