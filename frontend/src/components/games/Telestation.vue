@@ -26,7 +26,7 @@
             class="form-control inline-input"
             type="text"
             required
-            placeholder="eX)라이브 방송을 듣는 싸피인"
+            placeholder="ex)라이브 방송을 듣는 싸피인"
           />
           <button
             class="paper-btn btn-lg btn-warning writeEnd"
@@ -70,7 +70,7 @@
       v-show="gameMode === 'drawing'"
       style="display: flex; flex-direction: column; align-items: center"
     >
-        <div class="progress" style="width:900px; margin-top:10px; margin-bottom:40px;">
+        <div class="progress" style="width:900px; margin-top:10px; margin-bottom:15px;">
           <div class="progress-bar bar danger" role="progressbar" aria-valuenow="100"
           aria-valuemin="0" aria-valuemax="120" :style="{width:drawingTime/1.2+'%'}">
           </div>
