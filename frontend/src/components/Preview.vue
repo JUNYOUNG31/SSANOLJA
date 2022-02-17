@@ -171,7 +171,6 @@ export default {
     background-color: rgb(255, 255, 255);
     color: black;
   }
-
   .v-btn {
     margin:0 20px;
   }

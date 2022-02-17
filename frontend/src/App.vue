@@ -11,7 +11,6 @@ export default {
   name: 'App',
 
   data: () => ({
-    //
   }),
 };
 </script>
@@ -22,7 +21,7 @@ export default {
 }
 .v-application--wrap {
   border: hidden;
-  background-image: url(assets/checkback.png);
+  background-image: url(assets/paint/checkback.png);
   background-size: cover;
   background-position: center;
 }

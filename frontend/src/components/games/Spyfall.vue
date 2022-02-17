@@ -362,14 +362,12 @@ export default {
           this.session.on('signal:spyWinByVoting', ()=>{
             this.$store.commit("SPY_WIN")
           })
-          // this.effect()
         }
 
         if(this.session.ee._events["signal:citizenWinByVoting"] == undefined) {
           this.session.on('signal:citizenWinByVoting', () =>{
             this.$store.commit("CITIZEN_WIN")
           })
-          // this.effect()
         }  
       }      
     })
@@ -381,7 +379,6 @@ export default {
         const div = document.getElementById('voteCompleted')
         div.style.display = "block"
         setTimeout(() => {
-          // alert('투표가 완료 되었습니다.')
           this.restart()
         }, 3000);
       }
@@ -405,14 +402,12 @@ export default {
       this.session.on('signal:spyWinByVoting', ()=>{
         this.$store.commit("SPY_WIN")
       })
-      // this.effect()
     }
 
     if(this.session.ee._events["signal:citizenWinByVoting"] == undefined) {
       this.session.on('signal:citizenWinByVoting', () =>{
         this.$store.commit("CITIZEN_WIN")
       })
-      // this.effect()
     }
   },
 

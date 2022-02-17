@@ -14,10 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
 @Slf4j
+@Transactional
 public class TelestationService {
 
     @Autowired
@@ -149,7 +151,6 @@ public class TelestationService {
        return tel;
    }
 
-
     public   Map<String,Object> showAlbum(TelestationReq telestationReq){
 
         Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
@@ -157,18 +158,16 @@ public class TelestationService {
         Map<String, Object> returnData = new HashMap<String, Object>();
         if(telestationReq.getRound() != 1){
 
+            System.out.println("=================  " + telestationReq.getRound() + "  =================");
+
             if(telestationReq.getBestVote() != 0){
                 Integer bestVote = telestationRepository.findBestByDataIndexandDrawingOrder(telestationReq.getDataIndex(),  telestationReq.getBestVote());
-                Telestation bestTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getBestVote());
-                bestTele.setBestVote(bestVote + 1);
-                telestationRepository.save(bestTele);
+                System.out.println("    userNickname" + telestationReq.getUserNickname() + " / bestVote = " + bestVote);
 
             }
             if(telestationReq.getWorstVote() != 0){
                 Integer worstVote = telestationRepository.findWorstByDataIndexandDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
-                Telestation worstTele = telestationRepository.findByIndexAndDrawingOrder(telestationReq.getDataIndex(), telestationReq.getWorstVote());
-                worstTele.setWorstVote(worstVote + 1);
-                telestationRepository.save(worstTele);
+                System.out.println("    userNickname" + telestationReq.getUserNickname() + " / worstVote = " + worstVote);
             }
 
 
@@ -185,10 +184,16 @@ public class TelestationService {
             for (int i = 1; i <= personnel; i++) {
                 getAlbumList.add(getAlbumList(telestationReq, dataIndex, i));
             }
+            List<String> getUserNicknameList = new ArrayList<>();
+            for (int i = 1; i<= personnel; i++) {
+                Integer getUsersId = telestationRepository.findUsersIdByDataIndexDrawingOrder(dataIndex, i);
+                String getUserNickname =  userRepository.findByUserNicknameFromUsersId(getUsersId);
+                getUserNicknameList.add(getUserNickname);
+            }
 
             returnData.put("dataIndex", dataIndex);
             returnData.put("dataList", getAlbumList);
-
+            returnData.put("userNicknameList", getUserNicknameList);
 
         return returnData;
     }
@@ -218,21 +223,29 @@ public class TelestationService {
         // pre best => data, drawingOrder
         Integer preBestUserDrawingOrder = 0;
         String preBestUserData = null;
-
+        
+        // best => dataIndex
+        // best => preUsersId userNickname
+        Integer bestUserDataIndex = telestationRepository.findBestDataIndexByGamesIdUsersId(gameId, bestUsersId);
+        Integer preBestUsersId = 0;
+        
         if(bestUser.getDrawingOrder() - 1 == 0){
             Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
             Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
             preBestUserDrawingOrder = preBestUser.getDrawingOrder();
             preBestUserData = preBestUser.getData();
+            preBestUsersId = telestationRepository.findPreBestUsersIdByDataIndexDrawingOrder(bestUserDataIndex, personnel);
         }else{
             Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
             preBestUserDrawingOrder = preBestUser.getDrawingOrder();
             preBestUserData = preBestUser.getData();
+            preBestUsersId = telestationRepository.findPreBestUsersIdByDataIndexDrawingOrder(bestUserDataIndex, bestUserDrawingOrder - 1);
         }
+        String PreBestUserNickname = userRepository.findByUserNicknameFromUsersId(preBestUsersId);
 
         // worst => 유저 닉네임
         String worstUserNickname = userRepository.findByUserNicknameFromUsersId(worstUserId);
-
+        
         // worst => data, drawingOrder
         Telestation worstUser = telestationRepository.findWorstUserByGamesIdUsersId(gameId, worstUserId);
         Integer worstUserDrawingOrder = worstUser.getDrawingOrder();
@@ -241,18 +254,42 @@ public class TelestationService {
         // pre best => data, drawingOrder
         Integer preWorstUserDrawingOrder = 0;
         String preWorstUserData = null;
+
+        // best => dataIndex
+        // best => preUsersId userNickname
+        Integer WorstUserDataIndex = telestationRepository.findWorstDataIndexByGamesIdUsersId(gameId, worstUserId);
+        Integer preWorstUsersId = 0;
+        
         if(worstUser.getDrawingOrder() - 1 == 0){
             Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
-            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
+            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), personnel);
             preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
             preWorstUserData = preWorstUser.getData();
+            preWorstUsersId = telestationRepository.findPreWorstUsersIdByDataIndexDrawingOrder(WorstUserDataIndex, personnel);
 
         }else{
-            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
+            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), worstUser.getDrawingOrder() - 1);
             preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
             preWorstUserData = preWorstUser.getData();
+            preWorstUsersId = telestationRepository.findPreWorstUsersIdByDataIndexDrawingOrder(WorstUserDataIndex, worstUserDrawingOrder - 1);
         }
+        String PreWorstUserNickname = userRepository.findByUserNicknameFromUsersId(preWorstUsersId);
 
+        //**********************************************************************************************
+        //************************ 확인 *****************************************************************
+        //**********************************************************************************************
+        System.out.println("BestUserDataIndex = " + bestUserDataIndex);
+        System.out.println("preBestUsersId = " + preBestUsersId);
+        System.out.println("PreBestUserNickname = " + PreBestUserNickname);
+        System.out.println("WorstUserDataIndex = " + WorstUserDataIndex);
+        System.out.println("preWorstUsersId = " + preWorstUsersId);
+        System.out.println("PreWorstUserNickname = " + PreWorstUserNickname);
+        //**********************************************************************************************
+        //**********************************************************************************************
+        //**********************************************************************************************
+        
+        
+        
         Map<String, Object> res = new HashMap<>();
         Map<String, Object> worst = new HashMap<>();
         Map<String, Object> best = new HashMap<>();
@@ -260,17 +297,23 @@ public class TelestationService {
         res.put("worst", worst);
         res.put("best", best);
 
-        worst.put("Nickname", worstUserNickname);
+        worst.put("nickname", worstUserNickname);
+        worst.put("preNickname", PreWorstUserNickname);
         worst.put("preDrawingOrder", preWorstUserDrawingOrder);
         worst.put("preData", preWorstUserData);
-        worst.put("DrawingOrder", worstUserDrawingOrder);
-        worst.put("Data", worstUserData);
+        worst.put("drawingOrder", worstUserDrawingOrder);
+        worst.put("data", worstUserData);
 
-        best.put("Nickname", bestUserNickname);
+        best.put("nickname", bestUserNickname);
+        best.put("preNickname", PreBestUserNickname);
         best.put("preDrawingOrder", preBestUserDrawingOrder);
         best.put("preData", preBestUserData);
-        best.put("DrawingOrder", bestUserDrawingOrder);
-        best.put("Data", bestUserData);
+        best.put("drawingOrder", bestUserDrawingOrder);
+        best.put("data", bestUserData);
+
+        System.out.println("best = " + best);
+        System.out.println("worst = " + worst);
+        System.out.println("voteResult >> res = " + res);
 
         return res;
     }

@@ -1,5 +1,8 @@
 <template>
-  <div class="room"> <!--전체화면-->
+  <div class="room" style="" 
+    oncontextmenu="return false"
+    onselectstart="return false"
+    ondragstart="return false"> <!--전체화면-->
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
@@ -7,7 +10,7 @@
             <user-video :stream-manager="user" :game-selected="gameSelected" :start="start" :readyList="readyList"/>
           </div>
         </div>     
-        <v-col id="game"> <!--가운데 게임화면-->
+        <v-col id="game" style="height:100%"> <!--가운데 게임화면-->
           <span v-if="start">
             <span v-if="gameSelected == 'Spyfall'">
               <spyfall :stream-manager="streamManagers" :gameRes="gameRes" :rules="rules"></spyfall>
@@ -163,6 +166,11 @@ export default {
         this.$store.commit('INIT_SPYFALL')
       })
     }
+    if(this.session.ee._events["signal:initTelestation"] == undefined) {
+      this.session.on('signal:initTelestation', ()=>{
+        this.start = false
+      })
+    }
 
     this.session.on('signal:ready', (event)=>{
       const person = event.data
@@ -220,28 +228,30 @@ export default {
         '/api/games/rules',
         JSON.stringify({
           personnel: this.subscribers.length,
-          // personnel: 3,
           selectedGame: game
         })
       )
       .then(res => {
-        this.rules=res.data
-        this.sendMessageToEveryBody(JSON.stringify(this.rules), 'rules')
-        axios.post(
-          '/api/games/start',          
-          JSON.stringify({
-            userNicknames : this.playerList,
-            // userNicknames : ["박준영", "정성우", "김범주"],
-            roomCode : this.mySessionId,
-            selectedGame: game
-          }),
-        )
-        .then(resp =>{            
-          this.gameRes = resp.data
-          this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
-          this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
-        })
-        .catch(error => console.log(error))
+          this.rules=res.data
+          this.sendMessageToEveryBody(JSON.stringify(this.rules), 'rules')
+          axios
+          .post(
+            '/api/games/start',
+            
+            JSON.stringify({
+              userNicknames : this.playerList,
+              roomCode : this.mySessionId,
+              selectedGame: game
+            }),
+          )
+          .then(resp =>{
+            
+            this.gameRes = resp.data
+            this.sendMessageToEveryBody(JSON.stringify(this.gameRes), 'gameRes')
+            this.sendMessageToEveryBody(this.gameSelected, 'gameStart')
+          })
+          .catch(error => console.log(error))
+
       })
       .catch(err =>{
         console.log(err)
@@ -345,6 +355,7 @@ export default {
   border-color: var(--primary);
   border-style: solid;
   border-width: 2px;
+  background-color: rgb(241, 241, 241);
 }
 @media (max-width: 1455px) {
   .room{

@@ -4,9 +4,11 @@ import com.ssanolja.backend.db.entity.Game;
 import com.ssanolja.backend.db.entity.Telestation;
 import com.ssanolja.backend.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Repository
@@ -57,15 +59,20 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
 
 
     //----------VOTE--------------------
-    @Query(value = "select best_vote  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update telestations set best_vote = 1+ best_vote where data_index = ? and drawing_order = ?", nativeQuery = true)
     Integer findBestByDataIndexandDrawingOrder(Integer dataIndex, Integer bestVote);
 
-    @Query(value = "select worst_vote  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update telestations set worst_vote = worst_vote + 1 where data_index = ? and drawing_order = ? ", nativeQuery = true)
     Integer findWorstByDataIndexandDrawingOrder(Integer dataIndex, Integer worstVote);
 
     @Query(value = "select *  from telestations where data_index = ? and drawing_order = ? ", nativeQuery = true)
     Telestation findByIndexAndDrawingOrder(Integer dataIndex, Integer bestVote);
 
+    //--------------showAlbum find usersId
+    @Query(value = "select users_id from telestations where data_index = ? and drawing_order= ?", nativeQuery = true)
+    Integer findUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
 
     //--------DataGet-------------------
     @Query(value = "select data_index, data from telestations where games_id = ? and data_index = ( select data_index from telestations where games_id = ? and user_order = ? and drawing_order = 1)", nativeQuery = true)
@@ -81,7 +88,7 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     Integer findSumWorstVoteUsersIdByGamesId(Integer gamesId);
 
     // 베스트, 워스트 유저 최다 득표 컬럼 찾기 ( data, drawing_order 찾기 위해 )
-   @Query(value = "select * from telestations where games_id = ? and users_id = ? order by best_vote desc limit 1", nativeQuery = true)
+    @Query(value = "select * from telestations where games_id = ? and users_id = ? order by best_vote desc limit 1", nativeQuery = true)
     Telestation findBestUserByGamesIdUsersId(Integer gamesId, Integer usersId);
 
     @Query(value = "select * from telestations where games_id = ? and users_id = ? order by worst_vote desc limit 1", nativeQuery = true)
@@ -94,6 +101,23 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     // 게임 방의 인원수 찾기
     @Query(value = "select count(*) from telestations where games_id = ? and drawing_order = 1", nativeQuery = true)
     Integer findCountByGamesIdDrawing_order(Integer gamesId);
+
+    //최다 베스트 투표 데이터의 데이터 인덱스 찾기
+    @Query(value = "select data_index from telestations where games_id = ? and users_Id = ? order by best_vote desc limit 1", nativeQuery = true)
+    Integer findBestDataIndexByGamesIdUsersId(Integer gamesId, Integer usersId);
+
+    //최다 워스트 투표 데이터의 데이터 인덱스 찾기
+    @Query(value = "select data_index from telestations where games_id = ? and users_Id = ? order by worst_vote desc limit 1", nativeQuery = true)
+    Integer findWorstDataIndexByGamesIdUsersId(Integer gamesId, Integer usersId);
+
+    // 최다 베스트 투표 데이터의 preUsersId 찾기
+    @Query(value = "select users_id from telestations where data_index = ? and drawing_order = ?", nativeQuery = true)
+    Integer findPreBestUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
+
+    // 최다 워스트 투표 데이터의 preUsersId 찾기
+    @Query(value = "select users_id from telestations where data_index = ? and drawing_order = ?", nativeQuery = true)
+    Integer findPreWorstUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
+
 
 
 

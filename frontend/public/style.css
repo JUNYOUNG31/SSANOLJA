@@ -43,13 +43,6 @@ nav i.fa:hover {
 	padding-bottom: 80px;
 }
 
-/*vertical-center {
-	position: relative;
-	top: 30%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}*/
-
 .horizontal-center {
 	margin: 0 auto;
 }
@@ -156,10 +149,6 @@ a:hover .demo-logo {
 	text-align: center;
 	margin-top: 3em;
 	margin-bottom: 3em;
-	/*position: relative;
-	top: 20%;
-	left: 50%;
-	transform: translate(-50%, -50%);*/
 }
 
 #img-div img {
@@ -246,9 +235,6 @@ video {
 	height: 180px;
 }
 
-
-/* xs ans md screen resolutions*/
-
 @media screen and (max-width: 991px) and (orientation: portrait) {
 	#join-dialog {
 		max-width: inherit;
@@ -281,9 +267,3 @@ video {
 		max-width: inherit;
 	}
 }
-
-/* @media (max-width: 1369px) {
-  html {
-    overflow-x: scroll;
-  }
-} */
