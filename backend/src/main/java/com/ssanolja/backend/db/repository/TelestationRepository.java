@@ -123,8 +123,8 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     Integer findUsersIdByGamesIdDataIndexDrawingOrder(Integer gamesId, Integer dataIndex, Integer drawingOrder);
 
     // 이전 userData 찾기
-    @Query(value = "select data from telestations where games_id= ? and users_id = ? and drawing_order = ?", nativeQuery = true)
-    String findDataByGamesIdUsersIdDrawingOrder(Integer gamesId, Integer users_id, Integer drawingOrder);
+    @Query(value = "select data from telestations where games_id= ? and data_index = ? and drawing_order = ?", nativeQuery = true)
+    String findDataByGamesIdDataIndexDrawingOrder(Integer gamesId, Integer dataIndex, Integer drawingOrder);
 
 
 
