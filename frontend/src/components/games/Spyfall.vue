@@ -269,9 +269,7 @@ export default {
           }, 1000);
         }
         if(this.votetimeCnt == 0) {          
-          setTimeout(()=> {
-            this.restart()
-          }, 3000);          
+          this.restart()          
         }
       },
       immediate: false // 컴포넌트가 생성되자마자 즉시 실행
@@ -402,6 +400,20 @@ export default {
       const div = document.getElementById('voteCompleted')
       div.style.display = "none"
     })
+
+    if(this.session.ee._events["signal:spyWinByVoting"] == undefined) {
+      this.session.on('signal:spyWinByVoting', ()=>{
+        this.$store.commit("SPY_WIN")
+      })
+      // this.effect()
+    }
+
+    if(this.session.ee._events["signal:citizenWinByVoting"] == undefined) {
+      this.session.on('signal:citizenWinByVoting', () =>{
+        this.$store.commit("CITIZEN_WIN")
+      })
+      // this.effect()
+    }
   },
 
 	methods: {
