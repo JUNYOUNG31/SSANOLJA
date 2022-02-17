@@ -1,5 +1,8 @@
 <template>
-  <div class="room" style=""> <!--전체화면-->
+  <div class="room" style="" 
+    oncontextmenu="return false"
+    onselectstart="return false"
+    ondragstart="return false"> <!--전체화면-->
     <v-container fluid> <!--게임& 화면들 감싸는 부분-->
       <v-row class="wrap"><!--게임& 화면들 감싸는 부분-->
         <div class="left-cam"><!--왼쪽 카메라모음--><!--20%-->
