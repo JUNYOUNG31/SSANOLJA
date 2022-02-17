@@ -55,13 +55,13 @@ public class TelestationService {
             return telestationRes;
     }
 
+    // 받는 데이터 : data, userNickname, roomCode, drawingOrder, personnel
+    // 주는 데이터 : 다음 사람 userNickname
     public Map<String, Object> saveData(TelestationReq telestationReq) throws Exception {
 
         Integer dataIndex;
         int preUserOrder;
         Telestation telestation = null;
-
-
         // room_code >> find room_id
         Optional<Room> room = roomRepository.findByRoomCode(telestationReq.getRoomCode());
 
@@ -87,16 +87,16 @@ public class TelestationService {
         }
 
         Telestation tel = SetDataAndDataIndex(user.getUsersId(), game.get().getPlayGameId(), telestationReq.getDrawingOrder(), telestationReq.getData(), dataIndex);
-
-       //-------------------------------------뿌리는 과정---------------------------------
+//
+//       //-------------------------------------뿌리는 과정---------------------------------
         Map<String, Object> sendData = new HashMap<String, Object>();
-
+//
         if(tel.getUserOrder() != telestationReq.getPersonnel()){
            Integer byUsersId = telestationRepository.findUsersIdByUserOrderGamesId(tel.getUserOrder() + 1 , game.get().getPlayGameId());
            String byUserNicknameFromUsersId = userRepository.findByUserNicknameFromUsersId(byUsersId);
 
             sendData.put("userNickname", byUserNicknameFromUsersId);
-            sendData.put("data", telestationReq.getData());
+//            sendData.put("data", telestationReq.getData());
 
         }else{
 
@@ -105,10 +105,63 @@ public class TelestationService {
             String byUserNicknameFromUsersId = userRepository.findByUserNicknameFromUsersId(byUsersId);
 
             sendData.put("userNickname", byUserNicknameFromUsersId);
-            sendData.put("data", telestationReq.getData());
+//            sendData.put("data", telestationReq.getData());
 
         }
         return sendData;
+
+
+
+//        String roomCode = telestationReq.getRoomCode();
+//        Integer roomId = roomRepository.findRoomIdByRoomCode(roomCode);
+//        Integer gamesId = gameRepository.findGamesIdByRoomsId(roomId);
+//        String userNickname = telestationReq.getUserNickname();
+//        Integer usersId = userRepository.findUsersIdByUserNickname(userNickname);
+//        Integer drawingOrder = telestationReq.getDrawingOrder();
+//        Integer userOrder = telestationRepository.findUserOrderByGamesIdUsersIdDrawingOrder(gamesId, usersId, drawingOrder);
+//        Integer personnel = telestationReq.getPersonnel();
+//        String data = telestationReq.getData();
+//        Integer nextUserId;
+//
+//        if((userOrder + 1) > personnel ) {
+//            nextUserId = telestationRepository.findUsersIdByGamesIdUserOrderDrawingOrder(gamesId, drawingOrder, 1);
+//        }else {
+//            nextUserId = telestationRepository.findUsersIdByGamesIdUserOrderDrawingOrder(gamesId, drawingOrder, userOrder + 1);
+//        }
+//        String nextUserNickname = userRepository.findByUserNicknameFromUsersId(nextUserId);
+//
+//        Telestation setData = telestationRepository.findByUsersIdGamesIdDrawingOrder(usersId, gamesId, drawingOrder);
+//        setData.setData(data);
+//
+//        Map<String, Object> sendData = new HashMap<String, Object>();
+//        sendData.put("userNickname", nextUserNickname);
+//
+//        return sendData;
+
+    }
+
+    public Map<String, Object> getData(TelestationReq telestationReq) throws Exception {
+
+        String roomCode = telestationReq.getRoomCode();
+        Integer roomId = roomRepository.findRoomIdByRoomCode(roomCode);
+        Integer gamesId = gameRepository.findGamesIdByRoomsId(roomId);
+        String userNickname = telestationReq.getUserNickname();
+        Integer usersId = userRepository.findUsersIdByUserNickname(userNickname);
+        Integer drawingOrder = telestationReq.getDrawingOrder();
+        Integer userOrder = telestationRepository.findUserOrderByGamesIdUsersIdDrawingOrder(gamesId, usersId, drawingOrder);
+        Integer personnel = telestationReq.getPersonnel();
+        String  data;
+
+        if((userOrder - 1) == 0){
+            data = telestationRepository.findDataByGamesIdDrawingOrderUserOrder(gamesId, drawingOrder, personnel);
+        }else {
+            data = telestationRepository.findDataByGamesIdDrawingOrderUserOrder(gamesId, drawingOrder, userOrder - 1);
+        }
+
+        Map<String, Object> sendData = new HashMap<String, Object>();
+        sendData.put("data", data);
+
+        return  sendData;
     }
 
 

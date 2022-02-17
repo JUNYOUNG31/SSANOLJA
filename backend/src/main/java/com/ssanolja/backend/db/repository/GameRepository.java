@@ -15,4 +15,7 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
 
     @Query(value = "select * from games where rooms_id = ? order by games_id desc limit 1", nativeQuery = true)
     Optional<Game> findByRoomId(Optional<Room> room);
+
+    @Query(value = "select games_id from games where rooms_id = ?", nativeQuery = true)
+    Integer findGamesIdByRoomsId(Integer roomsId);
 }

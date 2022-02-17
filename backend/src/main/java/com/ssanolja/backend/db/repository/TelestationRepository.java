@@ -126,6 +126,22 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     @Query(value = "select data from telestations where games_id= ? and data_index = ? and drawing_order = ?", nativeQuery = true)
     String findDataByGamesIdDataIndexDrawingOrder(Integer gamesId, Integer dataIndex, Integer drawingOrder);
 
+    // 데이터 넣기
+    @Query(value = "select * from telestations where users_id = ? and games_id = ? and drawing_order = ?", nativeQuery = true)
+    Telestation findByUsersIdGamesIdDrawingOrder(Integer usersId, Integer gamesId, Integer drawingOrder);
+//
+//    // 다음사람 유저 아이디 찾기
+//    @Query(value = "select users_id from telestations where users_id = ? and games_id = ? and user_order = ?", nativeQuery = true)
+//    Integer findUsersIdByUsersIdGamesIdUsersOrder(Integer usersId, Integer gamesId, Integer userOrder);
+
+      @Query(value = "select user_order from telestations where games_id = ? and users_id = ? and drawing_order = ?", nativeQuery = true)
+      Integer findUserOrderByGamesIdUsersIdDrawingOrder(Integer gamesId, Integer usersId, Integer drawingOrder);
+
+      @Query(value = "select data from telestations where games_id = ? and drawing_order = ? and user_order = ?;", nativeQuery = true)
+      String findDataByGamesIdDrawingOrderUserOrder(Integer gamesId, Integer drawingOrder, Integer userOrder);
+
+      @Query(value = "select users_id from telestations where games_id = 370 and user_order = 1 and drawing_order = 1;", nativeQuery = true)
+      Integer findUsersIdByGamesIdUserOrderDrawingOrder(Integer gamesId, Integer drawingOrder, Integer userOrder);
 
 
 
