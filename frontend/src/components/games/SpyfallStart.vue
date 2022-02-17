@@ -137,7 +137,7 @@ export default {
 .citizenpick h4 {
   padding: 5px;
   background-color: white;
-  width: 150px;
+  width: 190px;
   margin-bottom: 50px ;
 }
 </style>

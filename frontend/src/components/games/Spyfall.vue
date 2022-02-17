@@ -73,9 +73,9 @@
                 <img :src="placeSrc"  style="width:100px; margin:0; height: 85px" />
                 <h5 v-if="!isSpy">{{place}}</h5>
               </div>
-              <div class="alert alert-primary" style="height: 100px; margin-bottom:10px" v-if="!isSpy">
+              <div class="alert alert-primary" style="height: 160px; margin-bottom:10px" v-if="!isSpy">
                 <h4>직업</h4>
-                <h4>{{job}}</h4>
+                <h5 style="margin:auto">{{job}}</h5>
               </div>
               <div v-else style="margin-bottom:10px">
                 <img src="../../assets/Spy.jpg" alt="spy">

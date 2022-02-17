@@ -41,21 +41,28 @@
         <button class="place20 paper-btn" @click="decide('동물원')"><h5>동물원</h5></button> 
       </div>
     </div>
-    <div v-show="spyWin">   
+    <div v-show="spyWin" class="spywinfadein">   
       <!-- <canvas v-show="isSpy" id="canvas"></canvas> -->
-      <h3 class="alert alert-primary">스파이 승리</h3>
-      <div v-if="spyPlayer" class="child-borders">
+      <h3 class="alert alert-primary">스파이 승리!</h3>
+      <div v-if="spyPlayer" class="child-borders" id="spyplayerfadein">
         <ov-video :stream-manager="spyPlayer"/>
       </div>
-      <h4 >스파이는 {{ spyName }}님 이였습니다!</h4>
+      <h4 id="spyplayerfadein">스파이는 {{ spyName }}님 이었습니다!</h4>
     </div>
-    <div v-show="citizenWin">   
+    <div v-show="citizenWin" class="spywinfadein">   
       <!-- <canvas v-show="!isSpy" id="canvas"></canvas> -->
-      <h3>시민 승리</h3>
-      <div v-if="spyPlayer" class="child-borders">
+      <h3>시민 승리!</h3>
+      <div class="winbox">
+        <div v-if="spyPlayer" class="child-borders"  id="spyplayerfadein">
         <ov-video :stream-manager="spyPlayer"/>
+        </div>
+        <div style="background-color:grey; height:301px; width: 250px" class="border">
+          <label for="" style="margin-top:20px"><h4>장소</h4></label>
+          <img :src="placeSrc" alt="" style="width: 200px; margin:auto">
+          <h4>{{place}}</h4>  
+        </div>
       </div>
-      <h4>스파이는 {{ spyName }}님 이였습니다!</h4>
+      <h4 id="spyplayerfadein">스파이는 {{ spyName }}님 이었습니다!</h4>
     </div>
     <div v-if="isRoomMaker & (spyWin || citizenWin)">
       <button class="paper-btn" style="width:30%; align-self: center;" @click="backToRoom()"><span>게임 선택하기</span></button>
@@ -83,7 +90,8 @@ export default {
 
   data() {
     return {      
-      spyName : JSON.parse(this.spyPlayer.stream.connection.data).clientData
+      spyName : JSON.parse(this.spyPlayer.stream.connection.data).clientData,
+      placeSrc : ""
     }
   },
 
@@ -112,6 +120,10 @@ export default {
   },
 
   mounted() {
+    const placeImg = this.gameRes.place.split(' ').join('_')
+    this.placeSrc = require("../../assets/places_image/"+placeImg+".jpg")
+
+
     if(this.session.ee._events["signal:spyWin"] == undefined) {
       this.session.on('signal:spyWin', ()=>{
         this.$store.commit("SPY_WIN")
@@ -476,6 +488,14 @@ export default {
   }
 }
 
+#spyplayerfadein  {
+  animation: fadein 4s;
+}
+
+.spywinfadein {
+  animation: fadein 2s;
+}
+
 .spyfallend h3 {
   font-family: 'GowunDodum-Regular';
   width: 99%;
@@ -488,7 +508,12 @@ export default {
   font-family: 'GowunDodum-Regular'
 }
 video {
-  width: 500px;  
+  width: 400px;  
+}
+
+.winbox {
+  display: flex;
+  justify-content: center;
 }
 .place_check {
   display: flex;

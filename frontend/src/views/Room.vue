@@ -115,8 +115,8 @@ export default {
     },
 
     isReadyToStart() {
-      if (this.readyList.length == (this.subscribers.length - 1)) {
-      // if (this.readyList.length == 1) {
+      // if (this.readyList.length == (this.subscribers.length - 1)) {
+      if (this.readyList.length == 1) {
         return true;
       }
       return false;
@@ -219,8 +219,8 @@ export default {
       axios.post(
         '/api/games/rules',
         JSON.stringify({
-          personnel: this.subscribers.length,
-          // personnel: 3,
+          // personnel: this.subscribers.length,
+          personnel: 3,
           selectedGame: game
         })
       )
@@ -230,8 +230,8 @@ export default {
         axios.post(
           '/api/games/start',          
           JSON.stringify({
-            userNicknames : this.playerList,
-            // userNicknames : ["박준영", "정성우", "김범주"],
+            // userNicknames : this.playerList,
+            userNicknames : ["박준영", "정성우", "김범주"],
             roomCode : this.mySessionId,
             selectedGame: game
           }),
