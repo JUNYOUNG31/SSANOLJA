@@ -1,5 +1,5 @@
 <template>
-  <div id="gamearea">
+<div id="gamearea">
     <div class="top">
       <div  class="paper-input left back-image" style="background-color : white; padding : 10px">
       <canvas ref="canvas" id="js-paint" 
@@ -12,26 +12,26 @@
       width="700"
       height="500"  ></canvas>
       </div>
-        <div class="controls right">
-          <button @click="startFilling" class="v-btn" :disabled="drawComplete">
-            <img src="../assets/paint/roller.png" style="width:100%; height : 100%;"/>
-          </button>
-          <button @click="stopFilling" :disabled="drawComplete">
-              <img src = "../assets/paint/pencil.png"  style="width:100%; height : 100%;"/>
-          </button>
-          <button @click="startErasing" :disabled="drawComplete">
-            <img src="../assets/paint/eraser.png"  style="width:100%; height : 100%;"/>
-          </button>
-          <button @click="resetAll" :disabled="drawComplete">
-            <img src="../assets/paint/easel.png"  style="width:100%; height : 100%;"/> 
-          </button>
-          <button @click="canvasComplete()" :disabled="drawComplete">
-            <img src="../assets/paint/checkbox.png"  style="width:100%; height : 100%;"/> 
-          </button>
-        </div>
+          <div class="controls">
+            <button @click="startFilling" class="v-btn" :disabled="drawComplete">
+              <img src="../assets/paint/roller.png" style="width:100%; height : 100%;"/>
+            </button>
+            <button @click="stopFilling" :disabled="drawComplete">
+                <img src = "../assets/paint/pencil.png"  style="width:100%; height : 100%;"/>
+            </button>
+            <button @click="startErasing" :disabled="drawComplete">
+              <img src="../assets/paint/eraser.png"  style="width:100%; height : 100%;"/>
+            </button>
+            <button @click="resetAll" :disabled="drawComplete">
+              <img src="../assets/paint/easel.png"  style="width:100%; height : 100%;"/> 
+            </button>
+            <button @click="canvasComplete()" :disabled="drawComplete">
+              <img src="../assets/paint/checkbox.png"  style="width:100%; height : 100%;"/> 
+            </button>
+          </div>
     </div>
     <div class="bottom">
-      <div class="colors left"><!-- 색깔 정렬-->
+      <div class="colors left paper-input"><!-- 색깔 정렬-->
         <div class="color" @click = "colorChange($event)" style="background-color:rgb(0, 0, 0)"></div>
         <div class="color" @click = "colorChange($event)" style="background-color:rgb(255,255,255)"></div>
         <div class="color" @click = "colorChange($event)" style="background-color:rgb(255,59,48)"></div>
@@ -42,16 +42,14 @@
         <div class="color" @click = "colorChange($event)" style="background-color:rgb(0,122,255)"></div>
         <div class="color" @click = "colorChange($event)" style="background-color:rgb(88,86,214)"></div>
       </div>
-      <div class = "left inputarea form-group" style="display:flex">
-        <p style="display:inline-block; margin:20px 30px;">o</p>
-        <input type="range" name="note" id="input-range" value="5.0" min="0.1" max="100.0" style="margin:7px 0; width:280px;"  @change="onRangeChange">
-        <p style="display:inline-block; margin:12px 7px; font-size:25px">O</p>
+      <div class = "left inputarea form-group paper-input" style="display:flex; margin-top : 10px">
+        <div class="checkColor1" style=""></div>
+        <input type="range" name="note" id="input-range" value="5.0" min="0.1" max="100.0" style="margin:7px 0; width:210px;"  @change="onRangeChange">
+        <div class="checkColor2" style=""></div>
       </div>
-    </div>     
+    </div>       
   </div>
 </template>
-
-
 <script>
 
 export default{
@@ -66,6 +64,7 @@ data:function(){
     strokeStyle : '#000000',
     colors : document.getElementsByClassName("color"),
     drawComplete : false,
+    beforeStroke: ''
   }
 },
   methods:{
@@ -79,6 +78,7 @@ data:function(){
       this.drawComplete = false;
       this.image = this.$refs.canvas.toDataURL("image/jpeg");
       this.$emit("setDrawData", this.image)
+      console.log(this.image);
     },
     handleCM(event){
       event.preventDefault();
@@ -90,6 +90,7 @@ data:function(){
     colorChange(event){ 
       this.style = event.target.style;
       this.ctx.strokeStyle = this.style.backgroundColor;
+      this.beforeStroke = this.style.backgroundColor;
     },
     onMouseMove(event){
         let x = event.offsetX;
@@ -137,16 +138,17 @@ data:function(){
         this.stopErasing();
       },
       stopErasing(){
-        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.strokeStyle = this.beforeStroke;
       },
       startErasing(){
-        this.ctx.globalCompositeOperation = 'destination-out';
+        this.beforeStroke = this.ctx.strokeStyle;
+        this.ctx.strokeStyle = 'white';
         this.filling = false;
       },
       resetAll(){
-        this.ctx.clearRect(0,0,this.$refs.canvas.width, this.$refs.canvas.height);
         this.ctx.fillStyle='white';
         this.ctx.fillRect(0,0,this.$refs.canvas.width, this.$refs.canvas.height);
+        this.stopErasing();
       },
 
     },
@@ -160,23 +162,19 @@ data:function(){
 }
 
 
-
 </script>
 <style scoped>
 
 .top .bottom{
   display: flex;
 }
+.left{
+  float : left;
+}
 
-
-
-    .left{
-      float : left;
-    }
-    
-    .right{
-      float : right;
-    }
+.right{
+  float : right;
+}
 
 .controls{
       background-color: rgb(216, 215, 215);
@@ -202,6 +200,28 @@ data:function(){
     padding : 0;
 }
 
+.checkColor1{
+  height: 15px;
+  width: 15px;
+  margin: 14px 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 25px;
+  background-color: black;
+  
+}
+
+.checkColor2{
+  height: 35px;
+  width: 35px;
+  margin: 4px 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 25px;
+  background-color: black;
+}
+
+
 canvas {
   background-color: white;
 }
@@ -219,6 +239,7 @@ canvas {
 .colors {
   margin-left: 10px;
   margin-top: 10px;
+  margin-right: 20px;
   display: flex;
 }
 
