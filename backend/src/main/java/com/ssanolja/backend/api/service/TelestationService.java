@@ -223,25 +223,39 @@ public class TelestationService {
         // pre best => data, drawingOrder
         Integer preBestUserDrawingOrder = 0;
         String preBestUserData = null;
-        
-        // best => dataIndex
-        // best => preUsersId userNickname
-        Integer bestUserDataIndex = telestationRepository.findBestDataIndexByGamesIdUsersId(gameId, bestUsersId);
-        Integer preBestUsersId = 0;
-        
-        if(bestUser.getDrawingOrder() - 1 == 0){
-            Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
-            Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
-            preBestUserDrawingOrder = preBestUser.getDrawingOrder();
-            preBestUserData = preBestUser.getData();
-            preBestUsersId = telestationRepository.findPreBestUsersIdByDataIndexDrawingOrder(bestUserDataIndex, personnel);
-        }else{
-            Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
-            preBestUserDrawingOrder = preBestUser.getDrawingOrder();
-            preBestUserData = preBestUser.getData();
-            preBestUsersId = telestationRepository.findPreBestUsersIdByDataIndexDrawingOrder(bestUserDataIndex, bestUserDrawingOrder - 1);
-        }
-        String PreBestUserNickname = userRepository.findByUserNicknameFromUsersId(preBestUsersId);
+
+//        if(bestUser.getDrawingOrder() - 1 == 0){
+//            Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
+//            Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
+//            preBestUserDrawingOrder = preBestUser.getDrawingOrder();
+//            preBestUserData = preBestUser.getData();
+//        }else{
+//            Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
+//            preBestUserDrawingOrder = preBestUser.getDrawingOrder();
+//            preBestUserData = preBestUser.getData();
+//        }
+
+        // pre nickname
+        Integer bestUsersId2 = telestationRepository.findUsersIdByGamesIdGroupByUsersIdOrderBySumBestVoteDescLimit(telestationReq.getGameId());
+        Telestation bestUserColumn = telestationRepository.findAllByGamesIdUsersIdOrderByBestVoteDescLimit(telestationReq.getGameId(), bestUsersId2);
+        Integer preBestUserId = telestationRepository.findUsersIdByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUserColumn.getDataIndex(), bestUserColumn.getDrawingOrder() - 1);
+        String PreBestUserNickname = userRepository.findByUserNicknameFromUsersId(preBestUserId);
+        preBestUserDrawingOrder = bestUserColumn.getDrawingOrder() - 1;
+        bestUserDrawingOrder = bestUserColumn.getDrawingOrder();
+        preBestUserData = telestationRepository.findDataByGamesIdUsersIdDrawingOrder(telestationReq.getGameId(), bestUserColumn.getDataIndex(), bestUserColumn.getDrawingOrder() - 1);
+
+        System.out.println("---- 이전 유저 닉네임 찾기 (best)");
+        System.out.println("bestUsersId2" + bestUsersId2);
+        System.out.println("bestUserColumn" + bestUserColumn);
+        System.out.println("preBestUserId" + preBestUserId);
+        System.out.println("PreBestUserNickname" + PreBestUserNickname);
+        System.out.println("preBestUserDrawingOrder" + preBestUserDrawingOrder);
+        System.out.println("bestUserDrawingOrder" + bestUserDrawingOrder);
+        System.out.println("preBestUserData" + preBestUserData);
+
+
+
+
 
         // worst => 유저 닉네임
         String worstUserNickname = userRepository.findByUserNicknameFromUsersId(worstUserId);
@@ -255,38 +269,35 @@ public class TelestationService {
         Integer preWorstUserDrawingOrder = 0;
         String preWorstUserData = null;
 
-        // best => dataIndex
-        // best => preUsersId userNickname
-        Integer WorstUserDataIndex = telestationRepository.findWorstDataIndexByGamesIdUsersId(gameId, worstUserId);
-        Integer preWorstUsersId = 0;
-        
-        if(worstUser.getDrawingOrder() - 1 == 0){
-            Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
-            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), personnel);
-            preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
-            preWorstUserData = preWorstUser.getData();
-            preWorstUsersId = telestationRepository.findPreWorstUsersIdByDataIndexDrawingOrder(WorstUserDataIndex, personnel);
+//        if(worstUser.getDrawingOrder() - 1 == 0){
+//            Integer personnel = telestationRepository.findCountByGamesIdDrawing_order(telestationReq.getGameId());
+//            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), personnel);
+//            preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
+//            preWorstUserData = preWorstUser.getData();
+//
+//        }else{
+//            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), worstUser.getDrawingOrder() - 1);
+//            preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
+//            preWorstUserData = preWorstUser.getData();
+//        }
 
-        }else{
-            Telestation preWorstUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUser.getDataIndex(), worstUser.getDrawingOrder() - 1);
-            preWorstUserDrawingOrder = preWorstUser.getDrawingOrder();
-            preWorstUserData = preWorstUser.getData();
-            preWorstUsersId = telestationRepository.findPreWorstUsersIdByDataIndexDrawingOrder(WorstUserDataIndex, worstUserDrawingOrder - 1);
-        }
-        String PreWorstUserNickname = userRepository.findByUserNicknameFromUsersId(preWorstUsersId);
+        // pre nickname
+        Integer worstUsersId2 = telestationRepository.findUsersIdByGamesIdGroupByUsersIdOrderBySumWorstVoteDescLimit(telestationReq.getGameId());
+        Telestation worstUserColumn = telestationRepository.findAllByGamesIdUsersIdOrderByWorstVoteDescLimit(telestationReq.getGameId(), worstUsersId2);
+        Integer preWorstUserId = telestationRepository.findUsersIdByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), worstUserColumn.getDataIndex(), worstUserColumn.getDrawingOrder() - 1);
+        String PreWorstUserNickname = userRepository.findByUserNicknameFromUsersId(preWorstUserId);
+        preWorstUserDrawingOrder = worstUserColumn.getDrawingOrder() - 1;
+        worstUserDrawingOrder = worstUserColumn.getDrawingOrder();
+        preWorstUserData = telestationRepository.findDataByGamesIdUsersIdDrawingOrder(telestationReq.getGameId(), worstUserColumn.getDataIndex(), worstUserColumn.getDrawingOrder() - 1);
 
-        //**********************************************************************************************
-        //************************ 확인 *****************************************************************
-        //**********************************************************************************************
-        System.out.println("BestUserDataIndex = " + bestUserDataIndex);
-        System.out.println("preBestUsersId = " + preBestUsersId);
-        System.out.println("PreBestUserNickname = " + PreBestUserNickname);
-        System.out.println("WorstUserDataIndex = " + WorstUserDataIndex);
-        System.out.println("preWorstUsersId = " + preWorstUsersId);
-        System.out.println("PreWorstUserNickname = " + PreWorstUserNickname);
-        //**********************************************************************************************
-        //**********************************************************************************************
-        //**********************************************************************************************
+        System.out.println("---- 이전 유저 닉네임 찾기 (best)");
+        System.out.println("worstUsersId2" + worstUsersId2);
+        System.out.println("worstUserColumn" + worstUserColumn);
+        System.out.println("preWorstUserId" + preWorstUserId);
+        System.out.println("PreWorstUserNickname" + PreWorstUserNickname);
+        System.out.println("preWorstUserDrawingOrder" + preWorstUserDrawingOrder);
+        System.out.println("worstUserDrawingOrder" + worstUserDrawingOrder);
+        System.out.println("preWorstUserData" + preWorstUserData);
         
         
         
