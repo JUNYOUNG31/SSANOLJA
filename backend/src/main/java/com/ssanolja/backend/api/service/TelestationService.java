@@ -226,7 +226,7 @@ public class TelestationService {
         
         // best => dataIndex
         // best => preUsersId userNickname
-        Integer BestUserDataIndex = telestationRepository.findBestDataIndexByGamesIdUsersId(gameId, bestUsersId);
+        Integer bestUserDataIndex = telestationRepository.findBestDataIndexByGamesIdUsersId(gameId, bestUsersId);
         Integer preBestUsersId = 0;
         
         if(bestUser.getDrawingOrder() - 1 == 0){
@@ -234,12 +234,12 @@ public class TelestationService {
             Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), personnel);
             preBestUserDrawingOrder = preBestUser.getDrawingOrder();
             preBestUserData = preBestUser.getData();
-            preBestUsersId = telestationRepository.findPreBestUsersIdByDataIndexDrawingOrder(BestUserDataIndex, personnel);
+            preBestUsersId = telestationRepository.findPreBestUsersIdByDataIndexDrawingOrder(bestUserDataIndex, personnel);
         }else{
             Telestation preBestUser = telestationRepository.findPreUserByGamesIdDataIndexDrawingOrder(telestationReq.getGameId(), bestUser.getDataIndex(), bestUser.getDrawingOrder() - 1);
             preBestUserDrawingOrder = preBestUser.getDrawingOrder();
             preBestUserData = preBestUser.getData();
-            preBestUsersId = telestationRepository.findPreBestUsersIdByDataIndexDrawingOrder(BestUserDataIndex, bestUserDrawingOrder - 1);
+            preBestUsersId = telestationRepository.findPreBestUsersIdByDataIndexDrawingOrder(bestUserDataIndex, bestUserDrawingOrder - 1);
         }
         String PreBestUserNickname = userRepository.findByUserNicknameFromUsersId(preBestUsersId);
 
@@ -273,12 +273,12 @@ public class TelestationService {
             preWorstUserData = preWorstUser.getData();
             preWorstUsersId = telestationRepository.findPreWorstUsersIdByDataIndexDrawingOrder(WorstUserDataIndex, worstUserDrawingOrder - 1);
         }
-        String PreWorstUserNickname = userRepository.findByUserNicknameFromUsersId(preBestUsersId);
+        String PreWorstUserNickname = userRepository.findByUserNicknameFromUsersId(preWorstUsersId);
 
         //**********************************************************************************************
         //************************ 확인 *****************************************************************
         //**********************************************************************************************
-        System.out.println("BestUserDataIndex = " + BestUserDataIndex);
+        System.out.println("BestUserDataIndex = " + bestUserDataIndex);
         System.out.println("preBestUsersId = " + preBestUsersId);
         System.out.println("PreBestUserNickname = " + PreBestUserNickname);
         System.out.println("WorstUserDataIndex = " + WorstUserDataIndex);
