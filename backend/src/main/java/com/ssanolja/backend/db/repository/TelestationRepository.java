@@ -102,9 +102,22 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     @Query(value = "select count(*) from telestations where games_id = ? and drawing_order = 1", nativeQuery = true)
     Integer findCountByGamesIdDrawing_order(Integer gamesId);
 
-    // 최다 투표 데이터의 preUsersId 찾기
+    //최다 베스트 투표 데이터의 데이터 인덱스 찾기
+    @Query(value = "select data_index from telestations where games_id = ? and users_Id = ? order by best_vote desc limit 1", nativeQuery = true)
+    Integer findBestDataIndexByGamesIdUsersId(Integer gamesId, Integer usersId);
+
+    //최다 워스트 투표 데이터의 데이터 인덱스 찾기
+    @Query(value = "select data_index from telestations where games_id = ? and users_Id = ? order by worst_vote desc limit 1", nativeQuery = true)
+    Integer findWorstDataIndexByGamesIdUsersId(Integer gamesId, Integer usersId);
+
+    // 최다 베스트 투표 데이터의 preUsersId 찾기
     @Query(value = "select users_id from telestations where data_index = ? and drawing_order = ?", nativeQuery = true)
-    Integer findPreUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
+    Integer findPreBestUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
+
+    // 최다 워스트 투표 데이터의 preUsersId 찾기
+    @Query(value = "select users_id from telestations where data_index = ? and drawing_order = ?", nativeQuery = true)
+    Integer findPreWorstUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
+
 
 
 

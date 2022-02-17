@@ -44,7 +44,7 @@
                   </div>
                   <div class = "left inputarea" style="display:flex">
                     <p style="display:inline-block; margin:20px 15px;">o</p>
-                    <wired-slider type="range" value="5.0" min="0.1" max="100.0" style="margin:7px 0;"  @change="onRangeChange"></wired-slider>
+                    <input type="range" value="5.0" min="0.1" max="100.0" style="margin:7px 0;"  @change="onRangeChange">
                     <p style="display:inline-block; margin:12px 7px; font-size:25px">O</p>
                   </div>
                 </div>

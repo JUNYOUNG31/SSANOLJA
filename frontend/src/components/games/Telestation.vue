@@ -1,5 +1,5 @@
 <template>
-  <div class="telestation-container" id="divdiv" style = "color : black; overflow:scroll;">
+  <div class="telestation-container" :class="{'overFlowScroll': this.gameMode==='album'}" id="divdiv">
     <!-- 소원 시작 -->
     <div
       v-show="gameMode === 'text'"
@@ -72,7 +72,7 @@
       v-show="gameMode === 'drawing'"
       style="display: flex; flex-direction: column; align-items: center"
     >
-        <div class="progress" style="width:900px; margin-bottom:40px; margin-top:10px;">
+        <div class="progress" style="width:900px;">
           <div class="progress-bar" role="progressbar" aria-valuenow="100"
           aria-valuemin="0" aria-valuemax="120" :style="{width:drawingTime/1.2+'%'}">
           </div>
@@ -146,21 +146,19 @@
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  게임 모드 === best 시작    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-
-    <div v-show="gameMode === 'best'" class="modeBestWorst">
-      <div class="worst">
+    <div v-show="gameMode === 'best'" class="modeBestWorst"  style="height: 680px;">
+      <canvas id="canvas"></canvas>
+      <div class="word">
         <span>B</span><span>e</span><span>s</span><span>t</span><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
       </div>
-      <audio v-if="gameMode === 'best'" autoplay onloadstart="this.volume=0.3" src="../../assets/telestation_audio/등장중일때.mp3" ></audio>
-      <canvas id="canvas"></canvas>
-      <div class="parent1">
-        <div class="div1-1">
-          <div class="parent2">
+      <div class="parent1" style="height: 630px">
+        <div class="div1-1" style="height: 100%">
+          <div class="parent2" style="max-height: 640px">
             <div class="div2-1 paper-input animate__animated animate__animated animate__bounceInDown">
-              <div class="">
-                <p class="animate__animated animate__pulse animate__infinite" style="text-align: center; margin: 0px 0px 0px 0px; font-size: 35px; font-style: italic; font-weight: bold;">
+              <div>
+                <h2 class="animate__animated animate__pulse animate__infinite" style=" text-align: center; margin: 0px 0px 0px 0px; font-size: 35px; font-style: italic; font-weight: bold;">
                   - {{bestPlayer}} -
-                </p>
+                </h2>
               </div>
             </div>
             <div class="div2-2">
@@ -168,36 +166,52 @@
                 <div class="div3-1 animate__animated animate__bounceInLeft paper-input" v-if="bestVideo" style="display:flex; flex-direction: column; justify-content: center;">
                   <user-video :best-video="bestVideo" />
                 </div>
-                <div class="div3-2 animate__animated animate__bounceInRight paper-input" style="display: flex; flex-direction: column; justify-content: center;">
-
-
-
-
-                  <div class="parent4" v-show="bestResultMode === 1">
-                    <div class="div4-1 speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;"><span>{{ bestPreData }}</span></div>
-                    <div class="div4-2 speech-bubble-right"><img :src="bestData" alt="" style="float:right; width:350px; height:250px;"/></div>
+                <div class="div3-2 animate__animated animate__bounceInRight paper-input" style=" display: flex; flex-direction: column; justify-content: center;">
+                   <div class="parent4" v-show="bestResultMode === 1">
+                    <div class="div4-1" style="display:flex; flex-direction: column;">
+                      <div style="display: flex; align-items: center;">
+                      <img src="../../assets/inspector.png" alt="" style="width:50px; float:left;">
+                      <span style="margin:auto 3px; font-size:20px; font-weight: bold; float:left;">{{ preBestPlayer }}</span>
+                      </div>
+                      <div class="speech-bubble-left2">
+                        <span  style="">{{ bestPreData }}sdfsd</span>
+                      </div>
+                    </div>
+                    <div class="div4-2" style="display:flex; flex-direction: column;">
+                      <div style="display: flex; align-items: center;">
+                        <div style="margin:auto 3px; font-size:20px; font-weight: bold; float:right; margin-left:auto; ">{{bestPlayer}}</div>
+                        <img src="../../assets/artist.png" alt="" style="width:50px; float:right;">
+                      </div>
+                      <div class="speech-bubble-right" style=""><img :src="bestData" alt="" style="float:right; width:350px; height:250px;"/></div>
+                    </div>
                   </div>
-
-
-
-
-
-
                   <div class="parent5" v-show="bestResultMode === 2">
-                    <div class="div5-1 speech-bubble-left"><img :src="bestData" alt="" style=" width:350px; height:250px;" /></div>
-                    <div class="div5-2" style="float:right;"><span class="speech-bubble-right" style="float:right">{{ bestPreData }}</span></div>
+                    <div class="div5-1" style="display:flex; flex-direction: column;">
+                      <div style="display: flex; align-items: center;">
+                        <img src="../../assets/inspector.png" alt="" style="width:50px; float:left;">
+                        <span style="margin:auto 3px; font-size:20px; font-weight: bold; float:left;">{{ preBestPlayer }}</span>
+                      </div>
+                        <div class="speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;">
+                          <img :src="bestPreData" alt="" style="float:right; width:350px; height:250px;"/></div>
+                        </div>
+                      <div class="div5-2" style="display:flex; flex-direction: column;">
+                        <div style="display: flex; align-items: center; ">
+                            <div style="margin:auto 3px; font-size:20px; font-weight: bold; margin-right: 0px; margin-left:auto;">{{bestPlayer}}</div>
+                          <img src="../../assets/artist.png" alt="" style="width:50px;">
+                        </div>
+                      <div>
+                        <span class="speech-bubble-right" style="float:right">{{ besttData }}sdfsd</span>
+                      </div>
+                    </div>
                   </div>
-
-
-
-
-
                 </div>
               </div>
             </div>
-            <div class="div2-3" style="overflow: hidden">
-              <button class="animate__animated animate__bounceInUp" v-show="isRoomMaker" @click="sendMessageToEveryBody('', 'worst')">worst보러가기</button>
+            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@  버튼 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+            <div class="div2-3" style="overflow: hidden; margin-top: 10px;">
+              <button class="animate__animated animate__bounceInUp paper-btn" style="width:100%;" v-show="isRoomMaker" @click="sendMessageToEveryBody('', 'worst')">worst보러가기</button>
             </div>
+            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
           </div>
         </div>
       </div>
@@ -228,19 +242,19 @@
                 <div class="div3-2 animate__animated animate__bounceInRight paper-input" style=" display: flex; flex-direction: column; justify-content: center;">
                    <div class="parent4" v-show="worstResultMode === 1">
                     <div class="div4-1" style="display:flex; flex-direction: column;">
-                      <div style=" vertical-align:middle">
+                      <div style="display: flex; align-items: center;">
                       <img src="../../assets/inspector.png" alt="" style="width:50px; float:left;">
                       <span style="margin:auto 3px; font-size:20px; font-weight: bold; float:left;">{{ preWorstPlayer }}</span>
                       </div>
-                      <div class=" speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;">
-                      <div style="margin:auto 0; font-size:20px; font-weight: bold;">{{ worstPreData }}</div>
+                      <div class="speech-bubble-left2">
+                        <span  style="">{{ worstPreData }}</span>
                       </div>
                     </div>
                     
                     <div class="div4-2" style="display:flex; flex-direction: column;">
-                      <div>
+                      <div style="display: flex; align-items: center;">
+                        <div style="margin:auto 3px; font-size:20px; font-weight: bold; float:right; margin-left:auto; ">{{worstPlayer}}</div>
                         <img src="../../assets/artist.png" alt="" style="width:50px; float:right;">
-                        <div style="margin:auto 3px; font-size:20px; font-weight: bold; float:right; ">{{worstPlayer}}</div>
                       </div>
                       <div class="speech-bubble-right" style=""><img :src="worstData" alt="" style="float:right; width:350px; height:250px;"/></div>
                     </div>
@@ -252,16 +266,16 @@
                       <img src="../../assets/inspector.png" alt="" style="width:50px; float:left;">
                       <span style="margin:auto 3px; font-size:20px; font-weight: bold; float:left;">{{ preWorstPlayer }}</span>
                       </div>
-                        <div class="speech-bubble-left" style=""><img :src="worstData" alt="" style="float:right; width:350px; height:250px;"/></div>
+                        <div class="speech-bubble-left" style="display:flex; flex-direction: column; justify-content: center;">
+                          <img :src="worstPreData" alt="" style="float:right; width:350px; height:250px;"/></div>
                       </div>
-
                     <div class="div5-2" style="display:flex; flex-direction: column;">
-                      <div style="display: flex; align-items: center;">
-                        <div style="margin:auto 3px; font-size:20px; font-weight: bold; margin-left: uto;">{{worstPlayer}}</div>
-                        <img src="../../assets/artist.png" alt="" style="width:50px; margin-left: auto;">
+                      <div style="display: flex; align-items: center; ">
+                          <div style="margin:auto 3px; font-size:20px; font-weight: bold; margin-right: 0px; margin-left:auto;">{{worstPlayer}}</div>
+                        <img src="../../assets/artist.png" alt="" style="width:50px;">
                       </div>
                       <div>
-                        <span class="speech-bubble-right" style="float:right">{{ worstPreData }}</span>
+                        <span class="speech-bubble-right" style="float:right">{{ worstData }}</span>
                       </div>
                       </div>
                   </div>
@@ -289,15 +303,14 @@
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
   </div>
 </template>
-<script type="module" src="https://unpkg.com/wired-elements/lib/wired-slider.js?module"></script>
-
+<script type="" src=""></script>
 <script>
 import axios from 'axios';
 import {mapState} from 'vuex';
 import CanvasApi from '@/components/CanvasApi';
 import UserVideo from '@/components/Video/UserVideo';
 import 'animate.css';
-import { WiredSlider } from 'wired-elements/lib/wired-slider.js';
+import OvVideo from '../Video/OvVideo.vue'; // 광은 핉터
 
 export default {
   name: 'Telestation',
@@ -307,9 +320,9 @@ export default {
     gameRes: Object,
   },
   components:{
-    WiredSlider,
     CanvasApi,
-    UserVideo
+    UserVideo,
+    OvVideo,
   },
   data () {
 		return {
@@ -323,11 +336,7 @@ export default {
       textingEnabled: false,
       votingEnabled: false,
 
-<<<<<<< HEAD
-      gameMode: "worst",
-=======
-      gameMode: "drawing",
->>>>>>> 4227706a7c5a347ec1ccdd935d26ee46f0f9fd13
+      gameMode: "text",
       
       drawingOrder:1, /* 라운드 */
       completedPlayers:0, /* 그림 다 그렸거나 or 키워드 입력완료 누른 플레이어 수 */
@@ -345,34 +354,24 @@ export default {
       dataIndex:0, // 앨범 번호
       worst:0,
       best:0,
-      worstPlayer:'강광은',
+      worstPlayer:'',
       worstVideo:null,
-      bestPlayer:'강광은',
+      bestPlayer:'',
       bestVideo:null,
-      worstResultMode:2, //1 이면 키워드 사진 2이면 사진 키워드
+      worstResultMode:0, //1 이면 키워드 사진 2이면 사진 키워드
       bestResultMode:0,
-<<<<<<< HEAD
-      worstPreData:'asdf',
-      worstData:'data:image/jpeg;base64,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',
-      bestPreData:'asdf',
-      bestData:'data:image/jpeg;base64,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',
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      //@@@@@@@@@@@@@@@@@  광은 투표 결과에 이름 넣기  @@@@@@@@@@@@@@
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      preBestPlayer:'강광은 이전',
-      preWorstPlayer:'강광은 이전',
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-=======
       worstPreData:'',
       worstData:'',
       bestPreData:'',
       bestData:'',
-
-
-      
->>>>>>> 4227706a7c5a347ec1ccdd935d26ee46f0f9fd13
+      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      //@@@@@@@@@@@@@@@@@  광은 투표 결과에 이름 넣기  @@@@@@@@@@@@@@
+      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      preBestPlayer:'',
+      preWorstPlayer:'',
+      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		}
 	},
   methods: {
@@ -394,6 +393,17 @@ export default {
       this.session.off('signal:result')
       this.session.off('signal:worst')
       this.sendMessageToEveryBody('', 'initTelestation')
+      // 광은 필터
+      if(this.worstPlayer == this.myUserName) {
+        this.publisher.stream.removeFilter()
+        .then(()=>{
+          console.log("필터 제거됨");
+        })
+        .catch(error => {
+          console.error(error);
+        })
+      }
+
     },
     testfn3(){
       this.removeKeyword()
@@ -610,6 +620,8 @@ export default {
           //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
           this.preBestPlayer = res.data.best.preNickname
           this.preWorstPlayer = res.data.worst.preNickname
+          console.error("preBestPlayerNicname: ", this.preBestPlayer);
+          console.error("preWorstPlayerNicname: ", this.preWorstPlayer);
           //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
           //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
           //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -792,11 +804,7 @@ export default {
     })
     this.session.on('signal:replay', (event) => { // 그린 그림 백에 보내기 
       this.worstVideo = null
-<<<<<<< HEAD
       this.backToRoom();
-=======
-      this.backToRoom()
->>>>>>> 4227706a7c5a347ec1ccdd935d26ee46f0f9fd13
     })
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -1071,7 +1079,20 @@ export default {
   },
   created() {
     this.personnel = this.subscribers.length
-  }
+  },
+  // 광은 필터
+  updated() {
+    if(this.worstPlayer == this.myUserName) {
+      this.publisher.stream.applyFilter("GStreamerFilter", {command: "videobalance saturation=0.0"})
+      .then(()=>{
+        console.log("필터 적용됨")
+      })
+      .catch(error =>{
+        console.error(error)
+      })
+    }
+  },
+
 }
 
 
@@ -1081,6 +1102,7 @@ export default {
 .telestation-container {
   height: 100%;
   background-color: rgb(245, 245, 245);
+  overflow: hidden;
 }
 .completed {
   background: black;
@@ -1178,7 +1200,7 @@ canvas {
   position: relative;
   background: #ffffff;
   border-radius: 0.4em;
-  margin-top: 20px;
+  margin-top: 15px;
   margin-left: 15px;
   margin-right: auto;
   min-width: 100px;
@@ -1189,7 +1211,32 @@ canvas {
   content: "";
   position: absolute;
   top: 0;
-  left: 30%;
+  left: 30px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-bottom-color: #ffffff;
+  border-top: 0;
+  border-left: 0;
+  margin-left: -10px;
+  margin-top: -10px;
+}
+.speech-bubble-left2 {
+  position: relative;
+  background: #ffffff;
+  border-radius: 0.4em;
+  margin-top: 15px;
+  margin-left: 15px;
+  margin-right: auto;
+  min-width: 100px;
+  padding: 10px 10px 10px 10px;
+}
+
+.speech-bubble-left2:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 30px;
   width: 0;
   height: 0;
   border: 10px solid transparent;
@@ -1215,7 +1262,7 @@ canvas {
   content: "";
   position: absolute;
   top: 0;
-  right: 10%;
+  right: 20px;
   width: 0;
   height: 0;
   border: 10px solid transparent;
@@ -1297,6 +1344,7 @@ canvas {
   grid-area: 1 / 2 / 2 / 3;
   margin-right: 20px;
   background-color: rgb(155, 187, 212);
+  /* margin-bottom: 5px; */
 }
 .parent4 {
   display: grid;
@@ -1304,6 +1352,7 @@ canvas {
   grid-template-rows: 1fr 4fr;
   grid-column-gap: 0px;
   grid-row-gap: 0x;
+  max-height: 450px;
 }
 
 .div4-1 {
@@ -1311,23 +1360,26 @@ canvas {
 }
 .div4-2 {
   grid-area: 2 / 1 / 3 / 2;
+  
 }
 
 .parent5 {
   display: grid;
   grid-template-columns: 1fr;
-  /* grid-template-rows: 3fr 1fr; */
+  grid-template-rows: 3fr 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+  /* padding-top: 10px; */
+  max-height: 450px;
 }
 
 .div5-1 {
   grid-area: 1 / 1 / 2 / 2;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 .div5-2 {
   grid-area: 2 / 1 / 3 / 2;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
 }
 /* 글자 움직이기 */
 .test {
@@ -1453,5 +1505,9 @@ canvas {
   60% {
     transform: rotate(45deg);
   }
+}
+.overFlowScroll {
+  color : black;
+  overflow:scroll;
 }
 </style>
