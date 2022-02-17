@@ -102,21 +102,29 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
     @Query(value = "select count(*) from telestations where games_id = ? and drawing_order = 1", nativeQuery = true)
     Integer findCountByGamesIdDrawing_order(Integer gamesId);
 
-    //최다 베스트 투표 데이터의 데이터 인덱스 찾기
-    @Query(value = "select data_index from telestations where games_id = ? and users_Id = ? order by best_vote desc limit 1", nativeQuery = true)
-    Integer findBestDataIndexByGamesIdUsersId(Integer gamesId, Integer usersId);
+    // best 최다 투표 받은 사람
+    @Query(value = "select users_id from telestations where games_id = ? group by users_id order by sum(best_vote) desc limit 1", nativeQuery = true)
+    Integer findUsersIdByGamesIdGroupByUsersIdOrderBySumBestVoteDescLimit(Integer gamesId);
 
-    //최다 워스트 투표 데이터의 데이터 인덱스 찾기
-    @Query(value = "select data_index from telestations where games_id = ? and users_Id = ? order by worst_vote desc limit 1", nativeQuery = true)
-    Integer findWorstDataIndexByGamesIdUsersId(Integer gamesId, Integer usersId);
+    // worst 최다 투표 받은 사람
+    @Query(value = "select users_id from telestations where games_id = ? group by users_id order by sum(worst_vote) desc limit 1", nativeQuery = true)
+    Integer findUsersIdByGamesIdGroupByUsersIdOrderBySumWorstVoteDescLimit(Integer gamesId);
 
-    // 최다 베스트 투표 데이터의 preUsersId 찾기
-    @Query(value = "select users_id from telestations where data_index = ? and drawing_order = ?", nativeQuery = true)
-    Integer findPreBestUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
+    // best 최다 득표 데이터 컬럼 찾기
+    @Query(value = "select * from telestations where games_id = ? and users_id = ? order by best_vote desc limit 1", nativeQuery = true)
+    Telestation findAllByGamesIdUsersIdOrderByBestVoteDescLimit(Integer gamesId, Integer usersId);
 
-    // 최다 워스트 투표 데이터의 preUsersId 찾기
-    @Query(value = "select users_id from telestations where data_index = ? and drawing_order = ?", nativeQuery = true)
-    Integer findPreWorstUsersIdByDataIndexDrawingOrder(Integer dataIndex, Integer drawingOrder);
+    // worst 최다 득표 데이터 컬럼 찾기
+    @Query(value = "select * from telestations where games_id = ? and users_id = ? order by worst_vote desc limit 1", nativeQuery = true)
+    Telestation findAllByGamesIdUsersIdOrderByWorstVoteDescLimit(Integer gamesId, Integer usersId);
+
+    //이전 userId 찾기
+    @Query(value = "select users_id from telestations where games_id = ? and data_index = ? and drawing_order = ?", nativeQuery = true)
+    Integer findUsersIdByGamesIdDataIndexDrawingOrder(Integer gamesId, Integer dataIndex, Integer drawingOrder);
+
+    // 이전 userData 찾기
+    @Query(value = "select data from telestations where games_id= ? and users_id = ? and drawing_order = ?", nativeQuery = true)
+    String findDataByGamesIdUsersIdDrawingOrder(Integer gamesId, Integer users_id, Integer drawingOrder);
 
 
 
