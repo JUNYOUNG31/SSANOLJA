@@ -80,7 +80,7 @@
               <div v-else style="margin-bottom:10px">
                 <img src="../../assets/Spy.jpg" alt="spy">
               </div>
-              <button class="paper-btn btn-secondary" color="primary" style="width:100%" @click="spyfall" v-if="isSpy" popover-right="장소를 추리하여 게임을 끝냅니다">스파이폴</button>
+              <button class="paper-btn btn-danger" style="width:100%" @click="spyfall" v-if="isSpy" popover-right="장소를 추리하여 게임을 끝냅니다">스파이폴</button>
               <div>                
                 <v-dialog v-model="dialog" persistent max-width="1000px">
                   <v-card>         
@@ -321,8 +321,6 @@ export default {
 
     this.session.on('signal:voteTrue', (event)=>{
       this.voteList = JSON.parse(event.data)
-      this.voteList.voteCnt += 1
-      this.voteList.agreeCnt += 1
       if ( this.voteList.voteCnt == this.streamManager.length -1) {    
         // 투표가 끝나고 3초 보여주기  
         const div = document.getElementById('voteCompleted')
@@ -331,22 +329,29 @@ export default {
           // 만약 만장일치일때
           if (this.voteList.agreeCnt == this.streamManager.length - 1) {
             // 스파이가 맞으면 시민 승리
-            if (this.gameRes.jobs[this.suspectPlayer] == '스파이') {            
-              this.$store.commit("CITIZEN_WIN")
-              this.isEnded = true
+            this.voteEnabled = false;
+            if (this.gameRes.jobs[this.suspectPlayer] == '스파이') {  
+              this.sendMessageToEveryBody('','citizenWinByVoting')          
+              this.$store.commit("CITIZEN_WIN")              
               this.$store.commit('SET_VOTEPLAYER', null)
               this.$store.commit('SET_SELECTPLAYER', null)
               this.$store.commit('SET_QUESTIONPLAYER', null)
               this.$store.commit('SET_ANSWERPLAYER', null)
+              setTimeout(() =>{
+                this.isEnded = true
+              },500)
             }          
             // 스파이가 아니라면 스파이 승리
             else {
+              this.sendMessageToEveryBody('','spyWinByVoting')
               this.$store.commit("SPY_WIN")
-              this.isEnded = true
               this.$store.commit('SET_VOTEPLAYER', null)
               this.$store.commit('SET_SELECTPLAYER', null)
               this.$store.commit('SET_QUESTIONPLAYER', null)
               this.$store.commit('SET_ANSWERPLAYER', null)
+              setTimeout(() =>{
+                this.isEnded = true                
+              },500)
             }
           }
           // 만약 만장일치가 아닐때 다시 게임 진행
@@ -354,13 +359,25 @@ export default {
             this.restart()
           }
         }, 3000);
+        
+        if(this.session.ee._events["signal:spyWinByVoting"] == undefined) {
+          this.session.on('signal:spyWinByVoting', ()=>{
+            this.$store.commit("SPY_WIN")
+          })
+          // this.effect()
+        }
+
+        if(this.session.ee._events["signal:citizenWinByVoting"] == undefined) {
+          this.session.on('signal:citizenWinByVoting', () =>{
+            this.$store.commit("CITIZEN_WIN")
+          })
+          // this.effect()
+        }  
       }      
     })
     
     this.session.on('signal:voteFalse', (event)=>{
       this.voteList = JSON.parse(event.data)
-      this.voteList.voteCnt += 1
-      this.voteList.disagreeCnt += 1
       if ( this.voteList.voteCnt >= this.streamManager.length-1) {
         this.voteList.voteCnt = this.streamManager.length-1
         const div = document.getElementById('voteCompleted')
@@ -432,18 +449,16 @@ export default {
 
     voteTrue() {
       this.isVoted = true
+      this.voteList.voteCnt += 1
+      this.voteList.agreeCnt += 1
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteTrue')           
     },
 
     voteFalse() {
       this.isVoted = true
+      this.voteList.voteCnt += 1
+      this.voteList.disagreeCnt += 1
       this.sendMessageToEveryBody(JSON.stringify(this.voteList), 'voteFalse')       
-    },
-
-    voteclose() { // 투표창 끄는 method
-      this.timerEnabled = true;
-      this.votetimeCnt = 30;
-      this.voteEnabled = false;
     }
   }
 }

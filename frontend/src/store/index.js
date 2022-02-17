@@ -218,7 +218,7 @@ export default new Vuex.Store({
 						"type": "WEBRTC",
 						"role": "PUBLISHER",
 						"kurentoOptions": {
-							"allowedFilters": ["GStreamerFilter", "FaceOverlayFilter"]
+							"allowedFilters": ["GStreamerFilter", "FaceOverlayFilter","ChromaFilter"]
 						}
 					}),
 					{

@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
-    "jQuery": "^1.7.4",
+    "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "openvidu-browser": "2.20.0",
     "vue": "^2.6.11",
