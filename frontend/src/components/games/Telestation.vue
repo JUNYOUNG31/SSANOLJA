@@ -380,7 +380,7 @@ export default {
       this.session.off('signal:keyword')
       this.session.off('signal:draw')
       this.session.off('signal:completed')
-      this.session.off('signal:ready')
+      this.session.off('signal:readyToNext')
       this.session.off('signal:nextAlbum')
       this.session.off('signal:result')
       this.session.off('signal:worst')
@@ -726,18 +726,18 @@ export default {
     this.session.on('signal:keyword', (event) => { // 입력한 키워드 백에 보내기
       let data = JSON.parse(event.data)
       this.receiveKeyword = data.data
-      this.sendMessageToEveryBody('', "ready")
+      this.sendMessageToEveryBody('', "readyToNext")
     })
     this.session.on('signal:draw', (event) => { // 그린 그림 백에 보내기 
       let data = JSON.parse(event.data)
       this.recieveDraw = data.data
-      this.sendMessageToEveryBody('', "ready")
+      this.sendMessageToEveryBody('', "readyToNext")
     })
     this.session.on('signal:completed', (event) => { // 입력버튼 누르면 완료된 사람 +1
       console.log(event.data)
       this.completedPlayers++
     })
-    this.session.on('signal:ready', (event) => { // 백에서 데이터 받아서 웹소켓 통신하고 나면 +1
+    this.session.on('signal:readyToNext', (event) => { // 백에서 데이터 받아서 웹소켓 통신하고 나면 +1
       console.log(event.data)
       this.readyPlayers++
     })
