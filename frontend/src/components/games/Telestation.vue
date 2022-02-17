@@ -389,36 +389,30 @@ export default {
     testfn3(){
       this.removeKeyword()
       this.removeDraw()
-      this.testfn()
-      setTimeout(() => {
-        this.testfn2()
-      },2500);
-    },
-    testfn() {
-      var index = 0
-      var final = parseInt(this.personnel/2)
-      var loading = setInterval(function(){
-        if (index === final) {
-          clearInterval(loading)
-        }
-        $('#keyword > div').eq(index).fadeIn(1000);index++
-        $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
-        },5000);
+      this.testfn2()
     },
     testfn2() {
       var index1 = 0
-      var final1 = parseInt(this.personnel/2)
+      var index2 = 0
+      var index3 = 0
+      var final1 = this.personnel
       var loading1 = setInterval(function(){
         if (index1 === final1) {
-          setTimeout(() =>{
             $('#next').fadeIn(1000)
             $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
-          },2500)
           clearInterval(loading1)
+        }else if (index1 % 2 === 0){
+          $('#keyword > div').eq(index2).fadeIn(1000);
+          index1++;
+          index2++;
+          $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
+        }else {
+          $('#draw > div').eq(index3).fadeIn(1000);
+          index1++
+          index3++
+          $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
         }
-        $('#draw > div').eq(index1).fadeIn(1000);index1++
-        $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
-        },5000);
+        },2000);
     },
     removeKeyword() {
       $('#keyword > div').hide();
