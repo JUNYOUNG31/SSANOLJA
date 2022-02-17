@@ -524,9 +524,9 @@ export default {
       })
       .then((res)=> {
         this.targetUser = res.data.userNickname
-        this.$refs.canvasApi.resetAll()       
+        this.$refs.canvasApi.resetAll()     
         // this.sendMessageToTargetUser(JSON.stringify(res.data), "draw", this.participant.get(this.targetUser))
-        this.sendMessageToTargetUser(data, "draw", this.participant.get(this.targetUser))
+        this.sendMessageToTargetUser(this.myUserName, "draw", this.participant.get(this.targetUser))
       })
     },
     startTextRound() {
@@ -730,12 +730,12 @@ export default {
       this.sendMessageToEveryBody('', "readyToNext")
     })
     this.session.on('signal:draw', (event) => { // 그린 그림 백에 보내기 
-      axios.get('/api/telestations/getData', 
+      axios.post('/api/telestations/getData', 
       {
-        params : {
-          userNickname : event.userNickname,
-          roomCode : event.roomCode,
-          drawingOrder : event.drawingOrder
+        data : {
+          userNickname: event,
+          roomCode: this.mySessionId,
+          drawingOrder: this.drawingOrder,
         }
       })
       .then((res)=> {
