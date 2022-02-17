@@ -42,9 +42,9 @@
                     <div class="color" @click = "colorChange($event)" style="background-color:rgb(0,122,255)"></div>
                     <div class="color" @click = "colorChange($event)" style="background-color:rgb(88,86,214)"></div>
                   </div>
-                  <div class = "left inputarea" style="display:flex">
-                    <p style="display:inline-block; margin:20px 15px;">o</p>
-                    <input type="range" value="5.0" min="0.1" max="100.0" style="margin:7px 0;"  @change="onRangeChange">
+                  <div class = "left inputarea form-group" style="display:flex">
+                    <p style="display:inline-block; margin:20px 30px;">o</p>
+                    <input type="range" name="note" id="input-range" value="5.0" min="0.1" max="100.0" style="margin:7px 0; width:280px;"  @change="onRangeChange">
                     <p style="display:inline-block; margin:12px 7px; font-size:25px">O</p>
                   </div>
                 </div>

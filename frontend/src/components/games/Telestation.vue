@@ -1,13 +1,11 @@
 <template>
   <div class="telestation-container" :class="{'overFlowScroll': this.gameMode==='album'}" id="divdiv">
-    <!-- 소원 시작 -->
     <div
       v-show="gameMode === 'text'"
       style="display: flex; flex-direction: column; align-items: center"
     >
-      <!-- 키워드 입력 -->
         <div class="progress" style="width:900px; margin-top:10px;">
-          <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="30" :style="{width:textingTime*3.4+'%'}">
+          <div class="progress-bar bar danger" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="30" :style="{width:textingTime*3.4+'%'}">
           </div>
         </div>
 
@@ -72,8 +70,8 @@
       v-show="gameMode === 'drawing'"
       style="display: flex; flex-direction: column; align-items: center"
     >
-        <div class="progress" style="width:900px;">
-          <div class="progress-bar" role="progressbar" aria-valuenow="100"
+        <div class="progress" style="width:900px; margin-top:10px; margin-bottom:40px;">
+          <div class="progress-bar bar danger" role="progressbar" aria-valuenow="100"
           aria-valuemin="0" aria-valuemax="120" :style="{width:drawingTime/1.2+'%'}">
           </div>
         </div>
@@ -88,12 +86,8 @@
       </div>
     </div>
 
- <!-- 소원 끝 -->
-
-
     <div v-show="gameMode ==='album'" style=" width:100%; text-align:center;">
       <h2>{{recieveUsers[0]+"'s Album"}}</h2>
-      <!-- <button @click="testfn3()" style="display:block; margin:auto">클릭</button> -->
       <div v-for="(data,index) in recieveAlbum" :key="index" style="display:flex; flex-direction: column; align-items:center;">
         <div style="width:100%;" v-if="index%2 === 0" id="keyword">
           <div class="animate__animated animate__slideInLeft" style="display:flex; flex-direction: column; align-items:center;">
@@ -141,11 +135,7 @@
         <button style="display:block; margin:auto; font-size:25px; background-color:rgb(1, 215, 236)" v-show="isRoomMaker && round===personnel" @click="sendMessageToEveryBody('','nextAlbum')">결과보기</button>
       </div>
     </div>
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  게임 모드 === best 시작    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
     <div v-show="gameMode === 'best'" class="modeBestWorst"  style="height: 680px;">
       <canvas id="canvas"></canvas>
       <div class="word">
@@ -173,8 +163,8 @@
                       <img src="../../assets/inspector.png" alt="" style="width:50px; float:left;">
                       <span style="margin:auto 3px; font-size:20px; font-weight: bold; float:left;">{{ preBestPlayer }}</span>
                       </div>
-                      <div class="speech-bubble-left2">
-                        <span  style="">{{ bestPreData }}sdfsd</span>
+                      <div class="speech-bubble-left2" style="text-align: center;">
+                        <span style="font-weight: bold; font-size:120%;">{{ bestPreData }}</span>
                       </div>
                     </div>
                     <div class="div4-2" style="display:flex; flex-direction: column;">
@@ -200,29 +190,25 @@
                           <img src="../../assets/artist.png" alt="" style="width:50px;">
                         </div>
                       <div>
-                        <span class="speech-bubble-right" style="float:right">{{ besttData }}sdfsd</span>
+                        <span class="speech-bubble-right" style="float:right; font-weight: bold; font-size:120%; text-align: center;">{{ bestData }}</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@  버튼 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
             <div class="div2-3" style="overflow: hidden; margin-top: 10px;">
               <button class="animate__animated animate__bounceInUp paper-btn" style="width:100%;" v-show="isRoomMaker" @click="sendMessageToEveryBody('', 'worst')">worst보러가기</button>
             </div>
-            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
           </div>
         </div>
       </div>
     </div>
 
-
     <div v-show="gameMode === 'worst'" class="modeBestWorst"  style="height: 680px;">
       <div class="word">
         <span>W</span><span>o</span><span>r</span><span>s</span><span>t</span><span>P</span><span>l</span><span>a</span><span>y</span><span>e</span><span>r</span>
       </div>
-      <canvas id="canvas"></canvas>
       <div class="parent1" style="height: 630px">
         <div class="div1-1" style="height: 100%">
           <div class="parent2" style="max-height: 640px">
@@ -246,8 +232,8 @@
                       <img src="../../assets/inspector.png" alt="" style="width:50px; float:left;">
                       <span style="margin:auto 3px; font-size:20px; font-weight: bold; float:left;">{{ preWorstPlayer }}</span>
                       </div>
-                      <div class="speech-bubble-left2">
-                        <span  style="">{{ worstPreData }}</span>
+                      <div class="speech-bubble-left2" style="text-align: center;">
+                        <span style="font-weight: bold; font-size:120%; ">{{ worstPreData }}</span>
                       </div>
                     </div>
                     
@@ -275,32 +261,21 @@
                         <img src="../../assets/artist.png" alt="" style="width:50px;">
                       </div>
                       <div>
-                        <span class="speech-bubble-right" style="float:right">{{ worstData }}</span>
+                        <span class="speech-bubble-right" style="float:right; font-weight: bold; font-size:120%; text-align: center;">{{ worstData }}</span>
                       </div>
                       </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@  버튼 @@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
             <div class="div2-3" style="display: flex; justify-content: center;">
-              <button v-if="isRoomMaker" class="paper-btn" style="width:100%;" @click="sendMessageToEveryBody('','replay')">
-                <span>게임 선택하기</span>
-              </button>
-              <button class="paper-btn btn-secondary" style="width:100%" @click="leaveRoom()">
-                <span>방 나가기</span>
-              </button>
+              <button v-if="isRoomMaker" class="paper-btn" style="width:100%;" @click="sendMessageToEveryBody('','replay')"><span>게임 선택하기</span></button>
+              <button class="paper-btn btn-secondary" style="width:100%" @click="leaveRoom()"><span>방 나가기</span></button>
             </div>
-            <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
           </div>
         </div>
       </div>
     </div>
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
   </div>
 </template>
 <script type="" src=""></script>
@@ -310,7 +285,6 @@ import {mapState} from 'vuex';
 import CanvasApi from '@/components/CanvasApi';
 import UserVideo from '@/components/Video/UserVideo';
 import 'animate.css';
-import OvVideo from '../Video/OvVideo.vue'; // 광은 핉터
 
 export default {
   name: 'Telestation',
@@ -322,7 +296,6 @@ export default {
   components:{
     CanvasApi,
     UserVideo,
-    OvVideo,
   },
   data () {
 		return {
@@ -347,8 +320,8 @@ export default {
       targetUser: '', // 웹소켓 받는 사람
       receiveKeyword:'', // 받은 키워드
       recieveDraw:'', // 받은 그림
-      recieveAlbum: null,
-      recieveUsers: [],
+      recieveAlbum: ['0','0','0','0','0','0','0','0'],
+      recieveUsers: ['0','0','0','0','0','0','0','0'],
       round:0,
       gameId: this.gameRes.playGameId,
       dataIndex:0, // 앨범 번호
@@ -364,27 +337,46 @@ export default {
       worstData:'',
       bestPreData:'',
       bestData:'',
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      //@@@@@@@@@@@@@@@@@  광은 투표 결과에 이름 넣기  @@@@@@@@@@@@@@
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       preBestPlayer:'',
       preWorstPlayer:'',
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		}
 	},
   methods: {
     leaveRoom() {
+    this.worstPlayer = '',
     this.$store.dispatch('leaveSession')
     this.$router.push({name:'Lobby', params: { sendUserEmail: this.sendUserEmail}})
     },
     backToRoom() {
-      // this.sendMessageToEveryBody('', 'backToRoom')
       this.keyword= '',
       this.draw='',
-      this.round=0,
       this.gameMode= "text",
+      this.drawingOrder=1,
+      this.completedPlayers=0,
+      this.myCompleted= false,
+      this.readyPlayers=0,
+      this.personnel=0,
+      this.participant= new Map(),
+      this.targetUser= '',
+      this.receiveKeyword='',
+      this.recieveDraw='',
+      this.recieveAlbum= ['0','0','0','0','0','0','0','0'],
+      this.recieveUsers= ['0','0','0','0','0','0','0','0'],
+      this.round=0,
+      this.gameId= this.gameRes.playGameId,
+      this.dataIndex=0,
+      this.worst=0,
+      this.best=0,
+      this.worstPlayer='',
+      this.worstVideo=null,
+      this.bestPlayer='',
+      this.bestVideo=null,
+      this.worstResultMode=0,
+      this.bestResultMode=0,
+      this.worstPreData='',
+      this.worstData='',
+      this.bestPreData='',
+      this.bestData='',
       this.session.off('signal:keyword')
       this.session.off('signal:draw')
       this.session.off('signal:completed')
@@ -393,17 +385,6 @@ export default {
       this.session.off('signal:result')
       this.session.off('signal:worst')
       this.sendMessageToEveryBody('', 'initTelestation')
-      // 광은 필터
-      if(this.worstPlayer == this.myUserName) {
-        this.publisher.stream.removeFilter()
-        .then(()=>{
-          console.log("필터 제거됨");
-        })
-        .catch(error => {
-          console.error(error);
-        })
-      }
-
     },
     testfn3(){
       this.removeKeyword()
@@ -429,20 +410,17 @@ export default {
       var final1 = parseInt(this.personnel/2)
       var loading1 = setInterval(function(){
         if (index1 === final1) {
-          clearInterval(loading1)
-        }
-        if (index1 === final1-1) {
           setTimeout(() =>{
             $('#next').fadeIn(1000)
             $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
           },2500)
+          clearInterval(loading1)
         }
         $('#draw > div').eq(index1).fadeIn(1000);index1++
         $('#divdiv').scrollTop($('#divdiv')[0].scrollHeight);
         },5000);
     },
     removeKeyword() {
-      console.log('리무브 들어왔니?ㄴ')
       $('#keyword > div').hide();
       $('#next').hide();
     },
@@ -533,18 +511,12 @@ export default {
       })
       .catch((err)=> {
         console.log(err)
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       })
     },
     endDrawRound() { // Drawing 라운드 끝
       this.pauseDrawing()
       this.drawingTime = this.rules.drawingTime
-      console.log('-------------------------------------------------------------------------------')
-      console.log(this.drawingTime, this.rules.drawingTime)
-      console.log('-------------------------------------------------------------------------------')
       this.$refs.canvasApi.saveClick()
-      console.log(this.drawingOrder)
-      console.log(this.myUserName,this.mySessionId,this.drawingOrder,this.personnel,this.draw)
       axios({
         method:'POST',
         url: '/api/telestations/saveData',
@@ -583,9 +555,6 @@ export default {
     },
     startAlbumRound(){
       this.round ++;
-      console.log("dataIndex" + this.dataIndex);
-      console.log("베슽흐" + this.best);
-      console.log("워스트" + this.worst);
       axios({
         method:'POST',
         url: '/api/telestations/showAlbum',
@@ -604,8 +573,6 @@ export default {
           this.dataIndex = res.data.dataIndex
           this.recieveAlbum = res.data.dataList
           this.recieveUsers = res.data.userNicknameList
-          console.log("this.dataIndex"+this.dataIndex);
-          console.log("this.recieveAlbum"+this.recieveAlbum);
           this.worst = 0
           this.best = 0
         }else {
@@ -615,16 +582,8 @@ export default {
           this.worstData = res.data.worst.data
           this.bestPreData = res.data.best.preData
           this.bestData = res.data.best.data
-          //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          //@@@@@@@@@@@@@@@@@  광은 투표 결과에 이름 넣기  @@@@@@@@@@@@@@
-          //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
           this.preBestPlayer = res.data.best.preNickname
           this.preWorstPlayer = res.data.worst.preNickname
-          console.error("preBestPlayerNicname: ", this.preBestPlayer);
-          console.error("preWorstPlayerNicname: ", this.preWorstPlayer);
-          //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
           if (res.data.best.preDrawingOrder%2 === 1) {
             this.bestResultMode = 1
           }else {
@@ -636,8 +595,8 @@ export default {
             this.worstResultMode = 2
           }
           this.gameMode='best'
-          this.testfn3()
         }
+        this.testfn3()
       })
       .catch((err)=> {
         console.log(err, '앨범에러')
@@ -768,7 +727,6 @@ export default {
     },
   },
   mounted() {
-    // $('#divdiv').scrollTop($('divdiv').prop('scrollHeight'));
     this.startTexting()
     this.getUsers()
     this.session.on('signal:keyword', (event) => { // 입력한 키워드 백에 보내기
@@ -806,302 +764,16 @@ export default {
       this.worstVideo = null
       this.backToRoom();
     })
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     꽃가루날리기 + a @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    (function () {
-      // globals
-      var canvas;
-      var ctx;
-      var W;
-      var H;
-      var mp = 150; //max particles
-      var particles = [];
-      var angle = 0;
-      var tiltAngle = 0;
-      var confettiActive = true;
-      var animationComplete = true;
-      var deactivationTimerHandler;
-      var reactivationTimerHandler;
-      var animationHandler;
-
-      // objects
-
-      var particleColors = {
-        colorOptions: [
-          "DodgerBlue",
-          "OliveDrab",
-          "Gold",
-          "pink",
-          "SlateBlue",
-          "lightblue",
-          "Violet",
-          "PaleGreen",
-          "SteelBlue",
-          "SandyBrown",
-          "Chocolate",
-          "Crimson",
-        ],
-        colorIndex: 0,
-        colorIncrementer: 0,
-        colorThreshold: 10,
-        getColor: function () {
-          if (this.colorIncrementer >= 10) {
-            this.colorIncrementer = 0;
-            this.colorIndex++;
-            if (this.colorIndex >= this.colorOptions.length) {
-              this.colorIndex = 0;
-            }
-          }
-          this.colorIncrementer++;
-          return this.colorOptions[this.colorIndex];
-        },
-      };
-
-      function confettiParticle(color) {
-        this.x = Math.random() * W; // x-coordinate
-        this.y = Math.random() * H - H; //y-coordinate
-        this.r = RandomFromTo(10, 15); //radius;
-        this.d = Math.random() * mp + 10; //density;
-        this.color = color;
-        this.tilt = Math.floor(Math.random() * 10) - 10;
-        this.tiltAngleIncremental = Math.random() * 0.07 + 0.05;
-        this.tiltAngle = 0;
-
-        this.draw = function () {
-          ctx.beginPath();
-          ctx.lineWidth = this.r / 2;
-          ctx.strokeStyle = this.color;
-          ctx.moveTo(this.x + this.tilt + this.r / 4, this.y);
-          ctx.lineTo(this.x + this.tilt, this.y + this.tilt + this.r / 4);
-          return ctx.stroke();
-        };
-      }
-
-      $(document).ready(function () {
-        SetGlobals();
-        // InitializeButton();
-        InitializeConfetti();
-
-        $(window).resize(function () {
-          W = window.innerWidth;
-          H = window.innerHeight;
-          canvas.width = W;
-          canvas.height = H;
-        });
-      });
-
-      function InitializeButton() {
-        $("#stopButton").click(DeactivateConfetti);
-        $("#startButton").click(RestartConfetti);
-      }
-
-      function SetGlobals() {
-        canvas = document.getElementById("canvas");
-        ctx = canvas.getContext("2d");
-        W = window.innerWidth;
-        H = window.innerHeight;
-        canvas.width = W;
-        canvas.height = H;
-      }
-
-      function InitializeConfetti() {
-        particles = [];
-        animationComplete = false;
-        for (var i = 0; i < mp; i++) {
-          var particleColor = particleColors.getColor();
-          particles.push(new confettiParticle(particleColor));
-        }
-        StartConfetti();
-      }
-
-      function Draw() {
-        ctx.clearRect(0, 0, W, H);
-        var results = [];
-        for (var i = 0; i < mp; i++) {
-          (function (j) {
-            results.push(particles[j].draw());
-          })(i);
-        }
-        Update();
-
-        return results;
-      }
-
-      function RandomFromTo(from, to) {
-        return Math.floor(Math.random() * (to - from + 1) + from);
-      }
-
-      function Update() {
-        var remainingFlakes = 0;
-        var particle;
-        angle += 0.01;
-        tiltAngle += 0.1;
-
-        for (var i = 0; i < mp; i++) {
-          particle = particles[i];
-          if (animationComplete) return;
-
-          if (!confettiActive && particle.y < -15) {
-            particle.y = H + 100;
-            continue;
-          }
-
-          stepParticle(particle, i);
-
-          if (particle.y <= H) {
-            remainingFlakes++;
-          }
-          CheckForReposition(particle, i);
-        }
-
-        if (remainingFlakes === 0) {
-          StopConfetti();
-        }
-      }
-
-      function CheckForReposition(particle, index) {
-        if (
-          (particle.x > W + 20 || particle.x < -20 || particle.y > H) &&
-          confettiActive
-        ) {
-          if (index % 5 > 0 || index % 2 == 0) {
-            //66.67% of the flakes
-            repositionParticle(
-              particle,
-              Math.random() * W,
-              -10,
-              Math.floor(Math.random() * 10) - 20
-            );
-          } else {
-            if (Math.sin(angle) > 0) {
-              //Enter from the left
-              repositionParticle(
-                particle,
-                -20,
-                Math.random() * H,
-                Math.floor(Math.random() * 10) - 20
-              );
-            } else {
-              //Enter from the right
-              repositionParticle(
-                particle,
-                W + 20,
-                Math.random() * H,
-                Math.floor(Math.random() * 10) - 20
-              );
-            }
-          }
-        }
-      }
-      function stepParticle(particle, particleIndex) {
-        particle.tiltAngle += particle.tiltAngleIncremental;
-        particle.y += (Math.cos(angle + particle.d) + 3 + particle.r / 2) / 3;
-        particle.x += Math.sin(angle);
-        particle.tilt = Math.sin(particle.tiltAngle - particleIndex / 3) * 15;
-      }
-
-      function repositionParticle(particle, xCoordinate, yCoordinate, tilt) {
-        particle.x = xCoordinate;
-        particle.y = yCoordinate;
-        particle.tilt = tilt;
-      }
-
-      function StartConfetti() {
-        W = window.innerWidth;
-        H = window.innerHeight;
-        canvas.width = W;
-        canvas.height = H;
-        (function animloop() {
-          if (animationComplete) return null;
-          animationHandler = requestAnimFrame(animloop);
-          return Draw();
-        })();
-      }
-
-      function ClearTimers() {
-        clearTimeout(reactivationTimerHandler);
-        clearTimeout(animationHandler);
-      }
-
-      function DeactivateConfetti() {
-        confettiActive = false;
-        ClearTimers();
-      }
-
-      function StopConfetti() {
-        animationComplete = true;
-        if (ctx == undefined) return;
-        ctx.clearRect(0, 0, W, H);
-      }
-
-      function RestartConfetti() {
-        ClearTimers();
-        StopConfetti();
-        reactivationTimerHandler = setTimeout(function () {
-          confettiActive = true;
-          animationComplete = false;
-          InitializeConfetti();
-        }, 100);
-      }
-
-      window.requestAnimFrame = (function () {
-        return (
-          window.requestAnimationFrame ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame ||
-          window.oRequestAnimationFrame ||
-          window.msRequestAnimationFrame ||
-          function (callback) {
-            return window.setTimeout(callback, 1000 / 60);
-          }
-        );
-      })();
-    })();
-    const spans = document.querySelectorAll(".word span");
-
-    spans.forEach((span, idx) => {
-      span.addEventListener("click", (e) => {
-        e.target.classList.add("active");
-      });
-      span.addEventListener("animationend", (e) => {
-        e.target.classList.remove("active");
-      });
-
-      // Initial animation
-      setTimeout(() => {
-        span.classList.add("active");
-      }, 750 * (idx + 1));
-    });
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   },
   created() {
     this.personnel = this.subscribers.length
   },
-  // 광은 필터
-  updated() {
-    if(this.worstPlayer == this.myUserName) {
-      this.publisher.stream.applyFilter("GStreamerFilter", {command: "videobalance saturation=0.0"})
-      .then(()=>{
-        console.log("필터 적용됨")
-      })
-      .catch(error =>{
-        console.error(error)
-      })
-    }
-  },
-
 }
-
-
 </script>
 
 <style scoped>
 .telestation-container {
   height: 100%;
-  background-color: rgb(245, 245, 245);
   overflow: hidden;
 }
 .completed {
@@ -1186,14 +858,12 @@ canvas {
 .animate__animated {
   --animate-duration: 2.5s;
 }
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 광은 수정 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
 .modeBestWorst {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: White; */
+
 }
 
 .speech-bubble-left {
@@ -1219,7 +889,7 @@ canvas {
   border-top: 0;
   border-left: 0;
   margin-left: -10px;
-  margin-top: -10px;
+  margin-top: -8px;
 }
 .speech-bubble-left2 {
   position: relative;
@@ -1244,14 +914,14 @@ canvas {
   border-top: 0;
   border-left: 0;
   margin-left: -10px;
-  margin-top: -10px;
+  margin-top: -8px;
 }
 
 .speech-bubble-right {
   position: relative;
   background: rgb(254, 240, 27);
   border-radius: 0.4em;
-  margin-top: 20px;
+  margin-top: 15px;
   margin-left: auto;
   margin-right: 10px;
   min-width: 100px;
@@ -1270,12 +940,10 @@ canvas {
   border-top: 0;
   border-left: 0;
   margin-left: -10px;
-  margin-top: -10px;
+  margin-top: -8px;
   transform: scaleX(-1);
 }
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+
 .parent1 {
   display: grid;
   grid-template-columns: 1fr;
@@ -1283,13 +951,11 @@ canvas {
   grid-column-gap: 100px;
   grid-row-gap: 0px;
   width: 100%;
-  /* height: 100%; */
-  /* background-color: green */
+
 }
 
 .div1-1 {
   grid-area: 1 / 1 / 2 / 2;
-  /* background-color: rgb(77, 0, 0); */
   height: 650px;
 }
 
@@ -1299,32 +965,23 @@ canvas {
   grid-template-rows: 1fr 7fr 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  /* padding-top: 20px; */
   height: 650px;
-  /* background-color: blanchedalmond; */
 }
 .div2-1 {
   margin: auto;
   padding: 7px 70px 7px 70px;
   
   grid-area: 1 / 2 / 2 / 3;
-  /* background-color: white; */
-
-  /* background-color: lightsalmon; */
 }
 .div2-2 {
   grid-area: 2 / 2 / 3 / 3;
-  
-  /* background-color: wheat; */
 }
 .div2-3 {
   grid-area: 3 / 2 / 4 / 3;
-  /* background-color: darkgreen; */
 }
 .div2-3 button {
   display: block;
   margin: auto;
-  /* background-color: aliceblue; */
 }
 .parent3 {
   display: grid;
@@ -1333,18 +990,16 @@ canvas {
   grid-column-gap: 50px;
   grid-row-gap: 0px;
   height: 100%;
-  /* background-color: rgba(3, 3, 3, 0.8); */
 }
 .div3-1 {
   grid-area: 1 / 1 / 2 / 2;
   margin-left: 20px;
-  /* background-color: rgba(3, 3, 3, 0.8); */
+  background-color: rgba(3, 3, 3, 0.8);
 }
 .div3-2 {
   grid-area: 1 / 2 / 2 / 3;
   margin-right: 20px;
   background-color: rgb(155, 187, 212);
-  /* margin-bottom: 5px; */
 }
 .parent4 {
   display: grid;
@@ -1369,7 +1024,6 @@ canvas {
   grid-template-rows: 3fr 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  /* padding-top: 10px; */
   max-height: 450px;
 }
 
@@ -1379,133 +1033,8 @@ canvas {
 }
 .div5-2 {
   grid-area: 2 / 1 / 3 / 2;
-  /* padding-bottom: 20px; */
-}
-/* 글자 움직이기 */
-.test {
-  perspective: 1000px;
-}
-.word {
-  perspective: 1000px;
 }
 
-.word span {
-  cursor: pointer;
-  display: inline-block;
-  font-size: 20px;
-  font-weight: bold;
-  user-select: none;
-  line-height: 0.8;
-  margin: 10px 0px 15px 0px;
-}
-
-.word span:nth-child(1).active {
-  animation: balance 1.5s ease-out;
-  transform-origin: bottom left;
-}
-.word span:nth-child(6).active {
-  animation: balance 1.5s ease-out;
-  transform-origin: bottom left;
-}
-@keyframes balance {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  30%,
-  60% {
-    transform: rotate(-45deg);
-  }
-}
-
-.word span:nth-child(2).active {
-  animation: shrinkjump 1s ease-in-out;
-  transform-origin: bottom center;
-}
-.word span:nth-child(7).active {
-  animation: shrinkjump 1s ease-in-out;
-  transform-origin: bottom center;
-}
-@keyframes shrinkjump {
-  10%,
-  35% {
-    transform: scale(2, 0.2) translate(0, 0);
-  }
-  45%,
-  50% {
-    transform: scale(1) translate(0, -150px);
-  }
-  80% {
-    transform: scale(1) translate(0, 0);
-  }
-}
-
-.word span:nth-child(3).active {
-  animation: falling 2s ease-out;
-  transform-origin: bottom center;
-}
-.word span:nth-child(8).active {
-  animation: falling 2s ease-out;
-  transform-origin: bottom center;
-}
-.word span:nth-child(11).active {
-  animation: falling 2s ease-out;
-  transform-origin: bottom center;
-}
-@keyframes falling {
-  12% {
-    transform: rotateX(240deg);
-  }
-  24% {
-    transform: rotateX(150deg);
-  }
-  36% {
-    transform: rotateX(200deg);
-  }
-  48% {
-    transform: rotateX(175deg);
-  }
-  60%,
-  85% {
-    transform: rotateX(180deg);
-  }
-  100% {
-    transform: rotateX(0deg);
-  }
-}
-
-.word span:nth-child(4).active {
-  animation: rotate 1s ease-out;
-}
-.word span:nth-child(9).active {
-  animation: rotate 1s ease-out;
-}
-@keyframes rotate {
-  20%,
-  80% {
-    transform: rotateY(180deg);
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
-}
-
-.word span:nth-child(5).active {
-  animation: falling 1.5s linear;
-}
-.word span:nth-child(10).active {
-  animation: balance1 1.5s linear;
-}
-@keyframes balance1 {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  30%,
-  60% {
-    transform: rotate(45deg);
-  }
-}
 .overFlowScroll {
   color : black;
   overflow:scroll;
