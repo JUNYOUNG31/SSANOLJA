@@ -57,7 +57,7 @@
 
 **키워드입력**
 
-![키워드입력](/uploads/0f33c2ee4bd7ab2fd43647ebb0caa009/키워드입력.gif)
+![키워드입력](/uploads/71ad2f6aa9e9f7659e4e032090ccff61/키워드입력.gif)
 
 **그림그리기**
 
@@ -69,7 +69,7 @@
 
 **투표하기**
 
-![투표하기](/uploads/4792e5a62da9e6ac44662da7c38966c6/투표하기.gif)
+![투표하기](/uploads/838f4ae98a5804e1f61aa01645074f3f/투표하기.gif)
 
 **시상하기**
 
@@ -179,7 +179,8 @@
   - Backend
 - 조성현
   - Frontend
-  - 
+  
+    
 
 ## 🔧 **협업 툴**
 
@@ -215,7 +216,8 @@
 - master: 배포
 - README는 develop브런치에서 바로 작성한다.
 - feature 브랜치가 완성되면 develop 브랜치로 merge pull request를 진행한다.
-- pull request시 충돌이 발생하면 충돌되는 코드를 작성한 당사자들끼리 코드를 리뷰하며 필요한 경우 모든 팀원들이 코드 리뷰해서 merge한다.
+- pull request시 충돌이 발생하면 충돌되는 코드를 작성한 당사자들끼리 코드를 리뷰한다.
+  필요한 경우 모든 팀원들이 코드 리뷰해서 merge한다.
 - feature 브랜치 이름 명명 규칙
     - feature/[fe or be]/[기능 이름]
     - 예시) feature/fe/login
@@ -225,7 +227,7 @@
 
 
 
-## 🙆‍♂️ 커밋 전략
+## ❗ 커밋 전략
 
 ```
 - 커밋 타입: 내용 간단하게 적어주기
