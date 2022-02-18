@@ -1,165 +1,207 @@
-# 웹/모바일(웹 기술) 스켈레톤 프로젝트
+# **📹 SSANOLJA - 웹 화상 기술을 이용한 아이스브레이킹용 게임 서비스**
+
+## 🎮 **로비 서비스 화면**
+
+------
+
+**구글 로그인**
+
+![1.로그인](/uploads/ff7b0b324a95d86c748dc5e54c8e60a4/1.로그인.gif)
+
+**로비**
+
+![2.로비](/uploads/c81df0d9442047d78557638be5ca8cad/2.로비.gif)
+
+## **🕶 스파이폴 서비스 화면**
+
+------
+
+**게임설명**
+
+![3.스파이폴설명](/uploads/4712b1d01a5123215f81055ac799bfbe/3.스파이폴설명.gif)
+
+**시작화면**
+
+![4.시민시작화면](/uploads/bf71fb58208f3b67fc4e5cfb61c13af3/4.시민시작화면.gif)
+
+**시작화면(스파이)**
+
+![스파이화면](/uploads/8ab8c24e7e2e954439a08cdb95fb5886/스파이화면.gif)
+
+**지목하기**
+
+![지목하기](/uploads/fa9d73e7653fa3fec3e6ed9eb95698de/지목하기.gif)
+
+**투표하기**
+
+![고발하기](/uploads/23afdfd37b73ca84bb1b15e6f5037f95/고발하기.gif)
+
+**스파이폴**
+
+![8.스파이폴](/uploads/328596f1ae68777cb21d74b27d5c9447/8.스파이폴.gif)
+
+**승리화면**
+
+시민승리  
+![spy_win](/uploads/150a26d553ad2179776185be5ced2364/spy_win.gif)
+
+스파이 승리
+![civil_win](/uploads/7693b0fd72d87e7fe4f17c132b079769/civil_win.gif)
 
 
+## **🎨 텔레스테이션 서비스 화면**
 
-## 카테고리
+------
 
-| Application | Domain | Language | Framework |
-| ---- | ---- | ---- | ---- |
-| :white_check_mark: Desktop Web | :black_square_button: AI | :white_check_mark: JavaScript | :white_check_mark: Vue.js |
-| :white_check_mark: Mobile Web | :black_square_button: Big Data | :black_square_button: TypeScript | :black_square_button: React |
-| :white_check_mark: Responsive Web | :black_square_button: Blockchain | :black_square_button: C/C++ | :black_square_button: Angular |
-| :black_square_button: Android App | :black_square_button: IoT | :black_square_button: C# | :black_square_button: Node.js |
-| :black_square_button: iOS App | :black_square_button: AR/VR/Metaverse | 🔲Python | 🔲Flask/Django |
-| :black_square_button: Desktop App | :black_square_button: Game | :white_check_mark: Java | :white_check_mark: Spring/Springboot |
-| | | :black_square_button: Kotlin | |
+**게임설명**
 
+![9.텔레스테이션설명](/uploads/a517c718914d22c04d5f295a2ef84be7/9.텔레스테이션설명.gif)
 
+**키워드입력**
 
-## 프로젝트 소개
+![키워드입력](/uploads/9095555573586f7556a5d686e8dde645/키워드입력.gif)
 
-* 프로젝트명: SSANOLJA
+**그림그리기**
 
+**그림맞추기**
 
+![그림맞추기](/uploads/d7bfcc3bc436de9f80f40d03c66899be/그림맞추기.gif)
 
-* 서비스 특징: 웹/모바일(웹 기술) 프로젝트를 위한 스켈레톤 프로젝트
+**투표하기**
 
+**시상**
 
+## 🔲 **와이어프레임**
 
-* 주요 기능
-  - 회원 관리
-  - 화상 미팅룸
-  - 그룹 채팅
-  
-<br>  
-  
-* 주요 기술
-  - WebRTC
-  - WebSocket
-  - JWT Authentication
-  - REST API
-  
-  <br>  
-  
-* 참조 리소스
-  * Vuetify: 디자인 전반 적용
-  * Vue Argon Design System: 디자인 전반 적용
-  * Vue Black Dashboard Pro(유료): 캘린더 컴포넌트 사용
-  * AR Core: 구글에서 제공하는 AR 지원 라이브러리. 이미지 인식 및 오버레이 영상에 활용
-  * Color Thief: 이미지 색상 추출 라이브러리. 커버 사진 색상 추출 및 배경 변경에 활용
-  * Animation.css: CSS 애니메이션 지원 라이브러리. 메인 페이지 진입 애니메이션에 활용
-  
-  <br>  
-  
-* 배포 환경
-  - URL: // 웹 서비스, 랜딩 페이지, 프로젝트 소개 등의 배포 URL 기입
-  - 테스트 계정: // 로그인이 필요한 경우, 사용 가능한 테스트 계정(ID/PW) 기입
+[링크](https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/프로토타입1?node-id=0%3A1)
 
+## 🔗 **ER Diagram**
 
+![14.ER_Diagram](/uploads/28f8d2401d0acb61d2a0a8bb2ae1e18a/14.ER_Diagram.png)
 
-## 팀 소개
-* 김범주: 팀장, 백엔드 개발
-* 배소원:  백엔드 개발
-* 강광은: 백엔드 개발
-* 박준영: 프론트 엔드 개발
-* 정성우: 프론트 엔드 개발
-* 조성현: 프론트 엔드 개발
+## 📄 **기능 정의서**
 
+------
 
+![15.기능정의서1](/uploads/916b8c17bed4f332c9444255bb13dff5/15.기능정의서1.png)
 
+![16.기능정의서2](/uploads/5cb54e0e170194ec380364b6220b7ef7/16.기능정의서2.png)
 
+![17.기능정의서3](/uploads/f7f1c3443d3cc8f93266ea50cbd4f6ce/17.기능정의서3.png)
 
-## 와이어프레임
+## 🔨 서비스 아키텍처
 
-[링크](https://www.figma.com/file/QZVKoDuLr3hUQw0IOLP12c/%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%851?node-id=0%3A1)
+------
 
-![스파이폴](/uploads/74416e46b58444793c1fecd726fcc683/스파이폴.gif)
-![메인페이지](/uploads/8f625a3e17109e80945f038d5a99c67c/메인페이지.gif)
-![가예뉴가](/uploads/86493623ec329b7fe3148be24b52231c/가예뉴가.gif)
-![텔레스테이션](/uploads/879e143addd53f0f16942510f1c46fd7/텔레스테이션.gif)
+![18서비스아키텍처](/uploads/1651038b7bff0a307b5357300df6cb64/18서비스아키텍처.png)
 
+| PORT | 이름                                                  |
+| ---- | ----------------------------------------------------- |
+| 443  | HTTPS                                                 |
+| 80   | HTTP - HTTPS로 리다이렉트(프론트 페이지로 리다이렉트) |
+| 3302 | MySQL                                                 |
+| 3000 | Vue, NginX Docker Container                           |
+| 8080 | Spring boot Docker Container                          |
+| 9002 | Openvidu                                              |
 
+## ⚙ 기술 스택
 
-## ER Diagram
+------
 
+⌨**Backend**
 
+- Spring Boot 2.6.2
+- Spring Data Jpa
+- Java 8
+- Mysql 5.7
 
-![ERD_1.0](/uploads/bde2736b8f25c5e8c0ede551fe4aee93/ERD_1.0.png)
+⌨**Frontend**
 
+- Vue.js 2
+- Vuetify 2.4
+- Vuex 3.4
+- (PaperCSS)[https://www.getpapercss.com/]
 
+⌨**Web RTC**
 
+- openvidu 2.20
 
+⌨ **배포**
 
-## 기능 정의서
+- AWS EC2
+- Docker
+- Nginx
 
-![1](/uploads/da8b830fd9bd66d23ce4c51a58e19705/1.png)
-![2](/uploads/56c36762481ed8b3f0f0980cfc31b22e/2.png)
-![3](/uploads/5408796bca8fffb2a802663842d75ac6/3.png)
-![4](/uploads/a9d625ea09c8a0847b151f1e827dbab1/4.png)
+## 😀 **팀원 역할**
 
+------
 
+- 김범주
+  - Backend
+  - Server
+- 배소원
+  - Backend
+- 강광은
+  - Backend
+- 박준영
+  - Frontend
+- 정성우
+  - Backend
+- 조성현
+  - Frontend
 
+## 🔧 **협업 툴**
 
-
-## 협업 툴
+------
 
 - Git
-
 - Jira
-
-- [Notion](https://granite-guitar-399.notion.site/SSAnolja-f46693a1c6f04836b9e515b5f61b3724)
-
+- [Notion](https://www.notion.so/SSAnolja-f46693a1c6f04836b9e515b5f61b3724)
 - Mattermost
-
 - Webex
+- Discord
 
+## 🙏 코드 컨벤션
 
+------
 
-## 개발 룰
+```
+- 변수명, 메서드 이름은 airbnb-eslint를 참고하여 카멜케이스로 작성합니다.
+- 클래스 이름은 대문자로 시작합니다.
+- 메서드 이름은 소문자로 시작하고 동사로 짓습니다.
+```
 
-- 코드 컨벤션
-  - 변수명, 메서드 이름은 airbnb-eslint를 참고하여 카멜케이스로 작성합니다.
-  - 클래스 이름은 대문자로 시작합니다.
-  - 메서드 이름은 소문자로 시작하고 동사로 짓습니다.
+## 🌿 브랜치 전략
 
-<br>
+------
 
-- 브랜치 전략
-
-  - feature: 기능
-  - develop: 개발
-  - master: 배포
-  - hotfix: 배포 중 급한 에러 수정
-  
-
-  - README는 develop브런치에서 바로 작성한다.
-  - feature 브랜치가 완성되면 develop 브랜치로 merge pull request를 진행한다.
-  - pull request시 충돌이 발생하면 충돌되는 코드를 작성한 당사자들끼리 코드를 리뷰하며 필요한 경우 모든 팀원들이 코드 리뷰해서 merge한다.
-  - feature 브랜치 이름 명명 규칙
+```
+- feature: 기능
+- develop: 개발
+- master: 배포
+- README는 develop브런치에서 바로 작성한다.
+- feature 브랜치가 완성되면 develop 브랜치로 merge pull request를 진행한다.
+- pull request시 충돌이 발생하면 충돌되는 코드를 작성한 당사자들끼리 코드를 리뷰하며 필요한 경우 모든 팀원들이 코드 리뷰해서 merge한다.
+- feature 브랜치 이름 명명 규칙
     - feature/[fe or be]/[기능 이름]
     - 예시) feature/fe/login
-<br>
-  - develop 브랜치 규칙
+- develop 브랜치 규칙
     - develop-[back or front]
+```
 
-<br>
+## 🙆‍♂️ 커밋 전략
 
+```
+- 커밋 타입: 내용 간단하게 적어주기
+- 예시) FEAT: register REST API 작성
 
+- FEAT: 새로운 기능을 추가
+- FIX: 버그를 해결
+- STYLE: 코드 포맷 변경, 코드 변경이 없는 경우
+- REFACTOR: 변수명, 메서드 이름 수정 등 클린코드를 위한 코드 리팩토링
+- DOCS: Swagger, README등 문서를 수정
+- RENAME: 파일 혹은 폴더명 수정 및 이동
+- REMOVE : 파일 삭제
+- CHORE : 빌드 테스크 업데이트, 패키지 매니저 환경설정
+```
 
-
-- 커밋 전략
-
-  - 커밋 타입: 내용 간단하게 적어주기
-  - 예시) FEAT: register REST API 작성 [#JIRA issue-number] 
-  - JIRA issue-number는 Githook을 사용하여 자동으로 작성할 예정
-  
-  
-  
-  - FEAT: 새로운 기능을 추가
-  - FIX: 버그를 해결
-  - STYLE: 코드 포맷 변경, 코드 변경이 없는 경우
-  - REFACTOR: 변수명, 메서드 이름 수정 등 클린코드를 위한 코드 리팩토링
-  - DOCS: Swagger, README등 문서를 수정
-  - RENAME: 파일 혹은 폴더명 수정 및 이동
-  - REMOVE : 파일 삭제
-  - CHORE : 빌드 테스크 업데이트, 패키지 매니저 환경설정
