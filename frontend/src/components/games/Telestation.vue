@@ -730,16 +730,18 @@ export default {
       this.sendMessageToEveryBody('', "readyToNext")
     })
     this.session.on('signal:draw', (event) => { // 그린 그림 백에 보내기 
-      axios.post('/api/telestations/getData', 
+    console.log(event.data)
+      axios.get('/api/telestations/getData', 
       {
-        data : {
-          userNickname: event,
-          roomCode: this.mySessionId,
+        params : {
+          userNickname: event.data,
+          gameId: this.gameId,
           drawingOrder: this.drawingOrder,
         }
       })
       .then((res)=> {
-        this.recieveDraw = res.data
+        console.log(res)
+        this.recieveDraw = res.data.data
         this.sendMessageToEveryBody('', "readyToNext")
       })
     })

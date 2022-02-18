@@ -137,12 +137,9 @@ public interface TelestationRepository extends JpaRepository<Telestation, Intege
       @Query(value = "select user_order from telestations where games_id = ? and users_id = ? and drawing_order = ?", nativeQuery = true)
       Integer findUserOrderByGamesIdUsersIdDrawingOrder(Integer gamesId, Integer usersId, Integer drawingOrder);
 
-      @Query(value = "select data from telestations where games_id = ? and drawing_order = ? and user_order = ?;", nativeQuery = true)
-      String findDataByGamesIdDrawingOrderUserOrder(Integer gamesId, Integer drawingOrder, Integer userOrder);
-
       @Query(value = "select users_id from telestations where games_id = 370 and user_order = 1 and drawing_order = 1;", nativeQuery = true)
       Integer findUsersIdByGamesIdUserOrderDrawingOrder(Integer gamesId, Integer drawingOrder, Integer userOrder);
 
-
-
+      @Query(value = "select data from telestations where games_id = ? and drawing_order = ? and users_Id = ?", nativeQuery = true)
+      String findDataByGamesIdDrawingOrderUserOrder(Integer gamesId, Integer drawingOrder, Integer usersId);
 }

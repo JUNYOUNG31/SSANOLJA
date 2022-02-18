@@ -96,7 +96,7 @@ public class TelestationService {
            String byUserNicknameFromUsersId = userRepository.findByUserNicknameFromUsersId(byUsersId);
 
             sendData.put("userNickname", byUserNicknameFromUsersId);
-//            sendData.put("data", telestationReq.getData());
+            sendData.put("data", telestationReq.getData());
 
         }else{
 
@@ -105,7 +105,7 @@ public class TelestationService {
             String byUserNicknameFromUsersId = userRepository.findByUserNicknameFromUsersId(byUsersId);
 
             sendData.put("userNickname", byUserNicknameFromUsersId);
-//            sendData.put("data", telestationReq.getData());
+            sendData.put("data", telestationReq.getData());
 
         }
         return sendData;
@@ -140,23 +140,12 @@ public class TelestationService {
 
     }
 
-    public Map<String, Object> getData(TelestationReq telestationReq) throws Exception {
+    public Map<String, Object> getData(String userNickname, int gameId, int drawingOrder) throws Exception {
 
-        String roomCode = telestationReq.getRoomCode();
-        Integer roomId = roomRepository.findRoomIdByRoomCode(roomCode);
-        Integer gamesId = gameRepository.findGamesIdByRoomsId(roomId);
-        String userNickname = telestationReq.getUserNickname();
+
         Integer usersId = userRepository.findUsersIdByUserNickname(userNickname);
-        Integer drawingOrder = telestationReq.getDrawingOrder();
-        Integer userOrder = telestationRepository.findUserOrderByGamesIdUsersIdDrawingOrder(gamesId, usersId, drawingOrder);
-        Integer personnel = telestationReq.getPersonnel();
         String  data;
-
-        if((userOrder - 1) == 0){
-            data = telestationRepository.findDataByGamesIdDrawingOrderUserOrder(gamesId, drawingOrder, personnel);
-        }else {
-            data = telestationRepository.findDataByGamesIdDrawingOrderUserOrder(gamesId, drawingOrder, userOrder - 1);
-        }
+        data = telestationRepository.findDataByGamesIdDrawingOrderUserOrder(gameId, drawingOrder, usersId);
 
         Map<String, Object> sendData = new HashMap<String, Object>();
         sendData.put("data", data);

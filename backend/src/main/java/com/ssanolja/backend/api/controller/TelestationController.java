@@ -42,8 +42,9 @@ public class TelestationController {
     }
 
     @GetMapping("/getData")
-    public ResponseEntity<Map<String, Object>> getData(@RequestBody TelestationReq telestationReq) throws Exception {
-        Map<String, Object> res = telestationService.getData(telestationReq);
+    public ResponseEntity<Map<String, Object>> getData(@RequestParam String userNickname, int gameId, int drawingOrder) throws Exception {
+
+        Map<String, Object> res = telestationService.getData(userNickname,gameId, drawingOrder);
 
         return  new ResponseEntity<>(res, HttpStatus.ACCEPTED);
     }
