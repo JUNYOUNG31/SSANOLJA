@@ -17,8 +17,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
     url: jdbc:mysql://i6e106.p.ssafy.io:3306/ssanolja_2.7?seUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
-    username: root
-    password: root_1234
+    username: 
+    password: 
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 
