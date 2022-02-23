@@ -4,11 +4,11 @@
 
 **구글 로그인**
 
-![1.로그인](/uploads/ff7b0b324a95d86c748dc5e54c8e60a4/1.로그인.gif)
+![1.로그인](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/ff7b0b324a95d86c748dc5e54c8e60a4/1.로그인.gif)
 
 **로비**
 
-![2.로비](/uploads/c81df0d9442047d78557638be5ca8cad/2.로비.gif)
+![2.로비](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/c81df0d9442047d78557638be5ca8cad/2.로비.gif)
 
 
 
@@ -16,35 +16,35 @@
 
 **게임설명**
 
-![3.스파이폴설명](/uploads/4712b1d01a5123215f81055ac799bfbe/3.스파이폴설명.gif)
+![3.스파이폴설명](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/4712b1d01a5123215f81055ac799bfbe/3.스파이폴설명.gif)
 
 **시작화면**
 
-![4.시민시작화면](/uploads/bf71fb58208f3b67fc4e5cfb61c13af3/4.시민시작화면.gif)
+![4.시민시작화면](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/bf71fb58208f3b67fc4e5cfb61c13af3/4.시민시작화면.gif)
 
 **시작화면(스파이)**
 
-![스파이화면](/uploads/8ab8c24e7e2e954439a08cdb95fb5886/스파이화면.gif)
+![스파이화면](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/8ab8c24e7e2e954439a08cdb95fb5886/스파이화면.gif)
 
 **지목하기**
 
-![지목하기](/uploads/fa9d73e7653fa3fec3e6ed9eb95698de/지목하기.gif)
+![지목하기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/fa9d73e7653fa3fec3e6ed9eb95698de/지목하기.gif)
 
 **투표하기**
 
-![고발하기](/uploads/23afdfd37b73ca84bb1b15e6f5037f95/고발하기.gif)
+![고발하기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/23afdfd37b73ca84bb1b15e6f5037f95/고발하기.gif)
 
 **스파이폴**
 
-![8.스파이폴](/uploads/328596f1ae68777cb21d74b27d5c9447/8.스파이폴.gif)
+![8.스파이폴](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/328596f1ae68777cb21d74b27d5c9447/8.스파이폴.gif)
 
 **승리화면 - 시민승리** 
 
-![spy_win](/uploads/150a26d553ad2179776185be5ced2364/spy_win.gif)
+![spy_win](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/150a26d553ad2179776185be5ced2364/spy_win.gif)
 
 **승리화면 - 스파이승리** 
 
-![civil_win](/uploads/7693b0fd72d87e7fe4f17c132b079769/civil_win.gif)
+![civil_win](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/7693b0fd72d87e7fe4f17c132b079769/civil_win.gif)
 
 
 
@@ -53,27 +53,27 @@
 
 **게임설명**
 
-![9.텔레스테이션설명](/uploads/a517c718914d22c04d5f295a2ef84be7/9.텔레스테이션설명.gif)
+![9.텔레스테이션설명](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/a517c718914d22c04d5f295a2ef84be7/9.텔레스테이션설명.gif)
 
 **키워드입력**
 
-![키워드입력](/uploads/71ad2f6aa9e9f7659e4e032090ccff61/키워드입력.gif)
+![키워드입력](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/71ad2f6aa9e9f7659e4e032090ccff61/키워드입력.gif)
 
 **그림그리기**
 
-<img src="/uploads/4595a89848168cdb7ba99dd4fd161312/그림그리기.gif" width="600" height="423"/>
+<img src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/4595a89848168cdb7ba99dd4fd161312/그림그리기.gif" width="600" height="423"/>
 
 **그림맞추기**
 
-![그림맞추기](/uploads/d7bfcc3bc436de9f80f40d03c66899be/그림맞추기.gif)
+![그림맞추기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/d7bfcc3bc436de9f80f40d03c66899be/그림맞추기.gif)
 
 **투표하기**
 
-![투표하기](/uploads/19986d65e28454fd14dacf7b8bededa3/투표하기.gif)
+![투표하기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/19986d65e28454fd14dacf7b8bededa3/투표하기.gif)
 
 **시상하기**
 
-![베스트워스트](/uploads/df56a5f67b2f2a805a0ba51dc67e914d/베스트워스트.gif)
+![베스트워스트](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/df56a5f67b2f2a805a0ba51dc67e914d/베스트워스트.gif)
 
 
 
@@ -87,43 +87,43 @@
 
 **로비/ 방 생성**
 
-![로비_방생성](/uploads/504d4bbe6508ccc7d1409040e2c23900/로비_방생성.png)
+![로비_방생성](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/504d4bbe6508ccc7d1409040e2c23900/로비_방생성.png)
 
 
 
 **스파이폴**
 
-![스파이폴](/uploads/da35ed2ed9766e1bee27421e6bb37a29/스파이폴.png)
+![스파이폴](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/da35ed2ed9766e1bee27421e6bb37a29/스파이폴.png)
 
-![스파이폴2](/uploads/326b739b907838f0c0e262b42d7777b9/스파이폴2.png)
+![스파이폴2](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/326b739b907838f0c0e262b42d7777b9/스파이폴2.png)
 
 
 
 **텔레스트레이션**
 
-![텔레스테이션](/uploads/fe9724bd950df550cf37c2ca2e0633e6/텔레스테이션.png)
+![텔레스테이션](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/fe9724bd950df550cf37c2ca2e0633e6/텔레스테이션.png)
 
 
 
 ## 🔗 **ER Diagram**
 
-![14.ER_Diagram](/uploads/28f8d2401d0acb61d2a0a8bb2ae1e18a/14.ER_Diagram.png)
+![14.ER_Diagram](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/28f8d2401d0acb61d2a0a8bb2ae1e18a/14.ER_Diagram.png)
 
 
 
 ## 📄 **기능 정의서**
 
-![15.기능정의서1](/uploads/916b8c17bed4f332c9444255bb13dff5/15.기능정의서1.png)
+![15.기능정의서1](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/916b8c17bed4f332c9444255bb13dff5/15.기능정의서1.png)
 
-![16.기능정의서2](/uploads/5cb54e0e170194ec380364b6220b7ef7/16.기능정의서2.png)
+![16.기능정의서2](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/5cb54e0e170194ec380364b6220b7ef7/16.기능정의서2.png)
 
-![17.기능정의서3](/uploads/f7f1c3443d3cc8f93266ea50cbd4f6ce/17.기능정의서3.png)
+![17.기능정의서3](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/f7f1c3443d3cc8f93266ea50cbd4f6ce/17.기능정의서3.png)
 
 
 
 ## 🔨 서비스 아키텍처
 
-![18서비스아키텍처](/uploads/1651038b7bff0a307b5357300df6cb64/18서비스아키텍처.png)
+![18서비스아키텍처](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/1651038b7bff0a307b5357300df6cb64/18서비스아키텍처.png)
 
 | PORT | 이름                                                  |
 | ---- | ----------------------------------------------------- |
