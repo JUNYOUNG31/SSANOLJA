@@ -16,7 +16,7 @@
 
 **게임설명**
 
-![3.스파이폴설명](/uploads/4712b1d01a5123215f81055ac799bfbe/3.스파이폴설명.gif width=300px height=300px)
+![3.스파이폴설명](/uploads/4712b1d01a5123215f81055ac799bfbe/3.스파이폴설명.gif)
 
 **시작화면**
 
@@ -61,7 +61,7 @@
 
 **그림그리기**
 
-![그림그리기](/uploads/4595a89848168cdb7ba99dd4fd161312/그림그리기.gif)
+<img src="/uploads/4595a89848168cdb7ba99dd4fd161312/그림그리기.gif" width="600" height="423"/>
 
 **그림맞추기**
 
@@ -166,22 +166,74 @@
 
 ## 😀 **팀원 역할**
 
-- 김범주
-  - Backend
-  - Server
-- 배소원
-  - Backend
-- 강광은
-  - Backend
-- 박준영
-  - Frontend
-- 정성우
-  - Backend
-- 조성현
-  - Frontend
-  
-    
+- **김범주**
+    - backend
+        - Spring Boot를 사용
+            - 게임 준비 관련 API 구현
+                - 방 만들기,방 참여하기, 게임 선택하기
+            - 스파이폴 관련 API 구현 및 서비스 구축
+                - 랜덤한 장소 및 직업 부여, 시작 장소 부여
+        - 게임 규칙 내용을 RuleUtil 클래스로 구축
+        - SSANOLJA DB 구축
+            - 테이블 설계 및 컬럼 값 지정
+    - Server
+        - AWS EC2 환경 구축
+        - OpenVidu 서버 구축 후 배포
+        - Nginx 프록시 서버 구축(On-Premise)
+            - FE 서버 구축
+            - BE 서버 구축
+                - Docker를 사용해 컨테이너 제작 후 사용
 
+- **배소원**
+    - DB
+        - DB 테이블 설계
+    - backend(Spring boot, JPA 사용)
+        - 텔레스테이션 백엔드개발(플레이어 정보 저장, 앨범 보여주기, 투표 결과 저장 )
+    - frontend
+        - canvas api 구현
+        - SSANOLJA 텔레스테이션 게임진행 화면 개발(키워드 작성, 그림 그리기)
+
+- **강광은**
+    - Backend
+        - Spring Boot, JPA를 사용해 Telestation Backend API 구현
+        - Google Login API 구현
+    - Frontend
+        - Vue와 OAuth2를 이용한 Google Login 구현
+        - Vue.js, PaperCSS, Animate.css를 사용해 Telestation 투표 결과 css 스타일링
+
+- **박준영**
+    - Frontend
+        - Vue.js를 활용하여 SPA 구현
+        - openvidu를 활용한 webRTC 구현
+        - websocket을 통한 플레이어간 실시간 통신 구현
+        - 메인 화면, 로비, 게임선택화면 구성
+        - 스파이폴 게임화면(시작화면, 게임화면, 투표화면, 게임종료화면) 구성
+        - 텔레스테이션 이미지 websocket 통신 구현
+        - 전체적인 웹 디자인 및 styled-component와 PaperCSS를 통한 css 스타일링
+
+- **정성우**
+    - Backend
+        - Entity와 DB 테이블 Jpa mapping
+        - SpringBoot와 Jpa를 이용한 스파이폴, 게임시작, 방만들기, 입장하기 구현
+        - 사용자 닉네임 변경 구현
+        - 게임규칙 정보를 enum으로 구현
+    - Frontend
+        - openvidu와 vue를 이용하여 webrtc 구현
+        - websocket을 통한 플레이어간 데이터 교환 구현
+        - 스파이폴 axios 비동기 통신 구현
+        - 방번호 복사 기능, 준비 및 시작 기능 구현
+
+- **조성현**
+    - Frontend
+        - Room.vue 전체적인 구조 CSS 구축
+        - OpenVidu를 이용하여 방 참가 전 자신의 화면 미리보기(preview) 기능 구현
+        - Frontend Home.vue 에서 구글 로그인  연동 기능 구현
+        - Telestaion 전체적인 게임 구성
+        - Telestation 게임 진행 시 keyword, drawing, album, BEST/Worst 로 GameMode를 정해 SPA로 라운드별 화면 구성
+        - WebSocket을 통한 플레이어간 정보 공유 및 입력완료, 준비완료 상태 공유
+        - Album Mode에서 자바스크립트를 이용하여 카카오톡 형식으로 앨범 나타내기 구현
+
+        
 ## 🔧 **협업 툴**
 
 - Git
