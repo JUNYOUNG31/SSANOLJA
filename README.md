@@ -4,11 +4,11 @@
 
 **구글 로그인**
 
-![1.로그인](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/ff7b0b324a95d86c748dc5e54c8e60a4/1.로그인.gif)
+![1 로그인](https://user-images.githubusercontent.com/87454934/231130339-ec6a3365-ef0b-4c6f-a07d-83df5e6d5b22.gif)
 
 **로비**
 
-![2.로비](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/c81df0d9442047d78557638be5ca8cad/2.로비.gif)
+![2 로비](https://user-images.githubusercontent.com/87454934/231130341-273b3a08-147f-4b87-a0cf-a7b0f3809b78.gif)
 
 
 
@@ -16,35 +16,31 @@
 
 **게임설명**
 
-![3.스파이폴설명](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/4712b1d01a5123215f81055ac799bfbe/3.스파이폴설명.gif)
+![3 스파이폴설명](https://user-images.githubusercontent.com/87454934/231130342-fdd32fcf-aa53-481c-80f1-523cc9d218d7.gif)
 
 **시작화면**
 
-![4.시민시작화면](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/bf71fb58208f3b67fc4e5cfb61c13af3/4.시민시작화면.gif)
+![4 시민시작화면](https://user-images.githubusercontent.com/87454934/231130345-5d6733a3-c48b-4616-b2e2-013630e7c929.gif)
 
 **시작화면(스파이)**
 
-![스파이화면](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/8ab8c24e7e2e954439a08cdb95fb5886/스파이화면.gif)
+![스파이화면](https://user-images.githubusercontent.com/87454934/231130322-9f2f11f1-6def-4cae-84bd-2730a89f8dab.gif)
 
 **지목하기**
 
-![지목하기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/fa9d73e7653fa3fec3e6ed9eb95698de/지목하기.gif)
-
-**투표하기**
-
-![고발하기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/23afdfd37b73ca84bb1b15e6f5037f95/고발하기.gif)
+![지목하기](https://user-images.githubusercontent.com/87454934/231130330-c4c6b6b5-b0db-476a-b946-e024368a1bdf.gif)
 
 **스파이폴**
 
-![8.스파이폴](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/328596f1ae68777cb21d74b27d5c9447/8.스파이폴.gif)
+![8 스파이폴](https://user-images.githubusercontent.com/87454934/231130349-ddbac6d9-ff1d-4bf7-96df-3033a6081a47.gif)
 
 **승리화면 - 시민승리** 
 
-![spy_win](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/150a26d553ad2179776185be5ced2364/spy_win.gif)
+![spy_win](https://user-images.githubusercontent.com/87454934/231130375-343361f9-f93d-4559-89be-e107601c50c2.gif)
 
 **승리화면 - 스파이승리** 
 
-![civil_win](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/7693b0fd72d87e7fe4f17c132b079769/civil_win.gif)
+![civil_win](https://user-images.githubusercontent.com/87454934/231130372-1daca884-ec30-44a1-aa1e-62be67f13840.gif)
 
 
 
@@ -53,27 +49,27 @@
 
 **게임설명**
 
-![9.텔레스테이션설명](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/a517c718914d22c04d5f295a2ef84be7/9.텔레스테이션설명.gif)
+![9 텔레스테이션설명](https://user-images.githubusercontent.com/87454934/231130354-da798666-fb06-4679-89dd-0c81e78e66f7.gif)
 
 **키워드입력**
 
-![키워드입력](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/71ad2f6aa9e9f7659e4e032090ccff61/키워드입력.gif)
+![키워드입력](https://user-images.githubusercontent.com/87454934/231130332-4b4e6f99-4428-44a3-a78e-efbc59599a50.gif)
 
 **그림그리기**
 
-<img src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/4595a89848168cdb7ba99dd4fd161312/그림그리기.gif" width="600" height="423"/>
+<img src="https://user-images.githubusercontent.com/87454934/231130382-cad391ce-aeb7-4fd2-8216-3fd415448768.gif" width="600" height="423"/>
 
 **그림맞추기**
 
-![그림맞추기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/d7bfcc3bc436de9f80f40d03c66899be/그림맞추기.gif)
+![그림맞추기](https://user-images.githubusercontent.com/87454934/231130385-93cfe495-c01f-4029-a8f9-4f1d1a1bf798.gif)
 
 **투표하기**
 
-![투표하기](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/19986d65e28454fd14dacf7b8bededa3/투표하기.gif)
+![투표하기](https://user-images.githubusercontent.com/87454934/231130336-336a4682-6e3e-4656-9e92-03e8c462893a.gif)
 
 **시상하기**
 
-![베스트워스트](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/df56a5f67b2f2a805a0ba51dc67e914d/베스트워스트.gif)
+![베스트워스트](https://user-images.githubusercontent.com/87454934/231130311-d45218ee-7d1c-45d1-959d-fd99135e2628.gif)
 
 
 
@@ -87,43 +83,42 @@
 
 **로비/ 방 생성**
 
-![로비_방생성](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/504d4bbe6508ccc7d1409040e2c23900/로비_방생성.png)
+![로비 방생성](https://user-images.githubusercontent.com/87454934/231130302-c8921d09-90f5-49e5-af41-a74af954b0d4.png)
 
 
 
 **스파이폴**
 
-![스파이폴](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/da35ed2ed9766e1bee27421e6bb37a29/스파이폴.png)
+![스파이폴](https://user-images.githubusercontent.com/87454934/231130318-a9dd7902-5c36-46d9-84a8-ec14df57bcee.png)
 
-![스파이폴2](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/326b739b907838f0c0e262b42d7777b9/스파이폴2.png)
+![스파이폴2](https://user-images.githubusercontent.com/87454934/231130320-f3a29191-ca00-4403-a2ec-b330bd7f1494.png)
 
 
 
 **텔레스트레이션**
 
-![텔레스테이션](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/fe9724bd950df550cf37c2ca2e0633e6/텔레스테이션.png)
+![텔레스테이션](https://user-images.githubusercontent.com/87454934/231130335-48d39183-c960-4a1a-8fa5-8c979d734e5f.png)
 
 
 
 ## 🔗 **ER Diagram**
 
-![14.ER_Diagram](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/28f8d2401d0acb61d2a0a8bb2ae1e18a/14.ER_Diagram.png)
+![14 ER Diagram](https://user-images.githubusercontent.com/87454934/231130356-ed89d235-0519-4972-b3f4-80b15d040109.png)
 
 
 
 ## 📄 **기능 정의서**
 
-![15.기능정의서1](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/916b8c17bed4f332c9444255bb13dff5/15.기능정의서1.png)
+![15 기능정의서1](https://user-images.githubusercontent.com/87454934/231130358-3361fbe5-5cda-44ab-9c4a-35e2e5ef6729.png)
 
-![16.기능정의서2](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/5cb54e0e170194ec380364b6220b7ef7/16.기능정의서2.png)
+![16 기능정의서2](https://user-images.githubusercontent.com/87454934/231130362-9ba2dd32-b807-4b78-9be1-1007973bc17e.png)
 
-![17.기능정의서3](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/f7f1c3443d3cc8f93266ea50cbd4f6ce/17.기능정의서3.png)
-
+![17 기능정의서3](https://user-images.githubusercontent.com/87454934/231130366-322364ed-0b8a-4272-9752-7125a5f28562.png)
 
 
 ## 🔨 서비스 아키텍처
 
-![18서비스아키텍처](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E106/uploads/1651038b7bff0a307b5357300df6cb64/18서비스아키텍처.png)
+![18서비스아키텍처](https://user-images.githubusercontent.com/87454934/231130370-d7b28a84-0b8c-4be7-a67a-60ccb10475aa.png)
 
 | PORT | 이름                                                  |
 | ---- | ----------------------------------------------------- |
